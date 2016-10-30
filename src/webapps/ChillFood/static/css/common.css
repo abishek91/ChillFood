@@ -15,9 +15,21 @@
 }
 
 .chill {
-	color: #43a1d4;
+	color: white;
 	font-weight: bold;
 	padding: 15px 15px;
 	font-size: 18px;
 
+}
+
+.bg-gray {
+	background-color: #edeaea;
+}
+
+.bg-blue {
+	background-color: #52a3f3;
+}
+
+.bg-white {
+	background-color: white;
 }

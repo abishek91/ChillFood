@@ -12,18 +12,22 @@
   <link href="{% static 'css/common.css' %}" rel="stylesheet">
   <link href="{% static 'css/recipe_detail.css' %}" rel="stylesheet">
   </head>
-  <body>
-    <nav class="navbar navbar-default navbar-static-top">
+  <body class="bg-gray">
+    <nav class="navbar navbar-static-top bg-blue">
     <div class="chill">ChillFood.com</div>
 
     </nav> 
-    <div class="container">
-        <div class="col-sm-9">
-          <img height="300" width="300" src="{% url 'recipe_image' recipe.id %}" alt="recipe pic">
+    <div class="bg-white main">
+        <div>
+          <img class="recipe-image" height="400" width="400" src="{% url 'recipe_image' recipe.id %}" alt="recipe pic">
 
-          <div class="row title">{{recipe.title}}</div>
-          <div class="row cook"> By {{recipe.cook.name}}</div>
-          <div class="row row-padding">
+          <div class="title">
+            <span>{{recipe.title}}</span>
+          </div>
+          <div class="cook"> By {{recipe.cook.name}}</div>
+          <button class="bookmark">Bookmark</button>
+
+          <div class="row-padding">
             <span>
               <img height="15" width="15" src="{% static 'images/clock-icon.png' %}" alt="clock">
               <span>{{recipe.time}} min</span>
@@ -33,34 +37,38 @@
               <span>{{recipe.calories}}</span>
             </span>
           </div>
-          <div class="row row-padding">
+          <div class="row-padding">
             <span>Category:</span>
             {% for category in recipe.categories %}
-              <span class="grey-box">{{category.name}}</span>
+              <span class="blue-box">{{category.name}}</span>
             {% endfor %}
             {% if recipe.equipment %}
               <span class="appliances-padding-left">Appliances:</span>
               {% for appliance in recipe.equipment %}
-                <span class="grey-box">{{appliance.name}}</span>
+                <span class="blue-box">{{appliance.name}}</span>
               {% endfor %}
             {% endif %}
           </div>
-          <div class="heading row row-padding">Ingredients</div>
-          <ul>
-            {% for ingredient in recipe.ingredients %}
-            <li>{{ingredient.display}}</li>
-            {% endfor %}
-          </ul>
-          <div class="heading row row-padding">Steps</div>
+          <div class="row-padding">
+            <div class="heading">Ingredients</div>
+            <ul>
+              {% for ingredient in recipe.ingredients %}
+              <li>{{ingredient.display}}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="heading row-padding">Steps</div>
           {% for step in recipe.steps %}
-          <div class="row row-padding">
+          <div class="row-padding">
             <div class="step-padding sub-heading">Step {{step.step_number}} </div>
-            <span class="col-sm-3">
+            {% if step.picture.name %}
+            <span>
                 <img height="100" width="100" src="{% url 'step_image' step.id %}" alt="step pic">
             </span>
-            <span class="col-sm-6">
+            {% endif %}
+            <div class="instruction">
               {{step.instruction}}
-            </span>
+            </div>
           </div>
             {% endfor %}
         </div>

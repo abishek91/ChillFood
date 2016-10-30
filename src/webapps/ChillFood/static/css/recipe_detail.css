@@ -6,15 +6,32 @@
 	padding-left: 50px
 }
 
-.grey-box {
-	background-color: #efeded;
+.blue-box {
+	background-color: #b6ecfe;;
 	padding: 1px 5px;
 }
 
 .row-padding {
-	padding: 3px 0px 
+	padding: 3px 0px;
 }
 
 .step-padding {
-	padding: 5px 0px 
+	padding: 5px 0px; 
+}
+
+.recipe-image {
+	margin-left: 150px;
+}
+
+.main {
+	margin-left: 300px;
+	margin-right: 400px;
+}
+
+.instruction {
+	padding: 5px 15px;
+}
+
+.bookmark {
+	background-color: lightblue;
 }

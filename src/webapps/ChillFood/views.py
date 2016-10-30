@@ -33,11 +33,11 @@ def step_image(request, step_id):
 		image = step.picture.name
 		content_type = guess_type(image)
 
-	else:
-		url = settings.BASE_DIR + '/ChillFood' + static('images/empty_profile.gif')
-		with open(url, "rb") as empty_recipe:
-			image = empty_recipe.read()
-			content_type = 'image/gif'
+	# else:
+	# 	url = settings.BASE_DIR + '/ChillFood' + static('images/empty_profile.gif')
+	# 	with open(url, "rb") as empty_recipe:
+	# 		image = empty_recipe.read()
+	# 		content_type = 'image/gif'
 
 	return HttpResponse(image, content_type=content_type)	
 
