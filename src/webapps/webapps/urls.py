@@ -16,10 +16,10 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
-import ChillFood.views
+import ChillFood.data
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^setup/$', ChillFood.views.setup),
+    url(r'^setup/$', ChillFood.data.setup),
 ]
