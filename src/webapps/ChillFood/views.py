@@ -66,7 +66,7 @@ def save_recipe(person):
 
 
 	if(recipe['readyInMinutes'] >= 30):
-		print('1')
+		print('Recipe skipped')
 		return False
 
 	recipe_id = recipe['id']
@@ -117,6 +117,7 @@ def setup(request):
 		context = save_recipe(person)
 		if(context):
 			i += 1
+			print('Recipe ' + str(i) + ' downloaded')
 	return render(request, 'setup.html', context)
 
 

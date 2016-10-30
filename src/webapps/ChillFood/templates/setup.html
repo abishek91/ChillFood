@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  </head>
+  <body>
+<!--   {% for a in json.recipes.0 %}
+  	<div>{{a}}</div>
+  {% endfor %} -->
+
+  {% for step in steps %}
+  	<div>{{step.number}})</div>
+  	<div>{{step.step}}</div>
+  	<div>{{step.equipment}}
+
+  {% endfor %}
+  <div>{{json}}</div>
+  <div>##################################################################################</div>
+  </body>
+</html>
