@@ -26,9 +26,9 @@ class Recipe(models.Model):
 	date_time = models.DateTimeField(auto_now_add=True)
 
 CATEGORIES = (
-    ('veg', 'veg'),
-    ('vegan', 'vegan'),
-    ('non-veg', 'non-veg')
+    ('Veg', 'Veg'),
+    ('Vegan', 'Vegan'),
+    ('Non-veg', 'Non-veg')
 )
 
 class Category(models.Model):

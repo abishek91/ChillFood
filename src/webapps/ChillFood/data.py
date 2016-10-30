@@ -80,15 +80,15 @@ def save_recipe(person):
 	new_recipe.pic.save(get_filename_from_url(image_url), download_image(image_url))
 
 	if(recipe['vegan']):
-		category = Category.objects.get(name='vegan')
+		category = Category.objects.get(name='Vegan')
 		category.recipes.add(new_recipe)
 		category.save()
 
 	if(recipe['vegetarian']):
-		category = Category.objects.get(name='veg')
+		category = Category.objects.get(name='Veg')
 		category.recipes.add(new_recipe)
 	else:
-		category = Category.objects.get(name='non-veg')
+		category = Category.objects.get(name='Non-veg')
 		category.recipes.add(new_recipe)
 	category.save()
 

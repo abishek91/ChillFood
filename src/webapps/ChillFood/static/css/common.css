@@ -1,0 +1,23 @@
+.title {
+	font-size: 25px;
+}
+
+.heading {
+	font-size: 20px;
+}
+
+.sub-heading {
+	color: #43a1d4;
+}
+
+.cook {
+	color: grey;
+}
+
+.chill {
+	color: #43a1d4;
+	font-weight: bold;
+	padding: 15px 15px;
+	font-size: 18px;
+
+}
