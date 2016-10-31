@@ -52,3 +52,6 @@ def recipe_detail(request, recipe_id):
 
 	context = {'recipe': recipe}
 	return render(request, 'recipe_detail.html', context)
+
+def plz(request):
+	return render(request, 'hi.html', {})

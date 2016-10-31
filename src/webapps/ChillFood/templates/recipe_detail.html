@@ -17,61 +17,63 @@
     <div class="chill">ChillFood.com</div>
 
     </nav> 
-    <div class="bg-white main">
-        <div>
-          <img class="recipe-image" height="400" width="400" src="{% url 'recipe_image' recipe.id %}" alt="recipe pic">
+    <div>
+      <span class="col-sm-6 bg-white">
+          <div>
+            <img class="recipe-image" height="400" width="400" src="{% url 'recipe_image' recipe.id %}" alt="recipe pic">
 
-          <div class="title">
-            <span>{{recipe.title}}</span>
-          </div>
-          <div class="cook"> By {{recipe.cook.name}}</div>
-          <button class="bookmark">Bookmark</button>
-
-          <div class="row-padding">
-            <span>
-              <img height="15" width="15" src="{% static 'images/clock-icon.png' %}" alt="clock">
-              <span>{{recipe.time}} min</span>
-            </span>
-            <span class="calories-padding-left">
-              <img height="15" width="15" src="{% static 'images/calories-icon.png' %}" alt="clock">
-              <span>{{recipe.calories}}</span>
-            </span>
-          </div>
-          <div class="row-padding">
-            <span>Category:</span>
-            {% for category in recipe.categories %}
-              <span class="blue-box">{{category.name}}</span>
-            {% endfor %}
-            {% if recipe.equipment %}
-              <span class="appliances-padding-left">Appliances:</span>
-              {% for appliance in recipe.equipment %}
-                <span class="blue-box">{{appliance.name}}</span>
-              {% endfor %}
-            {% endif %}
-          </div>
-          <div class="row-padding">
-            <div class="heading">Ingredients</div>
-            <ul>
-              {% for ingredient in recipe.ingredients %}
-              <li>{{ingredient.display}}</li>
-              {% endfor %}
-            </ul>
-          </div>
-          <div class="heading row-padding">Steps</div>
-          {% for step in recipe.steps %}
-          <div class="row-padding">
-            <div class="step-padding sub-heading">Step {{step.step_number}} </div>
-            {% if step.picture.name %}
-            <span>
-                <img height="100" width="100" src="{% url 'step_image' step.id %}" alt="step pic">
-            </span>
-            {% endif %}
-            <div class="instruction">
-              {{step.instruction}}
+            <div class="title">
+              <span>{{recipe.title}}</span>
             </div>
+            <div class="cook"> By {{recipe.cook.name}}</div>
+            <button class="bookmark">Bookmark</button>
+
+            <div class="row-padding">
+              <span>
+                <img height="15" width="15" src="{% static 'images/clock-icon.png' %}" alt="clock">
+                <span>{{recipe.time}} min</span>
+              </span>
+              <span class="calories-padding-left">
+                <img height="15" width="15" src="{% static 'images/calories-icon.png' %}" alt="clock">
+                <span>{{recipe.calories}}</span>
+              </span>
+            </div>
+            <div class="row-padding">
+              <span>Category:</span>
+              {% for category in recipe.categories %}
+                <span class="blue-box">{{category.name}}</span>
+              {% endfor %}
+              {% if recipe.equipment %}
+                <span class="appliances-padding-left">Appliances:</span>
+                {% for appliance in recipe.equipment %}
+                  <span class="blue-box">{{appliance.name}}</span>
+                {% endfor %}
+              {% endif %}
+            </div>
+            <div class="row-padding">
+              <div class="heading">Ingredients</div>
+              <ul>
+                {% for ingredient in recipe.ingredients %}
+                <li>{{ingredient.display}}</li>
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="heading row-padding">Steps</div>
+            {% for step in recipe.steps %}
+            <div class="row-padding">
+              <div class="step-padding sub-heading">Step {{step.step_number}} </div>
+              {% if step.picture.name %}
+              <span>
+                  <img height="100" width="100" src="{% url 'step_image' step.id %}" alt="step pic">
+              </span>
+              {% endif %}
+              <div class="instruction">
+                {{step.instruction}}
+              </div>
+            </div>
+              {% endfor %}
           </div>
-            {% endfor %}
         </div>
-      </div>
+      </span>
   </body>
 </html>

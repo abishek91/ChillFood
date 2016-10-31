@@ -26,5 +26,6 @@ urlpatterns = [
     url(r'^recipe_image/(?P<recipe_id>\d+)/$', ChillFood.views.recipe_image, name='recipe_image'),
     url(r'^step_image/(?P<step_id>\d+)/$', ChillFood.views.step_image, name='step_image'),
     url(r'^recipe/(?P<recipe_id>\d+)/$', ChillFood.views.recipe_detail, name='recipe_detail'),
+    url(r'^plz/$', ChillFood.views.plz, name='plz'),
 
 ]
