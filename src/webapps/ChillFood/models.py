@@ -1,18 +1,14 @@
 from django.db import models
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from django.utils.timezone import datetime, now
 from django.contrib.postgres.fields import ArrayField
 
+from .login.models import User
+ 
 class Person(models.Model):
-	name = models.CharField(max_length = 200)
-	email = models.EmailField(max_length = 200)
-	birthdate = models.DateField(null=True, blank=True)
-	bio = models.CharField(max_length = 420, blank = True)
-	user = models.ForeignKey(User)
-	following = models.ManyToManyField("self", symmetrical=False, related_name='followers')
-	profile_pic = models.ImageField(upload_to='profile-pics', blank=True)
-	is_active = models.BooleanField(default=False)
+	# user = models.ForeignKey(User)
 	location = models.CharField(max_length = 200, blank = True)
+	
 	def __unicode__(self):
 		return self.user
 
