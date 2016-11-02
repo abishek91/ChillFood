@@ -1,0 +1,106 @@
+/*body {
+	background-image: url('../img/sea.jpg');
+	background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100% 100%;
+
+    /*background-repeat: no-repeat;*/
+	/*background-size: cover;	*/
+	/*min-height: 100%;* /
+}*/
+
+.form-signin {
+    max-width: 430px;
+    padding: 15px;
+    padding-top: 0px;
+    margin: 0 auto;
+}
+
+.form-signin  img {
+	width: 100%;
+}
+
+.center-form {
+    max-width: 430px;
+    margin: 0 auto;
+}
+
+nav .logo {
+	height: 70px;
+	/*margin-top: -18px;		*/
+}
+
+
+nav .name {
+	min-width: 200px;
+}
+
+.clickable {
+	cursor: pointer;
+}
+
+.clickable:hover {
+	opacity: .8;
+}
+
+.errors {
+	color: red;
+}
+
+a {
+	text-decoration: none!important;
+}
+
+div .material-icons {
+	vertical-align: middle;
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px lightgray inset;
+}
+
+nav .user_photo {
+	border-radius: 0px 8px;
+	margin-top:8px; 
+	margin-right: 5px; 
+	max-width: 80px;
+	max-height: 50px;
+}
+
+.user_photo.big {
+	max-width: 150px;
+	max-height: 150px;
+}
+
+.user_photo.small {
+	max-width: 100%;		
+}
+
+.user_photo.frame {
+	margin: 10px;
+}
+
+.fixed-action-btn.top {
+	right: 320px;
+    top: 155px;
+    color: orange!important;
+}
+
+.fixed-action-btn.top > a > i {
+	right: 320px;
+    top: 155px;
+    color: orange!important;
+}
+
+input[type="file"] + label {
+    display: block;
+    margin-top: -40px; 
+}
+
+.hidden {
+	display: none!important;
+}
+
+html {
+    overflow-y:scroll;
+}
