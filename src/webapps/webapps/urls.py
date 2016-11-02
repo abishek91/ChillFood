@@ -13,19 +13,10 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
 
-import ChillFood.data
-import ChillFood.views
-
-
 urlpatterns = [
+    url(r'', include('ChillFood.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'^setup/$', ChillFood.data.setup),
-    url(r'^recipe_image/(?P<recipe_id>\d+)/$', ChillFood.views.recipe_image, name='recipe_image'),
-    url(r'^step_image/(?P<step_id>\d+)/$', ChillFood.views.step_image, name='step_image'),
-    url(r'^recipe/(?P<recipe_id>\d+)/$', ChillFood.views.recipe_detail, name='recipe_detail'),
-    url(r'^plz/$', ChillFood.views.plz, name='plz'),
-
 ]

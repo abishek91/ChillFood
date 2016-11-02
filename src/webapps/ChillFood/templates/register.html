@@ -1,0 +1,23 @@
+{% extends 'base_no_auth.html' %}
+{% load static %}
+
+{% block content %}
+
+    <form class="form-signin" method="post">
+       {% csrf_token %}
+
+      <a href="{% url 'login' %}">
+        <img alt="Grumblr" src="{% static 'images/ChillFood.png' %}">
+      </a>  
+      
+      {% include "form.html" %}
+
+      <a class="left waves-effect waves-blue btn btn-flat" href="{% url 'login' %}">
+        Already registered?        
+      </a>
+      <button class="right btn waves-effect waves-light blue" type="submit">
+        Register
+      </button>    
+    </form>
+
+{% endblock %}

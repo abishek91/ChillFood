@@ -1,0 +1,31 @@
+{% extends 'base_no_auth.html' %}
+
+{% load static %}
+
+{% block content %}
+  
+    <form class="form-signin" method="post">
+      {% csrf_token %}
+      <img alt="ChillFood" src="{% static 'images/ChillFood.png' %}">
+      
+      
+      <div class="errors">
+        {% if error %}
+          <p>{{error}}</p>
+        {% endif %}        
+      </div>
+      
+      {% include "form.html" %}
+
+      <div>
+        <a class="left btn btn-flat waves-effect waves-blue" href="{% url 'register' %}">
+          Register
+        </a>
+        <button class="right btn btn-warning waves-effect blue" type="submit">
+          Sign in
+        </button>       
+      </div>  
+      
+    </form>
+
+{% endblock %}

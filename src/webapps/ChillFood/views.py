@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 from ChillFood.models import *
+from django.contrib.auth.decorators import login_required
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.shortcuts import get_object_or_404, redirect, reverse
 from mimetypes import guess_type
@@ -9,6 +10,13 @@ import os
 
 from django.conf import settings
 
+
+
+@login_required
+def index(request):
+    context = {}
+
+    return render(request, 'index.html',context)
 
 def recipe_image(request, recipe_id):
 	recipe = get_object_or_404(Recipe, id=recipe_id)

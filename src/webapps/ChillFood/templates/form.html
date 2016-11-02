@@ -1,0 +1,23 @@
+<div class="errors">
+  {% for error in errors%}
+    <p>{{ error}}</p>
+  {% endfor %}
+  {% for error in form.non_field_errors%}
+    <p>{{ error}}</p>
+  {% endfor %}
+</div>
+
+{% for field in form.visible_fields %}
+  
+  <div class="input-field" >
+    {% if forloop.first %}
+      {{field}} 
+      <!-- |attr:"autofocus" -->
+    {% else %}
+      {{field}}
+    {% endif %}
+    {{field.label_tag}}
+    <div class="errors">{{field.errors}}</div>
+  </div>
+{% endfor %}
+
