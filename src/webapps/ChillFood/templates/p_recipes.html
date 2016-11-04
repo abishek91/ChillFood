@@ -1,0 +1,38 @@
+{% load static %}
+  <div class="progress">
+      <div class="indeterminate"></div>
+  </div>
+  <!-- <div class="container"> -->
+  <div id="post_container" class="list"></div>
+  <div class="center-align">
+    <button id="next" type="button" onclick="load_posts()" class="waves-effect waves-blue btn btn-flat hidden">load more...</button>
+  </div>  
+  <!-- </div> -->
+  
+  <div class="row hidden">
+    <div id="post_template" class="list-item">
+      <div  class="card  list-content">
+        <div class="card-image">
+          <a class="post_detail" href="">
+            <img id="post_pic" src="">
+          </a>
+        </div>
+        <div class="card-content">
+          <a class="post_detail" href="">
+            <h5 id="post_title">Card Title</h5>          
+          </a>
+        </div>  
+        <div class="card-footer">
+          <div class="row">
+            <div class="grey-text col s6">
+              <div id="post_rating">rating</div>              
+            </div>
+            <div class="grey-text col s6 right-align">
+              <span id="post_time">0</span> min
+            </div>    
+          </div>
+        </div>      
+      </div>      
+    </div>
+    
+  </div>

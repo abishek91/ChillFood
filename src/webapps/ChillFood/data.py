@@ -18,7 +18,7 @@ def download_image(url):
     headers={
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'
     })
-	img_temp = NamedTemporaryFile(delete=True)
+	img_temp = NamedTemporaryFile()
 	with urllib.request.urlopen(req) as response:
 		data = response.read() # a `bytes` object
 		img_temp.write(data)
@@ -56,7 +56,7 @@ def save_nutrients(recipe_id, new_recipe):
 		nutrient_value = NutrientValue(recipe=new_recipe, nutrient=saved_nutrient, amount=nutrient['amount'], unit=nutrient['unit'], percentOfDailyNeeds=nutrient['percentOfDailyNeeds'])
 		nutrient_value.save()
 
-def save_recipe(person):
+def save_recipe(user):
 	# with open('/home/abishek/Documents/Classes/Web App Development/Team213/src/webapps/ChillFood/templates/recipe.json') as data_file:    
 	# 	recipe = json.load(data_file)
 	# with open('/home/abishek/Documents/Classes/Web App Development/Team213/src/webapps/ChillFood/templates/steps.json') as data_file:    
@@ -73,10 +73,11 @@ def save_recipe(person):
 
 	recipe_nutrition = requests.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/" + str(recipe_id) + "/information?includeNutrition=true", headers=headers);
 
-	new_recipe = Recipe(title=recipe['title'], time=recipe['readyInMinutes'], cook=person)
+	new_recipe = Recipe(title=recipe['title'], time=recipe['readyInMinutes'], cook=user)
 	new_recipe.save()
 	
 	image_url = recipe['image']
+
 	new_recipe.pic.save(get_filename_from_url(image_url), download_image(image_url))
 
 	if(recipe['vegan']):
@@ -110,11 +111,16 @@ def save_recipe(person):
 	return context;
 
 def setup(request):
-	number_of_files = 10;
+	number_of_files = 20;
 	i = 0;
 	while(i < number_of_files):
-		person = Person.objects.get(name='ChillFood.com')
-		context = save_recipe(person)
+		try:
+			user = User.objects.get(name='ChillFood.com')
+		except User.DoesNotExist:
+			user = User(name="ChillFood.com")
+			user.save()
+		
+		context = save_recipe(user)
 		if(context):
 			i += 1
 			print('Recipe ' + str(i) + ' downloaded')

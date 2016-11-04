@@ -47,6 +47,11 @@
           <ul class="right hide-on-med-and-down">
             <!-- Dropdown Trigger -->
             <li>
+              <a href="{% url 'recipe_create' %}">                
+                <i class="material-icons">add</i>
+              </a>
+            </li>
+            <li>
               <a class="name dropdown-button white-text right-align" href="#!" data-activates="dropdown1">
                 {% if user.photo %}
                   <img class="left user_photo z-depth-1" src="{% url 'user_photo' user.id %}">

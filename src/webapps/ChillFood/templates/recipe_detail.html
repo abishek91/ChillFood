@@ -1,23 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+{% extends 'base.html' %}
+{% load static %}
 
-  <!-- Optional theme -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+{% block scripts %}
+    <link href="{% static 'css/common.css' %}" rel="stylesheet">
+    <link href="{% static 'css/recipe_detail.css' %}" rel="stylesheet">
+    <script src="{% static 'js/recipe.js' %}"></script>
+{% endblock %}
 
-  <!-- Latest compiled and minified JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-  {% load static %}
-  <link href="{% static 'css/common.css' %}" rel="stylesheet">
-  <link href="{% static 'css/recipe_detail.css' %}" rel="stylesheet">
-  </head>
-  <body class="bg-gray">
-    <nav class="navbar navbar-static-top bg-blue">
-    <div class="chill">ChillFood.com</div>
+{% block content %}
 
-    </nav> 
-    <div>
+    <div class="container">
       <span class="col-sm-6 bg-white">
           <div>
             <img class="recipe-image" height="400" width="400" src="{% url 'recipe_image' recipe.id %}" alt="recipe pic">
@@ -75,5 +67,4 @@
           </div>
         </div>
       </span>
-  </body>
-</html>
+{% endblock %}

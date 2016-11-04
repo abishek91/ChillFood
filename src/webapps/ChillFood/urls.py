@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 
-from . import data, views#, api
+from . import data, views, api
 from .login import views as login
 from django.contrib.auth.views import logout_then_login
 
@@ -28,10 +28,18 @@ urlpatterns = [
     url(r'^recipe_image/(?P<recipe_id>\d+)/$', views.recipe_image, name='recipe_image'),
     url(r'^step_image/(?P<step_id>\d+)/$', views.step_image, name='step_image'),
     url(r'^recipe/(?P<recipe_id>\d+)/$', views.recipe_detail, name='recipe_detail'),
+    url(r'^recipe/(?P<recipe_id>\d+)/pic$', views.recipe_pic,name='recipe_pic'),
+    url(r'^recipe/create$', views.recipe_create,name='recipe_create'),
+    url(r'^recipe/(?P<recipe_id>\d+)/edit$', views.recipe_create,name='recipe_create'),
     #Login Module
     url(r'^login$', login.login, name='login'),
     url(r'^confirm/(?P<username>.+)/(?P<token>.+)$', login.confirm, name='confirm'),    
     url(r'^logout$',logout_then_login, name='logout'),
-    url(r'^register$', login.register, name='register'),        
+    url(r'^register$', login.register, name='register'), 
+    #API
+    #List of Recipes 
+    
+    url(r'^api/recipes$', api.recipes, name='recipes'),
+         
 ]
 

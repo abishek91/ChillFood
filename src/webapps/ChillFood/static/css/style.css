@@ -92,10 +92,10 @@ nav .user_photo {
     color: orange!important;
 }
 
-input[type="file"] + label {
+/*input[type="file"] + label {
     display: block;
     margin-top: -40px; 
-}
+}*/
 
 .hidden {
 	display: none!important;
@@ -103,4 +103,68 @@ input[type="file"] + label {
 
 html {
     overflow-y:scroll;
+}
+
+.container-less {
+    max-width: 90%;
+    margin: 0 auto;
+}
+
+#post_title.card-title {
+    /*background-color: rgba(33,150,243,0.7);*/
+    /*width: 100%;*/
+}
+div.card-image {    
+    height: 200px;
+    position: relative;
+    overflow: hidden;
+}
+
+div.card-image  img {        
+    position:absolute; 
+    top:0; 
+    bottom:0; 
+    margin: auto;
+    width:100%;
+}
+
+.list-item div > div.card-content {
+    padding: 0px 20px;
+}
+
+.list-item div > div.card-content .row {
+    /*margin-bottom: 0px;*/
+}
+
+/* List */
+.list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+@media all and (min-width: 40em) {
+  .list-item {
+    width: 50%;
+  }
+}
+
+@media all and (min-width: 60em) {
+  .list-item {
+    width: 33.33%;
+  }
+}
+
+.list-item {
+  display: flex; 
+  padding: 0.5em;
+}
+
+.list-content {
+   display: flex;
+   flex-direction: column;
+   background-color: #fff;
+   width: 100%;
+}
+.list-content .card-content {
+  flex: 1 0 auto;
 }

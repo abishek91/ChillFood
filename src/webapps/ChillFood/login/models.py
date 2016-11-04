@@ -19,9 +19,10 @@ class User(AbstractUser):
   photo = models.ImageField(upload_to="user_photo", blank=True)
   following = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='followers', symmetrical=False)
   is_confirmed = models.BooleanField(default=False)
+  location = models.CharField(max_length = 200, blank = True)
   
   def __unicode__(self):
-    return self.get_full_name
+    return self.name
 
   def to_json(self):
     return {

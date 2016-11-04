@@ -65,30 +65,196 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var App = function (_React$Component) {
-	  _inherits(App, _React$Component);
+	var ListForm = function ListForm(_ref) {
+	  var addItem = _ref.addItem;
 	
-	  function App() {
-	    _classCallCheck(this, App);
+	  // Input tracker
+	  var input = void 0;
 	
-	    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
+	  return _react2.default.createElement(
+	    'div',
+	    { className: 'row' },
+	    _react2.default.createElement('input', { className: 'col s10', placeholder: 'Ingredient name', ref: function ref(node) {
+	        input = node;
+	      } }),
+	    _react2.default.createElement(
+	      'button',
+	      { className: 'col s1 waves-effect waves-blue btn btn-flat',
+	        type: 'button',
+	        onClick: function onClick() {
+	          addItem(input.value);
+	          input.value = '';
+	        } },
+	      _react2.default.createElement(
+	        'i',
+	        { className: 'material-icons blue-text' },
+	        'add'
+	      )
+	    )
+	  );
+	};
+	
+	var Item = function Item(_ref2) {
+	  var item = _ref2.item,
+	      remove = _ref2.remove;
+	
+	
+	  // Each Todo
+	  return _react2.default.createElement(
+	    'li',
+	    { className: 'list-group-item row', onClick: function onClick() {
+	        remove(item.id);
+	      } },
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'col s1' },
+	      item.id
+	    ),
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'col s3' },
+	      item.ingredient.name
+	    ),
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'col s2' },
+	      item.quantity
+	    ),
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'col s2' },
+	      item.price
+	    ),
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'col s2' },
+	      item.display
+	    ),
+	    _react2.default.createElement('input', { name: "form-" + item.id + "-id", className: 'col s1 hidden', value: item.id }),
+	    _react2.default.createElement('input', { name: "form-" + item.id + "-ingredient", className: 'col s3 hidden', value: item.ingredient.name }),
+	    _react2.default.createElement('input', { name: "form-" + item.id + "-quantity", className: 'col s2 hidden', value: item.quantity }),
+	    _react2.default.createElement('input', { name: "form-" + item.id + "-price", className: 'col s2 hidden', value: item.price }),
+	    _react2.default.createElement('input', { name: "form-" + item.id + "-display", className: 'col s2 hidden', value: item.display })
+	  );
+	};
+	
+	var ItemList = function ItemList(_ref3) {
+	  var items = _ref3.items,
+	      remove = _ref3.remove;
+	
+	  // Map through the items
+	  var itemNode = items.map(function (item) {
+	    console.log(item);
+	    return _react2.default.createElement(Item, { item: item, key: item.id, remove: remove });
+	  });
+	  return _react2.default.createElement(
+	    'ul',
+	    null,
+	    itemNode
+	  );
+	};
+	
+	var Title = function Title() {
+	  return _react2.default.createElement(
+	    'div',
+	    null,
+	    _react2.default.createElement(
+	      'div',
+	      null,
+	      _react2.default.createElement(
+	        'h4',
+	        null,
+	        'Ingredients'
+	      )
+	    )
+	  );
+	};
+	
+	// Contaner Component
+	// Todo Id
+	window.id = 0;
+	
+	var ListApp = function (_React$Component) {
+	  _inherits(ListApp, _React$Component);
+	
+	  function ListApp(props) {
+	    _classCallCheck(this, ListApp);
+	
+	    // Set initial state
+	    var _this = _possibleConstructorReturn(this, (ListApp.__proto__ || Object.getPrototypeOf(ListApp)).call(this, props));
+	    // Pass props to parent class
+	
+	
+	    _this.state = {
+	      data: []
+	    };
+	    return _this;
 	  }
+	  // Add todo handler
 	
-	  _createClass(App, [{
+	
+	  _createClass(ListApp, [{
+	    key: 'addItem',
+	    value: function addItem(val) {
+	      if (!val) {
+	        //TODO: Pretty Message
+	        alert('Value is required');
+	        return;
+	      }
+	      // Assemble data
+	      var item = new RecipeIngredient(this.state.data.length, val); // {text: val, id: window.id++}
+	      // Update data
+	      this.state.data.push(item);
+	      // Update state
+	      this.setState({ data: this.state.data });
+	    }
+	    // Handle remove
+	
+	  }, {
+	    key: 'handleRemove',
+	    value: function handleRemove(id) {
+	      // Filter all todos except the one to be removed
+	      var remainder = this.state.data.filter(function (item) {
+	        if (item.id !== id) return item;
+	      });
+	      // Update state with filter
+	      this.setState({ data: remainder });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      // Render JSX
 	      return _react2.default.createElement(
-	        'p',
+	        'div',
 	        null,
-	        ' Hello React!'
+	        _react2.default.createElement(Title, null),
+	        _react2.default.createElement(ItemList, {
+	          items: this.state.data,
+	          remove: this.handleRemove.bind(this)
+	        }),
+	        _react2.default.createElement(ListForm, { addItem: this.addItem.bind(this) })
 	      );
 	    }
 	  }]);
 	
-	  return App;
+	  return ListApp;
 	}(_react2.default.Component);
 	
-	(0, _reactDom.render)(_react2.default.createElement(App, null), document.getElementById('app'));
+	// ========================================
+	
+	
+	function RecipeIngredient(ingredient_id, ingredient_name, quantity, price, display) {
+	  this.id = ingredient_id;
+	  this.ingredient = {
+	    id: ingredient_id,
+	    name: ingredient_name
+	  };
+	  this.quantity = quantity;
+	  this.price = price;
+	  this.display = display;
+	}
+	
+	(0, _reactDom.render)(_react2.default.createElement(ListApp, null), document.getElementById('ingredients'));
 
 /***/ },
 /* 1 */

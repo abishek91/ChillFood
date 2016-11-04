@@ -2,13 +2,14 @@
 {% load static %}
 
 {% block scripts %}
-    <script src="{% static 'js/grumblr.js' %}"></script>
+    <script src="{% static 'js/recipe.js' %}"></script>
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        <h1>Welcome!!!</h1>
+    <div class="container-less">
+        <!-- <h1>Welcome!!!</h1> -->
 
+        {% include 'p_recipes.html' %}
     </div>
 
 {% endblock %}

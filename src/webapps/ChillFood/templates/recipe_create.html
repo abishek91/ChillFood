@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+  <div class="errors">
+  {{form.errors}}
+    {% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
+
+      <!--   
+    {% for error in form.errors%}
+      <p>{{ error}}</p>
+    {% endfor %}
+    {% for error in form.non_field_errors%}
+      <p>{{ error}}</p>
+    {% endfor %} -->
+  </div>
+
+    <form class="container" method="post">
+       {% csrf_token %}
+
+       <div class="row">
+        <input type="text" name="title" placeholder="Title" value="{{form.title.value}}">
+       </div>
+       <div class="row">
+        <div class="input-field col s4">
+          <i class="material-icons prefix">query_builder</i>
+          <input type="text"
+                 name="time" placeholder="minutes"
+                 value="{{form.time.value}}">
+        </div>
+        <div class="input-field col s4">
+          <i class="material-icons prefix">local_dining</i>
+          <input type="text" 
+                 name="calories" 
+                 placeholder="kcal"
+                 value="{{form.calories.value}}">
+        </div>
+        <div class="input-field col s4">
+          <i class="material-icons prefix">videocam</i>
+          <input type="text" 
+                 name="video_link" 
+                 placeholder="YouTube link"
+                 value="{{form.video_link.value}}">
+        </div>
+       </div>
+      <div id="ingredients" class="row">
+        <h4>Ingredients</h4>
+        <div id="ingredients"></div>
+      </div>
+      <div id="ingredients" class="row">
+        <h4>Steps</h4>
+      </div>
+      <div id="tags" class="row">
+        <div>          
+          <span>Category</span> 
+            <span class="">
+            {% for category in lists.categories %}
+              <div class="chip">
+                {{category.name}}
+                <!-- <i class="close material-icons">close</i> -->
+              </div>
+            {% endfor %}
+          </span>
+        </div>
+        <div>          
+          <span>Appliances</span> 
+            <span class="">
+            {% for appliance in lists.appliances %}
+              <div class="chip">
+                {{appliance.name}}
+                <!-- <i class="close material-icons">close</i> -->
+              </div>
+            {% endfor %}
+          </span>
+        </div>
+      </div>
+
+      <button class="right btn waves-effect waves-light blue" type="submit">
+        Save
+      </button>    
+    </form>
+
+    <script src="{% static 'js/bundle.js' %}"></script>
+{% endblock %}
