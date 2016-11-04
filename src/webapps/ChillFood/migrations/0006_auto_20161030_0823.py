@@ -21,7 +21,7 @@ def recreate_categories(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('ChillFood', '0018_auto_20161030_0747'),
+        ('ChillFood', '0005_auto_20161103_2026'),
     ]
 
     operations = [
