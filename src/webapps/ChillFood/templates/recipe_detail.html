@@ -9,28 +9,9 @@
 {% block content %}
 
     <div class="container">
-      <span class="col-sm-6 bg-white">
-          <div>
-            <img class="recipe-image" height="400" width="400" src="{% url 'recipe_image' recipe.id %}" alt="recipe pic">
+        <div id="root"></div>
+    </div>
 
-              <span id="root"></span>
-            <div class="heading row-padding">Steps</div>
-            {% for step in recipe.steps %}
-            <div class="row-padding">
-              <div class="step-padding sub-heading">Step {{step.step_number}} </div>
-              {% if step.picture.name %}
-              <span>
-                  <img height="100" width="100" src="{% url 'step_image' step.id %}" alt="step pic">
-              </span>
-              {% endif %}
-              <div class="instruction">
-                {{step.instruction}}
-              </div>
-            </div>
-              {% endfor %}
-          </div>
-        </div>
-      </span>
     <script type="text/javascript">
       var recipeId = {{recipe.id}}
     </script>

@@ -5,6 +5,7 @@ import Calories from './calories.jsx'
 import Time from './time.jsx'
 import Ingredients from './ingredients.jsx'
 import RecipeTitle from './recipeTitle.jsx'
+import Steps from './steps.jsx'
 
 
 export default class RecipeDetails extends React.Component {
@@ -32,22 +33,25 @@ constructor() {
   render() {
     if(!this.state.recipe)
       return null;
+    var recipe_image_url = "/recipe_image/" + this.state.recipe.id;
     return (
-      <span>
-        <RecipeTitle title={this.state.recipe.title} cook={this.state.recipe.cook} />
-        <button class="bookmark">Bookmark</button>
-        <div className="row-padding">
-          <Time time={this.state.recipe.time} />
-          <Calories calories={this.state.recipe.calories} />
-        </div>
-        <div className="row-padding">
-          <Category categories={this.state.recipe.categories} />
-          <Equipment equipment={this.state.recipe.equipment} />
-        </div>
-        <div class="row-padding">
-          <Ingredients ingredients={this.state.recipe.ingredients} />
-        </div>
-      </span>
+        <span className="col-sm-6 bg-white">
+          <img className="recipe-image" height="400" width="400" src={recipe_image_url} alt="recipe pic" />
+          <RecipeTitle title={this.state.recipe.title} cook={this.state.recipe.cook} />
+          <button className="bookmark">Bookmark</button>
+          <div className="row-padding">
+            <Time time={this.state.recipe.time} />
+            <Calories calories={this.state.recipe.calories} />
+          </div>
+          <div className="row-padding">
+            <Category categories={this.state.recipe.categories} />
+            <Equipment equipment={this.state.recipe.equipment} />
+          </div>
+          <div className="row-padding">
+            <Ingredients ingredients={this.state.recipe.ingredients} />
+          </div>
+          <Steps steps={this.state.recipe.steps} />
+        </span>
     );
   }
 
