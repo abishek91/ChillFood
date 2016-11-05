@@ -2,8 +2,6 @@ import React from 'react';
 
 export default class Equipment extends React.Component {
   render() {
-    if(!this.props.equipment)
-      return null;
      var equipmentRows = [];
      var recipeEquipment = JSON.parse(this.props.equipment)
      var id = 0;
