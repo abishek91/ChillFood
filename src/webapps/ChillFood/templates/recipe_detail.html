@@ -13,20 +13,7 @@
           <div>
             <img class="recipe-image" height="400" width="400" src="{% url 'recipe_image' recipe.id %}" alt="recipe pic">
 
-            <div class="title">
-              <span>{{recipe.title}}</span>
-            </div>
-            <div class="cook"> By {{recipe.cook.name}}</div>
-            <button class="bookmark">Bookmark</button>
               <span id="root"></span>
-            <div class="row-padding">
-              <div class="heading">Ingredients</div>
-              <ul>
-                {% for ingredient in recipe.ingredients %}
-                <li>{{ingredient.display}}</li>
-                {% endfor %}
-              </ul>
-            </div>
             <div class="heading row-padding">Steps</div>
             {% for step in recipe.steps %}
             <div class="row-padding">

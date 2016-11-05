@@ -27,7 +27,7 @@ class User(AbstractUser):
   def to_json(self):
     return {
       "id": self.id,
-      "name": self.get_full_name(),
+      "name": self.name,
       "photo": str(self.photo)
     }
 

@@ -46,9 +46,8 @@ class Recipe(models.Model):
           "views": self.views,
           "categories": serializers.serialize('json',self.category_set.all()),
           "equipment": serializers.serialize('json',self.equipment_set.all()),
-          "ingredients": serializers.serialize('json',self.category_set.all()),
+          "ingredients": serializers.serialize('json',self.recipeingredient_set.all()),
           "calories": str(self.nutrientvalue_set.get(nutrient__name='Calories').amount) + ' ' + self.nutrientvalue_set.get(nutrient__name='Calories').unit,
-          "ingredients": serializers.serialize('json',self.category_set.all()),
           "steps": serializers.serialize('json',self.step_set.order_by('step_number'))
         }
 
