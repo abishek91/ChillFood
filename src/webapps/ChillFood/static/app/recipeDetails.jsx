@@ -29,21 +29,15 @@ constructor() {
   render() {
     if(!this.state.recipe)
       return null;
-     var categoryRows = [];
-     var recipe =this.state.recipe; 
-     var x = JSON.parse(recipe.categories)
-      x.forEach(function(category){
-        categoryRows.push(<span key={++recipe.id} className="blue-box">{category.fields.name}</span>);
-      })
     return (
       <span>
         <div className="row-padding">
-          <Time recipe={recipe} />
-          <Calories recipe={recipe} />
+          <Time time={this.state.recipe.time} />
+          <Calories calories={this.state.recipe.calories} />
         </div>
         <div className="row-padding">
-          <Category recipe={recipe} />
-          <Equipment recipe={recipe} />
+          <Category categories={this.state.recipe.categories} />
+          <Equipment equipment={this.state.recipe.equipment} />
         </div>
       </span>
     );

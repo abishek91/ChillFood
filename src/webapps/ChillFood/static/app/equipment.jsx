@@ -2,11 +2,10 @@ import React from 'react';
 
 export default class Equipment extends React.Component {
   render() {
-    if(!this.props.recipe)
+    if(!this.props.equipment)
       return null;
      var equipmentRows = [];
-     var recipe =this.props.recipe; 
-     var recipeEquipment = JSON.parse(recipe.equipment)
+     var recipeEquipment = JSON.parse(this.props.equipment)
      var id = 0;
      recipeEquipment.forEach(function(equipment){
         equipmentRows.push(<span key={++id} className="blue-box">{equipment.fields.name}</span>);

@@ -2,11 +2,10 @@ import React from 'react';
 
 export default class Category extends React.Component {
   render() {
-    if(!this.props.recipe)
+    if(!this.props.categories)
       return null;
      var categoryRows = [];
-     var recipe =this.props.recipe; 
-     var categories = JSON.parse(recipe.categories)
+     var categories = JSON.parse(this.props.categories)
      var id = 0;
      categories.forEach(function(category){
         categoryRows.push(<span key={++id} className="blue-box">{category.fields.name}</span>);
