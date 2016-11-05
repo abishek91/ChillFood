@@ -6,6 +6,7 @@ from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.shortcuts import get_object_or_404, redirect, reverse
 from mimetypes import guess_type
 from django.http import HttpResponse
+from django.http import JsonResponse
 import os
 
 from django.conf import settings
@@ -60,6 +61,12 @@ def recipe_detail(request, recipe_id):
 
 	context = {'recipe': recipe}
 	return render(request, 'recipe_detail.html', context)
+
+def recipe_detail_json(request, recipe_id):
+	print(recipe_id)
+	recipe = get_object_or_404(Recipe, id=recipe_id)
+
+	return JsonResponse(recipe.to_json_full())
 
 def plz(request):
 	return render(request, 'hi.html', {})

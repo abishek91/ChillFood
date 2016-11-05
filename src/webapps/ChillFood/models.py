@@ -1,6 +1,7 @@
 from django.db import models
 # from django.contrib.auth.models import User
 from django.utils.timezone import datetime, now
+from django.core import serializers
 from django.contrib.postgres.fields import ArrayField
 
 from .login.models import User
@@ -24,7 +25,31 @@ class Recipe(models.Model):
           "time": self.time,
           "video_link": self.video_link,
           "date_time": self.date_time,
-          "views": self.views
+          "views": self.views,
+        }
+
+        if  hasattr(self, 'rating'):
+            result["rating"] = self.rating 
+        else:
+            result["rating"] = 0
+
+        return result
+
+    def to_json_full(self):
+        result = {
+          "id": self.id,
+          "title": self.title,
+          "cook": self.cook.to_json(),
+          "time": self.time,
+          "video_link": self.video_link,
+          "date_time": self.date_time,
+          "views": self.views,
+          "categories": serializers.serialize('json',self.category_set.all()),
+          "equipment": serializers.serialize('json',self.equipment_set.all()),
+          "ingredients": serializers.serialize('json',self.category_set.all()),
+          "calories": str(self.nutrientvalue_set.get(nutrient__name='Calories').amount) + ' ' + self.nutrientvalue_set.get(nutrient__name='Calories').unit,
+          "ingredients": serializers.serialize('json',self.category_set.all()),
+          "steps": serializers.serialize('json',self.step_set.order_by('step_number'))
         }
 
         if  hasattr(self, 'rating'):

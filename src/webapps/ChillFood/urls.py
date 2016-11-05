@@ -28,9 +28,9 @@ urlpatterns = [
     url(r'^recipe_image/(?P<recipe_id>\d+)/$', views.recipe_image, name='recipe_image'),
     url(r'^step_image/(?P<step_id>\d+)/$', views.step_image, name='step_image'),
     url(r'^recipe/(?P<recipe_id>\d+)/$', views.recipe_detail, name='recipe_detail'),
-    url(r'^recipe/(?P<recipe_id>\d+)/pic$', views.recipe_pic,name='recipe_pic'),
-    url(r'^recipe/create$', views.recipe_create,name='recipe_create'),
-    url(r'^recipe/(?P<recipe_id>\d+)/edit$', views.recipe_create,name='recipe_create'),
+    url(r'^recipe_json/(?P<recipe_id>\d+)/$', views.recipe_detail_json, name='recipe_detail_json'),
+    # url(r'^recipe/create$', views.recipe_create,name='recipe_create'),
+    # url(r'^recipe/(?P<recipe_id>\d+)/edit$', views.recipe_create,name='recipe_create'),
     #Login Module
     url(r'^login$', login.login, name='login'),
     url(r'^confirm/(?P<username>.+)/(?P<token>.+)$', login.confirm, name='confirm'),    

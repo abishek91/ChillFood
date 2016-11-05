@@ -17,7 +17,8 @@ var config = {
         include : APP_DIR,
         loader : 'babel'
       }
-    ]
+    ],
+	debug: 'source-map'
   }
 };
 
