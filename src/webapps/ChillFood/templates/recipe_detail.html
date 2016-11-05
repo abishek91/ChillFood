@@ -4,7 +4,6 @@
 {% block scripts %}
     <link href="{% static 'css/common.css' %}" rel="stylesheet">
     <link href="{% static 'css/recipe_detail.css' %}" rel="stylesheet">
-    <script src="{% static 'js/recipe.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -30,18 +29,7 @@
                 <span>{{recipe.calories}}</span>
               </span>
             </div>
-            <div class="row-padding">
-              <span>Category:</span>
-              {% for category in recipe.categories %}
-                <span class="blue-box">{{category.name}}</span>
-              {% endfor %}
-              {% if recipe.equipment %}
-                <span class="appliances-padding-left">Appliances:</span>
-                {% for appliance in recipe.equipment %}
-                  <span class="blue-box">{{appliance.name}}</span>
-                {% endfor %}
-              {% endif %}
-            </div>
+              <span id="root"></span>
             <div class="row-padding">
               <div class="heading">Ingredients</div>
               <ul>
@@ -67,4 +55,10 @@
           </div>
         </div>
       </span>
+    <script type="text/javascript">
+      var recipeId = {{recipe.id}}
+    </script>
+    <script src="/static/js/bundle.js" type="text/javascript"></script>
+
+
 {% endblock %}

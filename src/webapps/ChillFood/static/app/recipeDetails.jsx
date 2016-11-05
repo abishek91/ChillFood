@@ -1,5 +1,6 @@
 import React from 'react';
 import Category from './category.jsx'
+import Equipment from './equipment.jsx'
 
 export default class RecipeDetails extends React.Component {
 
@@ -13,7 +14,8 @@ constructor() {
 
  componentDidMount() {
   var self = this;
-  fetch('/recipe_json/1')
+  var url = '/recipe_json/' + recipeId 
+  fetch(url)
     .then(function(response) {
       return response.text();
     })
@@ -32,8 +34,11 @@ constructor() {
         categoryRows.push(<span key={++recipe.id} className="blue-box">{category.fields.name}</span>);
       })
     return (
-      
-        <Category recipe={recipe} />
+        <div className="row-padding">
+          <Category recipe={recipe} />
+          <Equipment recipe={recipe} />
+        </div>
+
     );
   }
 

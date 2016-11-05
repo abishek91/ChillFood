@@ -12,8 +12,11 @@ export default class Category extends React.Component {
         categoryRows.push(<span key={++id} className="blue-box">{category.fields.name}</span>);
      });
     return (
-        <span className="row-padding">
-              {categoryRows}
+        <span>
+          <span>Category:</span>
+          <span className="row-padding">
+                {categoryRows}
+          </span>
         </span>
     );
   }
