@@ -1,6 +1,8 @@
 import React from 'react';
 import Category from './category.jsx'
 import Equipment from './equipment.jsx'
+import Calories from './calories.jsx'
+import Time from './time.jsx'
 
 export default class RecipeDetails extends React.Component {
 
@@ -34,11 +36,16 @@ constructor() {
         categoryRows.push(<span key={++recipe.id} className="blue-box">{category.fields.name}</span>);
       })
     return (
+      <span>
+        <div className="row-padding">
+          <Time recipe={recipe} />
+          <Calories recipe={recipe} />
+        </div>
         <div className="row-padding">
           <Category recipe={recipe} />
           <Equipment recipe={recipe} />
         </div>
-
+      </span>
     );
   }
 
