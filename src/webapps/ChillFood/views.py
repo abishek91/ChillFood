@@ -34,6 +34,21 @@ def recipe_image(request, recipe_id):
 
 	return HttpResponse(image, content_type=content_type)	
 
+def profile_image(request, user_id):
+	user = get_object_or_404(User, id=user_id)
+
+	if user.photo:
+		image = user.photo
+		content_type = guess_type(image.name)
+
+	else:
+		url = settings.BASE_DIR + '/ChillFood' + static('images/empty_profile.png')
+		with open(url, "rb") as empty_profie:
+			image = empty_profie.read()
+			content_type = 'image/png'
+
+	return HttpResponse(image, content_type=content_type)	
+
 def step_image(request, step_id):
 	print()
 	step = get_object_or_404(Step, id=step_id)
@@ -50,16 +65,10 @@ def step_image(request, step_id):
 
 	return HttpResponse(image, content_type=content_type)	
 
+@login_required
 def recipe_detail(request, recipe_id):
 	recipe = get_object_or_404(Recipe, id=recipe_id)
-	
-	recipe.calories = str(recipe.nutrientvalue_set.get(nutrient__name='Calories').amount) + ' ' + recipe.nutrientvalue_set.get(nutrient__name='Calories').unit
-	recipe.categories = recipe.category_set.all()
-	recipe.equipment = recipe.equipment_set.all()
-	recipe.ingredients = recipe.recipeingredient_set.all()
-	recipe.steps = recipe.step_set.order_by('step_number')
-
-	context = {'recipe': recipe}
+	context = {'recipe': recipe, 'user_id': request.user.id}
 	return render(request, 'recipe_detail.html', context)
 
 def recipe_detail_json(request, recipe_id):
@@ -67,5 +76,25 @@ def recipe_detail_json(request, recipe_id):
 
 	return JsonResponse(recipe.to_json_full())
 
-def plz(request):
-	return render(request, 'hi.html', {})
+def add_comment(request, recipe_id):
+	recipe = Recipe.objects.get(id=recipe_id)
+
+	text=''
+	tastiness=None
+	difficulty=None
+
+	if 'text' in request.POST and request.POST['text']:
+		text = request.POST['text']
+	if 'tastiness' in request.POST and request.POST['tastiness']:
+		tastiness = request.POST['tastiness']
+	if 'difficulty' in request.POST and request.POST['difficulty']:
+		difficulty = request.POST['difficulty']
+
+	if not text and not tastiness and not difficulty:
+		print(difficulty)
+		print(request.POST['difficulty'])
+		return JsonResponse({"error":"Invalid parameters"})
+
+	new_comment = Comment( recipe=recipe, user=request.user, text=text, tastiness=tastiness, difficulty=difficulty)
+	new_comment.save()
+	return JsonResponse({"comment":recipe.to_json_full()})

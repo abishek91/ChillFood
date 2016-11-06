@@ -20,7 +20,7 @@
 }
 
 .recipe-image {
-	margin-left: 150px;
+	margin-left: 100px;
 }
 
 .main {
@@ -34,4 +34,55 @@
 
 .bookmark {
 	background-color: lightblue;
+}
+
+.column-left {
+	width: 50%;
+	float: left;
+	margin-left: 15%;
+}
+
+.vertical {
+	vertical-align: top;
+}
+
+.profile-pic {
+	height: 60px;
+	width: 70px;
+	padding-right: 10px;
+}
+
+.verticalListItem  {
+    border: 1px solid #333;
+    display: block;
+    overflow: hidden
+}
+
+.date-time {
+	color: gray;
+	margin-left: 10px;
+}
+
+.margin {
+	margin-top: 50px;
+}
+
+.comments-title {
+	font-size: 45px;
+}
+
+.submit {
+	margin-top: 20px;
+}
+
+.star {
+	font-size: 20px;
+}
+
+.tasty {
+	margin-left: 100px;
+}
+
+.profile-name {
+	font-weight: bold;
 }

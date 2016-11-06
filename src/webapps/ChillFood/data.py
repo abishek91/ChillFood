@@ -119,8 +119,11 @@ def setup(request):
 		except User.DoesNotExist:
 			user = User(name="ChillFood.com")
 			user.save()
-		
-		context = save_recipe(user)
+		try:
+			context = save_recipe(user)
+		except:
+			context = False
+			print('Exception, Recipe skipped')
 		if(context):
 			i += 1
 			print('Recipe ' + str(i) + ' downloaded')

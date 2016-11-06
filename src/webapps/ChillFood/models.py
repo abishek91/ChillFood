@@ -3,7 +3,9 @@ from django.db import models
 from django.utils.timezone import datetime, now
 from django.core import serializers
 from django.contrib.postgres.fields import ArrayField
-
+from django.utils.dateformat import DateFormat
+from django.utils.formats import get_format
+from django.db.models import Avg
 from .login.models import User
 
 
@@ -42,20 +44,23 @@ class Recipe(models.Model):
           "cook": self.cook.to_json(),
           "time": self.time,
           "video_link": self.video_link,
-          "date_time": self.date_time,
+          "date_time": DateFormat(self.date_time).format(get_format('DATETIME_FORMAT')),
           "views": self.views,
           "categories": serializers.serialize('json',self.category_set.all()),
           "equipment": serializers.serialize('json',self.equipment_set.all()),
           "ingredients": serializers.serialize('json',self.recipeingredient_set.all()),
           "calories": str(self.nutrientvalue_set.get(nutrient__name='Calories').amount) + ' ' + self.nutrientvalue_set.get(nutrient__name='Calories').unit,
-          "steps": serializers.serialize('json',self.step_set.order_by('step_number'))
+          "steps": serializers.serialize('json',self.step_set.order_by('step_number')),
+          "difficulty": self.comment_set.all().aggregate(Avg('difficulty')),
+          "tastiness": self.comment_set.all().aggregate(Avg('tastiness'))
         }
 
-        if  hasattr(self, 'rating'):
-            result["rating"] = self.rating 
-        else:
-            result["rating"] = 0
+        comments = []
 
+        for comment in self.comment_set.all().exclude(text='').order_by('-date_time'):
+            comments.append(comment.to_json());
+
+        result["comments"] = comments
         return result
 
 CATEGORIES = (
@@ -109,10 +114,19 @@ class NutrientValue(models.Model):
 class Comment(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    text = models.CharField(max_length = 200, blank = True)
-    tastiness = models.IntegerField(blank = True)
-    difficulty = models.IntegerField(blank = True)
+    text = models.CharField(max_length = 200, blank = True, null=True)
+    tastiness = models.DecimalField(blank = True, decimal_places=1, max_digits=2, null=True)
+    difficulty = models.DecimalField(blank = True, decimal_places=1, max_digits=2, null=True)
     date_time = models.DateTimeField(auto_now_add=True)
+
+    def to_json(self):
+        result = {
+          "text": self.text,
+          "user": self.user.to_json(),
+          "date_time": DateFormat(self.date_time).format(get_format('DATETIME_FORMAT')) 
+        }
+
+        return result
 
 PREFERENCE_SORT_TYPE = (
     (1, 'Difficulty'),

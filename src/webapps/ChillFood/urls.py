@@ -23,9 +23,9 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),    
     #Configuration
     url(r'^setup/$', data.setup),
-    url(r'^plz/$', views.plz, name='plz'),
     #Recipe
     url(r'^recipe_image/(?P<recipe_id>\d+)/$', views.recipe_image, name='recipe_image'),
+    url(r'^profile_image/(?P<user_id>\d+)/$', views.profile_image, name='profile_image'),
     url(r'^step_image/(?P<step_id>\d+)/$', views.step_image, name='step_image'),
     url(r'^recipe/(?P<recipe_id>\d+)/$', views.recipe_detail, name='recipe_detail'),
     url(r'^recipe_json/(?P<recipe_id>\d+)/$', views.recipe_detail_json, name='recipe_detail_json'),
@@ -40,6 +40,9 @@ urlpatterns = [
     #List of Recipes 
     
     url(r'^api/recipes$', api.recipes, name='recipes'),
+
+    url(r'^add_comment/(?P<recipe_id>\d+)$', views.add_comment, name='add_comment'),
+
          
 ]
 
