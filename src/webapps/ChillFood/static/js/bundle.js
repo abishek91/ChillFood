@@ -22153,9 +22153,10 @@
 	    _this.state = {
 	      recipe: undefined
 	    };
-	    _this.addCommment = _this.addCommment.bind(_this);
+	    _this.addComment = _this.addComment.bind(_this);
 	    _this.addDifficulty = _this.addDifficulty.bind(_this);
 	    _this.addTastiness = _this.addTastiness.bind(_this);
+	    _this.postData = _this.postData.bind(_this);
 	    return _this;
 	  }
 	
@@ -22164,7 +22165,8 @@
 	    value: function componentDidMount() {
 	      var self = this;
 	      var url = '/recipe_json/' + recipeId;
-	      fetch(url).then(function (response) {
+	      fetch(url, {
+	        credentials: 'include' }).then(function (response) {
 	        return response.text();
 	      }).then(function (text) {
 	        self.setState({ recipe: JSON.parse(text) });
@@ -22190,30 +22192,27 @@
 	  }, {
 	    key: 'addDifficulty',
 	    value: function addDifficulty(difficulty) {
-	      this.addCommment(null, null, difficulty);
+	      var body = 'difficulty=' + difficulty;
+	      var url = '/add_rating/' + recipeId;
+	      this.postData(url, body);
 	    }
 	  }, {
 	    key: 'addTastiness',
 	    value: function addTastiness(tastiness) {
-	      this.addCommment(null, tastiness, null);
+	      var body = 'tastiness=' + tastiness;
+	      var url = '/add_rating/' + recipeId;
+	      this.postData(url, body);
 	    }
 	  }, {
-	    key: 'addCommment',
-	    value: function addCommment(text, tastiness, difficulty) {
+	    key: 'addComment',
+	    value: function addComment(comment) {
+	      var body = 'text=' + comment;
 	      var url = '/add_comment/' + recipeId;
-	      var body = '';
-	      var appender = '';
-	      if (text) {
-	        body += 'text=' + text;
-	        appender = '&';
-	      }
-	      if (tastiness) {
-	        body += appender + 'tastiness=' + tastiness;
-	        appender = '&';
-	      }
-	      if (difficulty) {
-	        body += appender + 'difficulty=' + difficulty;
-	      }
+	      this.postData(url, body);
+	    }
+	  }, {
+	    key: 'postData',
+	    value: function postData(url, body) {
 	      self = this;
 	      fetch(url, {
 	        credentials: 'include',
@@ -22225,12 +22224,10 @@
 	        body: body
 	      }).then(function (response) {
 	        return response.text();
-	      }).then(function (commentJSON) {
-	        var id = 0;
-	        var comment = JSON.parse(commentJSON).comment;
-	
+	      }).then(function (recipeJSON) {
+	        var recipe = JSON.parse(recipeJSON).recipe;
 	        self.setState({
-	          recipe: comment
+	          recipe: recipe
 	        });
 	      });
 	    }
@@ -22275,8 +22272,10 @@
 	        _react2.default.createElement(
 	          _reactMaterialize.Col,
 	          { s: 5 },
-	          _react2.default.createElement(_comments2.default, { onNewComments: this.addCommment, onNewDifficultyRating: this.addDifficulty,
-	            onNewTastinessRating: this.addTastiness, comments: this.state.recipe.comments })
+	          _react2.default.createElement(_comments2.default, { onNewComments: this.addComment, onNewDifficultyRating: this.addDifficulty,
+	            onNewTastinessRating: this.addTastiness, comments: this.state.recipe.comments,
+	            difficulty: this.state.recipe.user_rating.difficulty,
+	            tastiness: this.state.recipe.user_rating.tastiness })
 	        )
 	      );
 	    }
@@ -27904,8 +27903,7 @@
 	    _this.handleSubmit = _this.handleSubmit.bind(_this);
 	    _this.difficultyRating = _this.difficultyRating.bind(_this);
 	    _this.tastinessRating = _this.tastinessRating.bind(_this);
-	    var id = 0;
-	    _this.state = { value: null, difficulty: undefined, tastiness: undefined };
+	    _this.state = { value: null };
 	    return _this;
 	  }
 	
@@ -27922,13 +27920,11 @@
 	  }, {
 	    key: 'difficultyRating',
 	    value: function difficultyRating(rating) {
-	      this.setState({ difficulty: rating });
 	      this.props.onNewDifficultyRating(rating);
 	    }
 	  }, {
 	    key: 'tastinessRating',
 	    value: function tastinessRating(rating) {
-	      this.setState({ tastiness: rating });
 	      this.props.onNewTastinessRating(rating);
 	    }
 	  }, {
@@ -27972,6 +27968,14 @@
 	          )
 	        ));
 	      });
+	      var difficultyEditable = undefined;
+	      var tastinessEditable = undefined;
+	      if (this.props.difficulty) {
+	        difficultyEditable = false;
+	      }
+	      if (this.props.tastiness) {
+	        tastinessEditable = false;
+	      }
 	      return _react2.default.createElement(
 	        'span',
 	        null,
@@ -27996,7 +28000,8 @@
 	              { className: 'left star' },
 	              'Difficulty'
 	            ),
-	            _react2.default.createElement(_reactStars2.default, { onChange: this.difficultyRating, value: this.state.difficulty, className: 'left', count: 5, size: 20, color2: '#ffd700' })
+	            _react2.default.createElement(_reactStars2.default, { onChange: this.difficultyRating, value: this.props.difficulty, edit: difficultyEditable,
+	              className: 'left', count: 5, size: 20, color2: '#ffd700' })
 	          ),
 	          _react2.default.createElement(
 	            'div',
@@ -28006,7 +28011,8 @@
 	              { className: 'left tasty star' },
 	              'Tastiness'
 	            ),
-	            _react2.default.createElement(_reactStars2.default, { onChange: this.tastinessRating, value: this.state.tastiness, count: 5, size: 20, color2: '#ffd700' })
+	            _react2.default.createElement(_reactStars2.default, { onChange: this.tastinessRating, value: this.props.tastiness, edit: tastinessEditable,
+	              count: 5, size: 20, color2: '#ffd700' })
 	          ),
 	          _react2.default.createElement(
 	            _reactMaterialize.Row,

@@ -67,34 +67,46 @@ def step_image(request, step_id):
 
 @login_required
 def recipe_detail(request, recipe_id):
+	print(1)
 	recipe = get_object_or_404(Recipe, id=recipe_id)
 	context = {'recipe': recipe, 'user_id': request.user.id}
 	return render(request, 'recipe_detail.html', context)
 
+@login_required
 def recipe_detail_json(request, recipe_id):
+	print(2)
+
 	recipe = get_object_or_404(Recipe, id=recipe_id)
 
-	return JsonResponse(recipe.to_json_full())
+	return JsonResponse(recipe.to_json_full(request.user))
 
-def add_comment(request, recipe_id):
+@login_required
+def add_rating(request, recipe_id):
 	recipe = Recipe.objects.get(id=recipe_id)
 
-	text=''
 	tastiness=None
 	difficulty=None
 
-	if 'text' in request.POST and request.POST['text']:
-		text = request.POST['text']
 	if 'tastiness' in request.POST and request.POST['tastiness']:
 		tastiness = request.POST['tastiness']
 	if 'difficulty' in request.POST and request.POST['difficulty']:
 		difficulty = request.POST['difficulty']
+	if not tastiness and not difficulty:
+		return JsonResponse({"error":"Invalid parametersq"})
+	rating,created = Rating.objects.get_or_create(recipe=recipe, user=request.user)
+	rating.tastiness=tastiness
+	rating.difficulty=difficulty
+	rating.save()
 
-	if not text and not tastiness and not difficulty:
-		print(difficulty)
-		print(request.POST['difficulty'])
-		return JsonResponse({"error":"Invalid parameters"})
+	return JsonResponse({"recipe":recipe.to_json_full(request.user)})
 
-	new_comment = Comment( recipe=recipe, user=request.user, text=text, tastiness=tastiness, difficulty=difficulty)
-	new_comment.save()
-	return JsonResponse({"comment":recipe.to_json_full()})
+@login_required
+def add_comment(request, recipe_id):
+	recipe = Recipe.objects.get(id=recipe_id)
+	if 'text' in request.POST and request.POST['text']:
+		text = request.POST['text']
+		new_comment = Comment( recipe=recipe, user=request.user, text=text)
+		new_comment.save()
+		return JsonResponse({"recipe":recipe.to_json_full(request.user)})
+	return JsonResponse({"error":"Invalid parameters"})
+

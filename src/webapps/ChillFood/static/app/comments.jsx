@@ -9,8 +9,7 @@ export default class Comments extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.difficultyRating = this.difficultyRating.bind(this);
     this.tastinessRating = this.tastinessRating.bind(this);
-    var id = 0;
-    this.state = {value: null, difficulty: undefined, tastiness: undefined};
+    this.state = {value: null};
   }
 
   handleChange(event) {
@@ -22,11 +21,9 @@ export default class Comments extends React.Component {
   }	
 
   difficultyRating(rating) {
-    	this.setState({difficulty: rating});
   		this.props.onNewDifficultyRating(rating);
   }	
   tastinessRating(rating) {
-    	this.setState({tastiness: rating});
   		this.props.onNewTastinessRating(rating);
 
   }	
@@ -36,20 +33,30 @@ export default class Comments extends React.Component {
   	var commentRows = [];
   	var userProfileImageUrl = '/profile_image/' + userId;
   	this.props.comments.forEach(function(comment){
-  	var commenterProfileImageUrl = '/profile_image/' + comment.user.id;
-  	commentRows.push(
-  			<div key={++id}>
-        		<div className="profile-pic	left"><img className="profile-pic left" src={commenterProfileImageUrl} alt="recipe pic" /></div>
-        		<div>
-        			<p>
-        				<span className="profile-name">{comment.user.name}</span>
-        				<span className="date-time">{comment.date_time}</span>
-        			</p>
-  					<span>{comment.text}</span>
-  				</div>
-  			</div>
-  			);
+	  	var commenterProfileImageUrl = '/profile_image/' + comment.user.id;
+	  	commentRows.push(
+	  			<div key={++id}>
+	        		<div className="profile-pic	left"><img className="profile-pic left" src={commenterProfileImageUrl} alt="recipe pic" /></div>
+	        		<div>
+	        			<p>
+	        				<span className="profile-name">{comment.user.name}</span>
+	        				<span className="date-time">{comment.date_time}</span>
+	        			</p>
+	  					<span>{comment.text}</span>
+	  				</div>
+	  			</div>
+	  			);
   	});
+  	var difficultyEditable = undefined;	
+  	var tastinessEditable = undefined;
+  	if(this.props.difficulty)
+  	{
+  		difficultyEditable = false;
+  	}
+  	if(this.props.tastiness)
+  	{
+  		tastinessEditable = false;
+  	}
     return (
         <span>
 		     <div>
@@ -59,11 +66,13 @@ export default class Comments extends React.Component {
 		        </Row>
 	        	<div className="left">
 		        	<div className="left star" >Difficulty</div>
-		        	<ReactStars onChange={this.difficultyRating} value={this.state.difficulty} className="left" count={5} size={20} color2={'#ffd700'} />
+		        	<ReactStars onChange={this.difficultyRating} value={this.props.difficulty} edit={difficultyEditable}
+		        				 className="left" count={5} size={20} color2={'#ffd700'} />
 	        	</div>
 	        	<div>
 		        	<div className="left tasty star">Tastiness</div>
-		        	<ReactStars onChange={this.tastinessRating} value={this.state.tastiness} count={5} size={20} color2={'#ffd700'} />
+		        	<ReactStars onChange={this.tastinessRating} value={this.props.tastiness} edit={tastinessEditable}
+		        				 count={5} size={20} color2={'#ffd700'} />
 	        	</div>
 
 		        <Row>

@@ -37,7 +37,7 @@ class Recipe(models.Model):
 
         return result
 
-    def to_json_full(self):
+    def to_json_full(self, user):
         result = {
           "id": self.id,
           "title": self.title,
@@ -51,8 +51,8 @@ class Recipe(models.Model):
           "ingredients": serializers.serialize('json',self.recipeingredient_set.all()),
           "calories": str(self.nutrientvalue_set.get(nutrient__name='Calories').amount) + ' ' + self.nutrientvalue_set.get(nutrient__name='Calories').unit,
           "steps": serializers.serialize('json',self.step_set.order_by('step_number')),
-          "difficulty": self.comment_set.all().aggregate(Avg('difficulty')),
-          "tastiness": self.comment_set.all().aggregate(Avg('tastiness'))
+          "difficulty": self.rating_set.all().aggregate(Avg('difficulty')),
+          "tastiness": self.rating_set.all().aggregate(Avg('tastiness'))
         }
 
         comments = []
@@ -61,6 +61,12 @@ class Recipe(models.Model):
             comments.append(comment.to_json());
 
         result["comments"] = comments
+
+        user_rating = {"tastiness" : 0, "difficulty": 0}
+        for rating in self.rating_set.filter(user=user):
+            user_rating = {"tastiness" : rating.tastiness, "difficulty": rating.difficulty}
+        result["user_rating"] = user_rating;
+
         return result
 
 CATEGORIES = (
@@ -115,8 +121,7 @@ class Comment(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.CharField(max_length = 200, blank = True, null=True)
-    tastiness = models.DecimalField(blank = True, decimal_places=1, max_digits=2, null=True)
-    difficulty = models.DecimalField(blank = True, decimal_places=1, max_digits=2, null=True)
+    
     date_time = models.DateTimeField(auto_now_add=True)
 
     def to_json(self):
@@ -127,6 +132,12 @@ class Comment(models.Model):
         }
 
         return result
+
+class Rating(models.Model):
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    tastiness = models.DecimalField(blank = True, decimal_places=1, max_digits=2, null=True)
+    difficulty = models.DecimalField(blank = True, decimal_places=1, max_digits=2, null=True)
 
 PREFERENCE_SORT_TYPE = (
     (1, 'Difficulty'),

@@ -42,6 +42,7 @@ urlpatterns = [
     url(r'^api/recipes$', api.recipes, name='recipes'),
 
     url(r'^add_comment/(?P<recipe_id>\d+)$', views.add_comment, name='add_comment'),
+    url(r'^add_rating/(?P<recipe_id>\d+)$', views.add_rating, name='add_rating'),
 
          
 ]

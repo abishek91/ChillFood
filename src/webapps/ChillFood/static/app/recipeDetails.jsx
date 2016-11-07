@@ -19,15 +19,17 @@ constructor() {
     this.state = {
       recipe: undefined
     };
-    this.addCommment = this.addCommment.bind(this);
+    this.addComment = this.addComment.bind(this);
     this.addDifficulty = this.addDifficulty.bind(this);
     this.addTastiness = this.addTastiness.bind(this);
+    this.postData = this.postData.bind(this);
   }
 
  componentDidMount() {
   var self = this;
   var url = '/recipe_json/' + recipeId 
-  fetch(url)
+  fetch(url,{  
+      credentials: 'include'})
     .then(function(response) {
       return response.text();
     })
@@ -53,32 +55,24 @@ constructor() {
   }
 
   addDifficulty(difficulty) {
-    this.addCommment(null, null, difficulty)
+    var body = 'difficulty=' + difficulty;
+    var url = '/add_rating/' + recipeId;
+    this.postData(url, body)
   }
-
 
   addTastiness(tastiness) {
-    this.addCommment(null, tastiness, null)
+    var body =  'tastiness=' + tastiness;
+    var url = '/add_rating/' + recipeId;
+    this.postData(url, body)
   }
 
-  addCommment(text, tastiness, difficulty) {
+  addComment(comment) {
+    var body = 'text=' + comment;
     var url = '/add_comment/' + recipeId;
-    var body ='';
-    var appender = '';
-    if(text)
-    {
-      body += 'text=' + text;
-      appender = '&';
-    }
-    if(tastiness)
-    {
-      body += appender + 'tastiness=' + tastiness;
-      appender = '&';
-    }
-    if(difficulty)
-    {
-      body += appender + 'difficulty=' + difficulty;
-    }
+    this.postData(url, body)
+  }
+
+  postData(url, body) {
     self = this;
     fetch(url, {  
       credentials: 'include',
@@ -92,12 +86,10 @@ constructor() {
     .then(function (response) {  
       return response.text();
     })  
-    .then(function(commentJSON) { 
-      var id = 0;
-      var comment = JSON.parse(commentJSON).comment;
- 
+    .then(function(recipeJSON) { 
+      var recipe = JSON.parse(recipeJSON).recipe;
       self.setState({ 
-        recipe: comment
+        recipe: recipe
       });
     })
   }
@@ -127,8 +119,10 @@ constructor() {
             <Steps steps={this.state.recipe.steps} />
         </Col>
         <Col s={5}>
-          <Comments onNewComments={this.addCommment} onNewDifficultyRating={this.addDifficulty} 
-                    onNewTastinessRating={this.addTastiness} comments={this.state.recipe.comments}/>
+          <Comments onNewComments={this.addComment} onNewDifficultyRating={this.addDifficulty} 
+                    onNewTastinessRating={this.addTastiness} comments={this.state.recipe.comments}
+                    difficulty={this.state.recipe.user_rating.difficulty}
+                    tastiness={this.state.recipe.user_rating.tastiness} />
         </Col>
       </Row>
     );
