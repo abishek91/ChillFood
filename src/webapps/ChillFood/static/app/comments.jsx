@@ -1,6 +1,7 @@
 import React from 'react';
 import {Row, Col, Input, Icon, Button} from 'react-materialize';
 import ReactStars from 'react-stars'
+import Rating from 'react-rating'
 
 export default class Comments extends React.Component {
   constructor(props) {
@@ -47,17 +48,8 @@ export default class Comments extends React.Component {
 	  			</div>
 	  			);
   	});
-  	var difficultyEditable = undefined;	
-  	var tastinessEditable = undefined;
-  	if(this.props.difficulty)
-  	{
-  		difficultyEditable = false;
-  	}
-  	if(this.props.tastiness)
-  	{
-  		tastinessEditable = false;
-  	}
     return (
+    	
         <span>
 		     <div>
 		     	<Row>
@@ -65,14 +57,16 @@ export default class Comments extends React.Component {
 		        <span className="comments-title"> Comments </span>
 		        </Row>
 	        	<div className="left">
-		        	<div className="left star" >Difficulty</div>
-		        	<ReactStars onChange={this.difficultyRating} value={this.props.difficulty} edit={difficultyEditable}
-		        				 className="left" count={5} size={20} color2={'#ffd700'} />
+		        	<div className="left star" >Difficulty2</div>
+		        	<Rating initialRate={parseFloat(this.props.difficulty)} readonly={Boolean(this.props.difficulty)}  
+		        			 full="glyphicon glyphicon-star big-star" empty="glyphicon glyphicon-star-empty big-star" 
+		        			 onClick={this.difficultyRating} fractions={2} />
 	        	</div>
 	        	<div>
 		        	<div className="left tasty star">Tastiness</div>
-		        	<ReactStars onChange={this.tastinessRating} value={this.props.tastiness} edit={tastinessEditable}
-		        				 count={5} size={20} color2={'#ffd700'} />
+		        	<Rating initialRate={parseFloat(this.props.tastiness)} readonly={Boolean(this.props.tastiness)}
+		        			 full="glyphicon glyphicon-star big-star" empty="glyphicon glyphicon-star-empty big-star"
+		        			 onClick={this.tastinessRating} fractions={2} />
 	        	</div>
 
 		        <Row>

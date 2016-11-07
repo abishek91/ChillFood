@@ -84,8 +84,10 @@ def recipe_detail_json(request, recipe_id):
 def add_rating(request, recipe_id):
 	recipe = Recipe.objects.get(id=recipe_id)
 
-	tastiness=None
-	difficulty=None
+	rating,created = Rating.objects.get_or_create(recipe=recipe, user=request.user)
+
+	tastiness = rating.tastiness
+	difficulty = rating.difficulty
 
 	if 'tastiness' in request.POST and request.POST['tastiness']:
 		tastiness = request.POST['tastiness']
@@ -93,9 +95,8 @@ def add_rating(request, recipe_id):
 		difficulty = request.POST['difficulty']
 	if not tastiness and not difficulty:
 		return JsonResponse({"error":"Invalid parametersq"})
-	rating,created = Rating.objects.get_or_create(recipe=recipe, user=request.user)
-	rating.tastiness=tastiness
-	rating.difficulty=difficulty
+	rating.tastiness = tastiness
+	rating.difficulty = difficulty
 	rating.save()
 
 	return JsonResponse({"recipe":recipe.to_json_full(request.user)})

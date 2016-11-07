@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactStars from 'react-stars'
+import Rating from 'react-rating'
 
 export default class RecipeTitle extends React.Component {
   render() {
@@ -9,11 +9,13 @@ export default class RecipeTitle extends React.Component {
           <div>{this.props.title}</div>
           <div className="left">
               <div className="left star" >Difficulty</div>
-              <ReactStars edit={false} value={this.props.difficulty} className="left" count={5} size={20} color2={'#ffd700'} />
+              <Rating readonly={true} initialRate={parseFloat(this.props.difficulty)} className="left" fractions={2}
+                      full="glyphicon glyphicon-star big-star" empty="glyphicon glyphicon-star-empty big-star" />
             </div>
             <div>
               <div className="left tasty star">Tastiness</div>
-              <ReactStars edit={false} value={this.props.tastiness} count={5} size={20} color2={'#ffd700'} />
+              <Rating readonly={true} initialRate={parseFloat(this.props.tastiness)} fractions={2}
+                      full="glyphicon glyphicon-star big-star" empty="glyphicon glyphicon-star-empty big-star" />
             </div>
         </div>
         <div className="cook"> By {this.props.cook.name}</div>
