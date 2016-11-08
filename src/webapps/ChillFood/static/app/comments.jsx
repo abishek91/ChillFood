@@ -58,7 +58,7 @@ export default class Comments extends React.Component {
 		        <span className="comments-title"> Comments </span>
 		        </Row>
 	        	<div className="left">
-		        	<div className="left star" >Difficulty2</div>
+		        	<div className="left star" >Difficulty</div>
 		        	<Rating initialRate={parseFloat(this.props.difficulty)} readonly={Boolean(this.props.difficulty)}  
 		        			 full="glyphicon glyphicon-star big-star" empty="glyphicon glyphicon-star-empty big-star" 
 		        			 onClick={this.difficultyRating} fractions={2} />
