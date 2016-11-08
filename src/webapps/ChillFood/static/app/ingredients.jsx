@@ -9,12 +9,9 @@ export default class Ingredients extends React.Component {
         ingredientsRows.push(<li key={++id}>{ingredient.fields.display}</li>);
      });
     return (
-      <span>
-        <div className="heading">Ingredients</div>
         <ul>
           {ingredientsRows}
         </ul>
-      </span>
     );
   }
 }
