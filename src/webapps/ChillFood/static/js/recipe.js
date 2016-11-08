@@ -13,7 +13,8 @@ var interval;   //Store the number of the inteval
 function load_posts() {
     if (wait) return;
     wait = true;
-
+    if(typeof userId !== 'undefined')
+        URL += "/" + userId;
     $.get(URL, append_posts);
 }
 

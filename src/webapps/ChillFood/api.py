@@ -19,7 +19,7 @@ from .forms import *
 #   sys.stderr = codecs.getwriter('cp850')(sys.stderr.buffer, 'strict')
 @transaction.atomic
 @login_required
-def recipes(request):
+def get_recipes(request, user_id):
     v_from = request.GET.get('from', '0')
 
     if re.match(r"\d",v_from):
@@ -34,7 +34,10 @@ def recipes(request):
     limit = 6
 
     #TODO: Look for a way not to load the whole table
-    recipes = Recipe.objects.filter().order_by('-views')
+    if user_id:
+        recipes = Recipe.objects.filter(cook__id=user_id).order_by('-date_time')
+    else:
+        recipes = Recipe.objects.filter().order_by('-views')
     #TODO: More elaborate query for homepage
     ##.annotate(rating=Avg('comment__tastiness'))\
     data = recipes[v_from:v_from+limit]
@@ -48,6 +51,10 @@ def recipes(request):
     }
 
     return JsonResponse(result,safe=False)
+
+@login_required
+def recipes(request):
+    return get_recipes(request, None)
     
 @login_required
 def recipe_create(request, recipe_id = 0):
@@ -145,3 +152,5 @@ def recipe_create(request, recipe_id = 0):
     # recipe = Recipe.get(pk=recipe.id)
 
     return JsonResponse(recipe.to_json(), safe=False);
+
+

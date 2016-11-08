@@ -35,12 +35,13 @@ export default class Comments extends React.Component {
   	var userProfileImageUrl = '/profile_image/' + userId;
   	this.props.comments.forEach(function(comment){
 	  	var commenterProfileImageUrl = '/profile_image/' + comment.user.id;
+  		var profileLink = '/profile/' + comment.user.id;
 	  	commentRows.push(
 	  			<Row key={++id}>
 	        		<div className="profile-pic	left"><img className="profile-pic left" src={commenterProfileImageUrl} alt="recipe pic" /></div>
 	        		<div>
 	        			<p>
-	        				<span className="profile-name">{comment.user.name}</span>
+	        				<a href={profileLink} className="profile-name">{comment.user.name}</a>
 	        				<span className="date-time">{comment.date_time}</span>
 	        			</p>
 	  					<span>{comment.text}</span>
