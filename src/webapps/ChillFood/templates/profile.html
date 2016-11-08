@@ -7,17 +7,26 @@
 
 {% block content %}
     <div class="container-less">
-      <div class="padding row">
-        <div class="col s4">
-            <img height="300" width="300" src="{% url 'profile_image' profile.id %}" alt="profile pic">
-        </div>
-        <div class="col s4 profile-text">
-  	       <div class="font">{{profile.name}}</div>
-           <div class="font">{{profile.bio}}</div>
-	    </div>
-	  </div>
-	</div>
-	<script type="text/javascript">
+
+
+      <div class="row">
+        <div class="m12">
+              <img class="user_photo big left z-depth-1 frame" src="{% url 'profile_image' profile.id %}">
+          <h1>
+            {{ profile.name }}
+          </h1>    
+          {% if profile.bio %}
+          <div class="chip">
+            <i class="material-icons">perm_identity</i>
+            {{profile.bio}} 
+          </div>
+          {% endif %}
+        </div>   
+      </div> 
+      
+      {% include 'p_recipes.html' %}
+  </div>
+  <script type="text/javascript">
     var userId = {{profile.id}}
 
     $(function () {
@@ -26,7 +35,6 @@
         load_posts(null,userId);
     });
   </script>
-	        {% include 'p_recipes.html' %}
 
 {% endblock %}
 
