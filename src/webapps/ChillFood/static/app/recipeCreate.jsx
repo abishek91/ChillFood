@@ -36,7 +36,7 @@ export default class RecipeCreate extends React.Component{
       body: JSON.stringify(body)   
     })
     .then(function (response) {
-
+      console.log(response);
       var recipe = JSON.parse(response.text());
       console.log('Recipe Saved',recipe)
       self.setState({ 

@@ -10,10 +10,12 @@ var interval;   //Store the number of the inteval
 /* POSTS */
 
 // Look for posts
-function load_posts() {
+function load_posts(query) {
     if (wait) return;
     wait = true;
-
+    if (query)
+        URL = '/api/recipes?search='+search_word;
+    
     $.get(URL, append_posts);
 }
 
@@ -53,39 +55,16 @@ function post_to_html(post) {
     node.find("#post_title").html(post.title);
     node.find("#post_rating").html(post.rating);
     node.find("#post_time").html(post.time);
-    
-    // node.find("#post_date").html(new Date(post.date).toLocaleString());
-    // node.find("#post_user_photo").attr('src', '/user_photo/' + post.user.id);
-    // node.find("#profile_link").attr('href', '/profile/' + post.user.id);
-    // node.find("#comment_link").click(function () {
-    //     show_comments(post.id)
-    // });
-    // if (post.comments_qty)
-    //     node.find("#comments_qty").html(post.comments_qty);
-
     return node;
-}
-
-
-function setUrl(url) {
-    last_id = 0;
-    clearInterval(interval)
-    URL = '/api/'+url+'?id=';
-
-    var stream = $("#post_container")[0];
-    console.log(stream,stream.firstChild)
-    while (stream.firstChild) {
-        stream.removeChild(stream.firstChild);
-    }
-    console.log('hjere',url)
-    load_posts();
-    interval = setInterval(load_posts, 5000);
 }
 
 $(function () {
     //Initialize global variables
     post_template = $('#post_template');
-
+    console.log("Global",search_word)
     //Do a initial load of the posts
-    load_posts();
+    if (!search_word) {
+        console.log('here')
+        load_posts();
+    }
 });

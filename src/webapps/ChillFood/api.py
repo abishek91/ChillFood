@@ -6,8 +6,10 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
 from django.db import transaction
+from django.db.models import Q
 import re
 import json
+from functools import reduce
 
 # Local Libraries
 from .models import *
@@ -21,6 +23,7 @@ from .forms import *
 @login_required
 def recipes(request):
     v_from = request.GET.get('from', '0')
+    v_search = request.GET.get('search')
 
     if re.match(r"\d",v_from):
         v_from = int(v_from) 
@@ -32,15 +35,24 @@ def recipes(request):
     # post_id = request.GET.get('to', 0)
 
     limit = 6
-
+    print('search',v_search)
     #TODO: Look for a way not to load the whole table
-    recipes = Recipe.objects.filter().order_by('-views')
+    if v_search:
+        lista = v_search.split()
+        recipes = Recipe.objects.filter(reduce(lambda x, y: x | y, [Q(title__icontains=word) for word in lista])).order_by('-views')
+    else:
+        recipes = Recipe.objects.filter().order_by('-views')
+    
     #TODO: More elaborate query for homepage
     ##.annotate(rating=Avg('comment__tastiness'))\
     data = recipes[v_from:v_from+limit]
-    
+    query = []
     if (len(recipes[v_from+limit:])):
-        v_next = '%s?from=%d' % (request.path,v_from+limit)
+        query.append('from=%d' % (v_from+limit))
+        if v_search:
+            query.append('search=%s' % v_search)
+        if query:
+            v_next = '%s?%s' % (request.path,'&'.join(query))
 
     result = {
         "data": list(map(lambda x: x.to_json(), data)),

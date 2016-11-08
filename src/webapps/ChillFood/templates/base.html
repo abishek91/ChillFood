@@ -22,6 +22,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
 
     <script src="{% static 'js/token.js' %}"></script>
+    <script src="{% static 'js/search.js' %}"></script>
 
   {% block scripts %}
     {% endblock %}
@@ -44,6 +45,7 @@
           <a class="brand-logo" href="{% url 'index' %}">
             <img alt="ChillFood" src="{% static 'images/ChillFood-white.png' %}" class="logo">
           </a>
+
           <ul class="right hide-on-med-and-down">
             <li>
               <a href="/app/#/recipe/create">                
@@ -61,7 +63,15 @@
               </a>
             </li>
           </ul>
-
+          <form class="right col s6">
+            <div class="input-field">
+              <input id="search" type="search" required>
+              <label for="search">
+                <i class="material-icons">search</i>
+              </label>
+              <i class="material-icons">close</i>
+            </div>
+          </form>
 
         </div>
       </nav>
