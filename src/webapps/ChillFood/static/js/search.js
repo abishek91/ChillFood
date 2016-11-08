@@ -37,20 +37,16 @@ function search(e) {
 }
 
 $(function () {
-
-    search_word = sessionStorage.getItem('search');
-    if (search_word) {
-        $("#search").val(search_word);
-        load_posts(search_word);
+    if (location.pathname === '/') {
+        search_word = sessionStorage.getItem('search');
+        if (search_word) {
+            $("#search").val(search_word);
+            load_posts(search_word);
+        }
     }
-        
-    var e = document.getElementById('search');
-   e.oninput = search;
-   e.onpropertychange = e.oninput; // for IE8
-   
-    //Initialize global variables
-    // post_template = $('#post_template');
 
-    //Do a initial load of the posts
-    // load_posts();
+    var e = document.getElementById('search');
+    e.oninput = search;
+    e.onpropertychange = e.oninput; // for IE8
+
 });

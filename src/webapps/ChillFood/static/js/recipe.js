@@ -9,26 +9,38 @@ var URL = '/api/recipes';
 var interval;   //Store the number of the inteval
 /* POSTS */
 
-// Look for posts
-function load_posts() {
+function load_posts(query,userId) {
     if (wait) return;
     wait = true;
-    if(typeof userId !== 'undefined')
-        URL += "/" + userId;
-    $.get(URL, append_posts);
+    console.log(query,userId)
+    
+    if (query)
+        URL = '/api/recipes';
+    
+    $.get(URL,{search: query, user_id: userId}, append_posts);
 }
+
+// Look for posts
+// function load_posts() {
+//     if (wait) return;
+//     wait = true;
+//     if(typeof userId !== 'undefined')
+//         URL += "?userId=" + userId; 
+//     $.get(URL, append_posts);
+// }
 
 // Callback function to append post to DOM
 function append_posts(response) {
-    URL = response.next
     new_posts = response.data
     
     console.log(URL)
 
-    if (URL) {
+    if (response.next) {
+        URL = response.next;
         $("#next").attr('href', next );
         $("#next").removeClass("hidden");
     } else {
+        URL = '/api/recipes';
         $("#next").addClass("hidden");
     }
 
@@ -84,9 +96,20 @@ function setUrl(url) {
 }
 
 $(function () {
+
+
     //Initialize global variables
     post_template = $('#post_template');
 
-    //Do a initial load of the posts
-    load_posts();
+    if (location.pathname === '/') {
+        search_word = sessionStorage.getItem('search');
+        if (search_word) {
+            $("#search").val(search_word);
+            load_posts(search_word);
+        } else {
+            load_posts();
+        }
+    }
+    // //Do a initial load of the posts
+    // load_posts();
 });

@@ -18,8 +18,14 @@
 	  </div>
 	</div>
 	<script type="text/javascript">
-      var userId = {{profile.id}}
-    </script>
+    var userId = {{profile.id}}
+
+    $(function () {
+        console.log('a',userId);
+        //Do a initial load of the recipes
+        load_posts(null,userId);
+    });
+  </script>
 	        {% include 'p_recipes.html' %}
 
 {% endblock %}

@@ -8,6 +8,7 @@ import StepForm from './stepForm.jsx'
 import IngredientForm from './ingredientForm.jsx'
 import Ingredient from './ingredient.jsx'
 import Item from './item.jsx'
+import Tags from './tags.jsx'
 
 
 export default class RecipeCreate extends React.Component{ 
@@ -21,24 +22,24 @@ export default class RecipeCreate extends React.Component{
       ingredients: [],
       steps: [],
     }
-
+    this.appliances = [{id:1,name:'hey'},{id:2,name:'hey2'}]
     this.handleChange = this.handleChange.bind(this);
   }
   
   handleSave() {
 
     if (!this.refs.titleInput.value) {
-      alert('Please, enter the title of the recipe.');
+      Materialize.toast('Please, enter the title of the recipe.',4000);
       return; 
     }
 
     if (this.state.ingredients.length == 0) {
-      alert('Please, enter at least one ingredient.');
+      Materialize.toast('Please, enter at least one ingredient.',4000);
       return;
     }
 
     if (this.state.steps.length == 0) {
-      alert('Please, enter at least one step.');
+      Materialize.toast('Please, enter at least one step.',4000);
       return;
     }
 
@@ -70,7 +71,7 @@ export default class RecipeCreate extends React.Component{
     console.log('val',ingredient_name)
     if (!/[\w\d]+/.test(ingredient_name)) {
       //TODO: Pretty Message
-      alert('Please, include the name of the ingredient.');
+      Materialize.toast('Please, include the name of the ingredient.',4000);
       return;
     }
 
@@ -84,10 +85,9 @@ export default class RecipeCreate extends React.Component{
   }
 
   addStep(val){
-    console.log('val',val)
     if (!val) {
       //TODO: Pretty Message
-      alert('Please, describe the step.');
+      Materialize.toast('Please, describe the step.', 4000) // 4000 is the duration of the toast
       return;
     }
     // Assemble data
@@ -99,15 +99,42 @@ export default class RecipeCreate extends React.Component{
     new_state.steps = this.state.steps;
     this.setState(new_state);
   }
+  
+  toogleApplicances(index) {
+    this.appliances[index]
+    // remove = false;
+    // for (var i in this.state.appliances) {
+    //   if (this.state.appliances[i].id === index) {
+    //     remove = true
+    //     break;
+    //   }
+    // }
+
+
+
+    // const appliance = this.appliances.filter((item) => {
+    //   if(item.id === id) return item;
+    // });
+    // Update state with filter
+    this.setState({ingredients: remainder});
+  }
   // Handle remove
-  // handleRemove(id){
-  //   // Filter all todos except the one to be removed
-  //   const remainder = this.state.data.filter((item) => {
-  //     if(item.id !== id) return item;
-  //   });
-  //   // Update state with filter
-  //   this.setState({data: remainder});
-  // }
+  handleRemoveIngredient(id){
+    // Filter all todos except the one to be removed
+    const remainder = this.state.ingredients.filter((item) => {
+      if(item.id !== id) return item;
+    });
+    // Update state with filter
+    this.setState({ingredients: remainder});
+  }
+  handleRemoveStep(id){
+    // Filter all todos except the one to be removed
+    const remainder = this.state.steps.filter((item) => {
+      if(item.id !== id) return item;
+    });
+    // Update state with filter
+    this.setState({steps: remainder});
+  }
 
   render () {
     return (
@@ -159,15 +186,17 @@ export default class RecipeCreate extends React.Component{
               array="ingredients"
               data={this.state.ingredients}
               addItem={this.addIngredient.bind(this)}
+              remove={this.handleRemoveIngredient.bind(this)}
             />
           </Row>
           <Row>
             <ListApp title="Steps"
               form={StepForm}
               itemTemplate={Item}
-              array="steps"
               data={this.state.steps}
-              addItem={this.addStep.bind(this)}/>
+              addItem={this.addStep.bind(this)}
+              remove={this.handleRemoveStep.bind(this)}
+              />
           </Row>
           <button className="right btn waves-effect waves-light blue" type="button" onClick={() => this.handleSave() } >
               Save
