@@ -49,11 +49,15 @@ class Recipe(models.Model):
           "categories": serializers.serialize('json',self.category_set.all()),
           "equipment": serializers.serialize('json',self.equipment_set.all()),
           "ingredients": serializers.serialize('json',self.ingredients.all()),
-          "calories": str(self.nutrientvalue_set.get(nutrient__name='Calories').amount) + ' ' + self.nutrientvalue_set.get(nutrient__name='Calories').unit,
           "steps": serializers.serialize('json',self.steps.order_by('step_number')),
           "difficulty": self.rating_set.all().aggregate(Avg('difficulty')),
           "tastiness": self.rating_set.all().aggregate(Avg('tastiness'))
         }
+
+        calories = self.nutrientvalue_set.filter(nutrient__name='Calories')
+        if(calories):
+          result["calories"] = str(calories[0].amount) +  ' ' + self.nutrientvalue_set.get(nutrient__name='Calories').unit
+
 
         comments = []
 
