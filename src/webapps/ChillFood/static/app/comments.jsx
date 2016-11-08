@@ -73,7 +73,7 @@ export default class Comments extends React.Component {
 		    		<Input type="text" s={9} placeholder="Did you try it?" onChange={this.handleChange}>
 		        		<img className="profile-pic" src={userProfileImageUrl} alt="recipe pic" />
 		    		</Input>
-		    		<Button className="submit" waves='light' onClick={this.handleSubmit}>Submit</Button>
+		    		<Button waves='light' onClick={this.handleSubmit}>Submit</Button>
 		    	</Row>
 		    </div>
     	<div>
