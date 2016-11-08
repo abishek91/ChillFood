@@ -108,6 +108,10 @@ div.recipe-pic  img {
 }
 
 .recipe-details-text {
-	line-height: 3rem;
-	font-size: 20px;
+	line-height: 2rem;
+	font-size: 18px;
+}
+
+.collection {
+	width: 90%;
 }

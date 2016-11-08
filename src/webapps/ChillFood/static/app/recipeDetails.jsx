@@ -100,7 +100,7 @@ constructor() {
     var recipe_image_url = "/recipe_image/" + this.state.recipe.id;
     return (
       <Row>
-        <Col s={5} className="offset-s1">
+        <Col s={6} className="offset-s1">
             <div className="recipe-pic">
               <img src={recipe_image_url} alt="recipe pic" />
             </div>
