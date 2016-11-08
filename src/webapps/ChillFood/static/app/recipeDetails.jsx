@@ -106,7 +106,6 @@ constructor() {
             </div>
             <RecipeTitle difficulty={this.state.recipe.difficulty.difficulty__avg} tastiness={this.state.recipe.tastiness.tastiness__avg}
                          title={this.state.recipe.title} cook={this.state.recipe.cook} />
-            <Button waves='light'>Bookmark</Button>
             <div className="row-padding">
               <Time time={this.state.recipe.time} />
               <Calories calories={this.state.recipe.calories} />
