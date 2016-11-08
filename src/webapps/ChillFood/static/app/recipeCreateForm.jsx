@@ -228,10 +228,12 @@ function RecipeIngredient(ingredient_id, ingredient_name, quantity, price, displ
   this.id = ingredient_id;
   this.ingredient_id = ingredient_id | 0;
   this.ingredient_name = ingredient_name;
-  console.log('Received quantity',quantity)
-  this.quantity = quantity | '1';
+  if (quantity == undefined)
+    this.quantity = '1';
+  else
+    this.quantity = quantity;
   this.price = price | 0;
-  this.display = display | ingredient_name;
+  this.display = this.quantity + ' ' + ingredient_name;
 }
 
 function RecipeStep(id, instruction) {

@@ -27870,14 +27870,18 @@
 	        },
 	        body: JSON.stringify(body)
 	      }).then(function (response) {
-	        console.log(response);
-	        var recipe = JSON.parse(response.text());
+	        return response.text();
+	      }).then(function (text) {
+	        var recipe = JSON.parse(text);
 	        console.log('Recipe Saved', recipe);
+	        parent.location.hash = "";
+	        location.pathname = 'recipe/' + recipe.id;
 	        self.setState({
 	          recipe: recipe
 	        });
 	      }).catch(function (error) {
-	        console.log('There has been a problem with your fetch operation: ' + error.message);
+	        Materialize.toast('There has been a problem, please contact your administrator.');
+	        console.log('There has been a problem with your fetch operation: ' + error.message, 400);
 	      });
 	    }
 	  }, {
@@ -28233,10 +28237,9 @@
 	  this.id = ingredient_id;
 	  this.ingredient_id = ingredient_id | 0;
 	  this.ingredient_name = ingredient_name;
-	  console.log('Received quantity', quantity);
-	  this.quantity = quantity | '1';
+	  if (quantity == undefined) this.quantity = '1';else this.quantity = quantity;
 	  this.price = price | 0;
-	  this.display = display | ingredient_name;
+	  this.display = this.quantity + ' ' + ingredient_name;
 	}
 	
 	function RecipeStep(id, instruction) {
@@ -33778,7 +33781,8 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var Item = function Item(_ref) {
-	  var item = _ref.item,
+	  var index = _ref.index,
+	      item = _ref.item,
 	      remove = _ref.remove;
 	
 	
@@ -33791,7 +33795,7 @@
 	    _react2.default.createElement(
 	      'div',
 	      { className: 'col s1' },
-	      item.id
+	      index
 	    ),
 	    _react2.default.createElement(
 	      'div',

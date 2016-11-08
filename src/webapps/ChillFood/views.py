@@ -27,10 +27,10 @@ def recipe_image(request, recipe_id):
 		content_type = guess_type(image.name)
 
 	else:
-		url = settings.BASE_DIR + '/ChillFood' + static('images/empty_profile.gif')
+		url = settings.BASE_DIR + '/ChillFood' + static('images/food.jpg')
 		with open(url, "rb") as empty_recipe:
 			image = empty_recipe.read()
-			content_type = 'image/gif'
+			content_type = 'image/jpg'
 
 	return HttpResponse(image, content_type=content_type)	
 

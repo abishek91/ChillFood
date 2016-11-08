@@ -35,16 +35,21 @@ export default class RecipeCreate extends React.Component{
       },  
       body: JSON.stringify(body)   
     })
-    .then(function (response) {
-      console.log(response);
-      var recipe = JSON.parse(response.text());
+    .then(function(response) {
+      return response.text();
+    })
+    .then(function(text) { 
+      var recipe = JSON.parse(text);
       console.log('Recipe Saved',recipe)
+      parent.location.hash = "";
+      location.pathname = 'recipe/'+recipe.id
       self.setState({ 
         recipe: recipe
       });
     })
     .catch(function(error) {
-      console.log('There has been a problem with your fetch operation: ' + error.message);
+      Materialize.toast('There has been a problem, please contact your administrator.');
+      console.log('There has been a problem with your fetch operation: ' + error.message,400);
     });
   }
 

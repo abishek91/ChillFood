@@ -75,6 +75,7 @@ def recipes(request):
 
     return JsonResponse(result,safe=False)
     
+@transaction.atomic
 @login_required
 def recipe_create(request, recipe_id = 0):
     context={}
