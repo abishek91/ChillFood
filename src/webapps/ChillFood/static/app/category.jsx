@@ -2,6 +2,8 @@ import React from 'react';
 
 export default class Category extends React.Component {
   render() {
+     if(this.props.categories)
+      return null;
      var categoryRows = [];
      var categories = JSON.parse(this.props.categories)
      var id = 0;
