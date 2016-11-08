@@ -28,12 +28,13 @@ class Recipe(models.Model):
           "video_link": self.video_link,
           "date_time": self.date_time,
           "views": self.views,
+          "tastiness": self.rating_set.all().aggregate(Avg('tastiness'))['tastiness__avg']
         }
 
-        if  hasattr(self, 'rating'):
-            result["rating"] = self.rating 
-        else:
-            result["rating"] = 0
+        # if  hasattr(self, 'rating'):
+        #     result["rating"] = self.rating 
+        # else:
+        #     result["rating"] = 0
 
         return result
 

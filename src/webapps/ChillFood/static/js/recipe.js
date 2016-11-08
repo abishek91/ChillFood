@@ -56,6 +56,9 @@ function append_posts(response) {
     wait = false;
 }
 
+star = '<i class="material-icons">star</i>'
+star_empty = '<i class="material-icons">star_border</i>'
+star_half = '<i class="material-icons">star_half</i>'
 // Convert the JSON into HTML
 function post_to_html(post) {
     var node = post_template.clone();
@@ -64,7 +67,23 @@ function post_to_html(post) {
     node.find("#post_pic").attr('src', '/recipe/' + post.id + '/pic');
     node.find(".post_detail").attr('href', '/recipe/' + post.id );
     node.find("#post_title").html(post.title);
-    node.find("#post_rating").html(post.rating);
+    console.log(post.tastiness)
+    // if (for )
+    stars = ''
+    for (var i = 1; i < post.tastiness; i++) {
+        stars += star;
+    }
+
+    if ((i - post.tastiness) == 0.5) {
+        stars += star_half
+        i+=1;
+    }
+
+    for (; i < 6; i++) {
+        stars += star_empty;
+    }
+
+    node.find("#post_rating").html(stars);
     node.find("#post_time").html(post.time);
     
     // node.find("#post_date").html(new Date(post.date).toLocaleString());

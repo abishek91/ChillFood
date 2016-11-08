@@ -177,3 +177,8 @@ div.card-image  img {
 .profile-text {
   font-size: 30px;
 }
+
+.card-footer > .row {
+  padding-left: 10px;
+  padding-right: 10px;
+}
