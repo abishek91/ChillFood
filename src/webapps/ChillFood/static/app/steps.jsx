@@ -1,4 +1,5 @@
 import React from 'react';
+import {Collection, CollectionItem} from 'react-materialize';
 
 export default class Steps extends React.Component {
   render() {
@@ -8,23 +9,27 @@ export default class Steps extends React.Component {
      steps.forEach(function(step){
         var imageUrl = "/step_image/" + step.pk;
         stepRows.push(
-          <div key={++id} className="row-padding">
-              <div className="step-padding sub-heading">Step {step.fields.step_number} </div>
+          <CollectionItem key={++id} className="row-padding">
+              <div className="step-padding recipe-details-text sub-heading">Step {step.fields.step_number} </div>
               { step.fields.picture.name ?
                 <span>
                   <img height="100" width="100" src={imageUrl} alt="step pic" />
                </span> : null
               }
-              <div className="instruction">
+              <div className="recipe-details-text">
                 {step.fields.instruction}
               </div>
-            </div>
+            </CollectionItem>
         );
       });
     return (
       <span>
-        <div className="heading row-padding">Steps</div>
+        <div className="heading recipe-details-text row-padding">Steps</div>
+        <Collection>
+
               {stepRows}
+        </Collection>
+
       </span>
     );
   }

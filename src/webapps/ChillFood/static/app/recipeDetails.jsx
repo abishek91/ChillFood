@@ -101,10 +101,12 @@ constructor() {
     return (
       <Row>
         <Col s={5} className="offset-s1">
-            <img className="recipe-image" height="400" width="400" src={recipe_image_url} alt="recipe pic" />
+            <div className="recipe-pic">
+              <img src={recipe_image_url} alt="recipe pic" />
+            </div>
             <RecipeTitle difficulty={this.state.recipe.difficulty.difficulty__avg} tastiness={this.state.recipe.tastiness.tastiness__avg}
                          title={this.state.recipe.title} cook={this.state.recipe.cook} />
-            <button className="bookmark">Bookmark</button>
+            <Button waves='light'>Bookmark</Button>
             <div className="row-padding">
               <Time time={this.state.recipe.time} />
               <Calories calories={this.state.recipe.calories} />
