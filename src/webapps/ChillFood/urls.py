@@ -39,6 +39,8 @@ urlpatterns = [
     #API
     #List of Recipes 
     url(r'^api/recipes$', api.recipes, name='recipes'),
+    url(r'^api/recipes/(?P<user_id>\d+)$', api.get_recipes, name='get_recipes'),
+    url(r'^profile/(?P<user_id>\d+)$', views.profile),
     #Recipe Creation
     url(r'^api/recipe/create$', api.recipe_create,name='recipe_create'),
     #Comments

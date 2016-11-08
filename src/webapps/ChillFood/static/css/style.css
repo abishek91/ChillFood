@@ -168,3 +168,11 @@ div.card-image  img {
 .list-content .card-content {
   flex: 1 0 auto;
 }
+
+.padding {
+  padding-top: 20px;
+}
+
+.profile-text {
+  font-size: 30px;
+}

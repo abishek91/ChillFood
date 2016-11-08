@@ -6,10 +6,8 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
 from django.db import transaction
-from django.db.models import Q
 import re
 import json
-from functools import reduce
 
 # Local Libraries
 from .models import *
@@ -21,9 +19,8 @@ from .forms import *
 #   sys.stderr = codecs.getwriter('cp850')(sys.stderr.buffer, 'strict')
 @transaction.atomic
 @login_required
-def recipes(request):
+def get_recipes(request, user_id):
     v_from = request.GET.get('from', '0')
-    v_search = request.GET.get('search')
 
     if re.match(r"\d",v_from):
         v_from = int(v_from) 
@@ -35,24 +32,18 @@ def recipes(request):
     # post_id = request.GET.get('to', 0)
 
     limit = 6
-    print('search',v_search)
+
     #TODO: Look for a way not to load the whole table
-    if v_search:
-        lista = v_search.split()
-        recipes = Recipe.objects.filter(reduce(lambda x, y: x | y, [Q(title__icontains=word) for word in lista])).order_by('-views')
+    if user_id:
+        recipes = Recipe.objects.filter(cook__id=user_id).order_by('-date_time')
     else:
         recipes = Recipe.objects.filter().order_by('-views')
-    
     #TODO: More elaborate query for homepage
     ##.annotate(rating=Avg('comment__tastiness'))\
     data = recipes[v_from:v_from+limit]
-    query = []
+    
     if (len(recipes[v_from+limit:])):
-        query.append('from=%d' % (v_from+limit))
-        if v_search:
-            query.append('search=%s' % v_search)
-        if query:
-            v_next = '%s?%s' % (request.path,'&'.join(query))
+        v_next = '%s?from=%d' % (request.path,v_from+limit)
 
     result = {
         "data": list(map(lambda x: x.to_json(), data)),
@@ -60,6 +51,10 @@ def recipes(request):
     }
 
     return JsonResponse(result,safe=False)
+
+@login_required
+def recipes(request):
+    return get_recipes(request, None)
     
 @login_required
 def recipe_create(request, recipe_id = 0):
@@ -157,3 +152,5 @@ def recipe_create(request, recipe_id = 0):
     # recipe = Recipe.get(pk=recipe.id)
 
     return JsonResponse(recipe.to_json(), safe=False);
+
+

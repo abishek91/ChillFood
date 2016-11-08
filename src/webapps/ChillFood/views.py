@@ -67,15 +67,13 @@ def step_image(request, step_id):
 
 @login_required
 def recipe_detail(request, recipe_id):
-	print(1)
 	recipe = get_object_or_404(Recipe, id=recipe_id)
+
 	context = {'recipe': recipe, 'user_id': request.user.id}
 	return render(request, 'recipe_detail.html', context)
 
 @login_required
 def recipe_detail_json(request, recipe_id):
-	print(2)
-
 	recipe = get_object_or_404(Recipe, id=recipe_id)
 
 	return JsonResponse(recipe.to_json_full(request.user))
@@ -117,8 +115,8 @@ def recipe_pic(request, recipe_id):
     
     
     if not recipe.pic:
-        print(settings.MEDIA_ROOT+'\\food.jpg')
-        with open(settings.MEDIA_ROOT+'\\food.jpg', "rb") as f:
+        print(settings.MEDIA_ROOT+'/food.jpg')
+        with open(settings.MEDIA_ROOT+'/food.jpg', "rb") as f:
             pic = f.read()
         content_type = 'image/png'
     else:
@@ -129,6 +127,21 @@ def recipe_pic(request, recipe_id):
 
 @login_required
 def app(request):
-
     return render(request, 'app.html')
+
+@login_required
+def profile(request, user_id):
+	user = get_object_or_404(User, id=user_id)
+	context = {"profile": user}
+	return render(request, 'profile.html',context)
+
+
+
+
+
+
+
+
+
+
 
