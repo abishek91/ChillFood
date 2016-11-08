@@ -34,3 +34,4 @@ nosetests.xml
 .DS_Store
 
 src/webapps/images/recipes/
+src/webapps/ChillFood/views - Copy.py

@@ -54,17 +54,16 @@ export default class Comments extends React.Component {
         <span>
 		     <div>	
 		     	<Row>
-		        <img height="40" width="40" src="/static/images/comments-icon.png" alt="clock" />
-		        <span className="comments-title"> Comments </span>
+		        <h4> Comments </h4>
 		        </Row>
 	        	<div className="left">
-		        	<div className="left star" >Difficulty</div>
+		        	<div className="left cook" >Difficulty&nbsp;&nbsp;&nbsp;</div>
 		        	<Rating initialRate={parseFloat(this.props.difficulty)} readonly={Boolean(this.props.difficulty)}  
 		        			 full="glyphicon glyphicon-star big-star" empty="glyphicon glyphicon-star-empty big-star" 
 		        			 onClick={this.difficultyRating} fractions={2} />
 	        	</div>
 	        	<div>
-		        	<div className="left tasty star">Tastiness</div>
+		        	<div className="left tasty tastiness cook">Tastiness&nbsp;&nbsp;&nbsp;</div>
 		        	<Rating initialRate={parseFloat(this.props.tastiness)} readonly={Boolean(this.props.tastiness)}
 		        			 full="glyphicon glyphicon-star big-star" empty="glyphicon glyphicon-star-empty big-star"
 		        			 onClick={this.tastinessRating} fractions={2} />
@@ -74,7 +73,7 @@ export default class Comments extends React.Component {
 		    		<Input type="text" s={9} placeholder="Did you try it?" onChange={this.handleChange}>
 		        		<img className="profile-pic" src={userProfileImageUrl} alt="recipe pic" />
 		    		</Input>
-		    		<Button waves='light' onClick={this.handleSubmit}>Submit</Button>
+		    		<Button waves='light' className="blue-text btn btn-flat" onClick={this.handleSubmit}><Icon>add</Icon></Button>
 		    	</Row>
 		    </div>
     	<div>

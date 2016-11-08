@@ -99,21 +99,32 @@ constructor() {
       return null;
     var recipe_image_url = "/recipe_image/" + this.state.recipe.id;
     return (
+      <div>
       <Row>
-        <Col s={6} className="offset-s1">
-            <div className="recipe-pic">
-              <img src={recipe_image_url} alt="recipe pic" />
-            </div>
-            <RecipeTitle difficulty={this.state.recipe.difficulty.difficulty__avg} tastiness={this.state.recipe.tastiness.tastiness__avg}
-                         title={this.state.recipe.title} cook={this.state.recipe.cook} />
-            <div className="row-padding">
-              <Time time={this.state.recipe.time} />
-              <Calories calories={this.state.recipe.calories} />
-            </div>
+        <Col s={6} className="recipe-pic">
+          <img src={recipe_image_url} 
+          alt="recipe pic" 
+          className="big left z-depth-1 frame" />
+        </Col>
+        <Col s={6}>
+          <RecipeTitle 
+            difficulty={this.state.recipe.difficulty.difficulty__avg} 
+            tastiness={this.state.recipe.tastiness.tastiness__avg}
+            title={this.state.recipe.title} 
+            cook={this.state.recipe.cook} 
+            time={this.state.recipe.time}
+            calories={this.state.recipe.calories}
+            />
             <div className="row-padding">
               <Category categories={this.state.recipe.categories} />
               <Equipment equipment={this.state.recipe.equipment} />
             </div>
+        </Col>
+      </Row>
+      <Row>
+        <Col s={6} className="offset-s1">
+            
+            
             <div className="row-padding">
               <Ingredients ingredients={this.state.recipe.ingredients} />
             </div>
@@ -126,6 +137,7 @@ constructor() {
                     tastiness={this.state.recipe.user_rating.tastiness} />
         </Col>
       </Row>
+      </div>
     );
   }
 
