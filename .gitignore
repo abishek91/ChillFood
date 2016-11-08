@@ -32,3 +32,5 @@ nosetests.xml
 
 # Mac OS file
 .DS_Store
+
+src/webapps/images/recipes/

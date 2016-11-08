@@ -33622,7 +33622,6 @@
 	          var item = _ref.item,
 	              remove = _ref.remove;
 	
-	
 	          // Each Todo
 	          return _react2.default.createElement(
 	                    'li',
@@ -33636,23 +33635,18 @@
 	                    ),
 	                    _react2.default.createElement(
 	                              'div',
-	                              { className: 'col s3' },
+	                              { className: 'col s4' },
 	                              item.ingredient_name
 	                    ),
 	                    _react2.default.createElement(
 	                              'div',
-	                              { className: 'col s2' },
+	                              { className: 'col s3' },
 	                              item.quantity
 	                    ),
 	                    _react2.default.createElement(
 	                              'div',
-	                              { className: 'col s2' },
+	                              { className: 'col s3' },
 	                              item.price
-	                    ),
-	                    _react2.default.createElement(
-	                              'div',
-	                              { className: 'col s2' },
-	                              item.display
 	                    )
 	          );
 	};
