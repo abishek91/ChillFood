@@ -48,9 +48,9 @@ class Recipe(models.Model):
           "views": self.views,
           "categories": serializers.serialize('json',self.category_set.all()),
           "equipment": serializers.serialize('json',self.equipment_set.all()),
-          "ingredients": serializers.serialize('json',self.recipeingredient_set.all()),
+          "ingredients": serializers.serialize('json',self.ingredients.all()),
           "calories": str(self.nutrientvalue_set.get(nutrient__name='Calories').amount) + ' ' + self.nutrientvalue_set.get(nutrient__name='Calories').unit,
-          "steps": serializers.serialize('json',self.step_set.order_by('step_number')),
+          "steps": serializers.serialize('json',self.steps.order_by('step_number')),
           "difficulty": self.rating_set.all().aggregate(Avg('difficulty')),
           "tastiness": self.rating_set.all().aggregate(Avg('tastiness'))
         }
@@ -92,16 +92,14 @@ class Ingredient(models.Model):
     name = models.CharField(max_length = 200)
 
 class RecipeIngredient(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="ingredients")
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     quantity = models.CharField(max_length = 200, blank = True)
     price = models.IntegerField(blank = True, null = True)
     display = models.CharField(max_length = 200, blank = True)
 
-
-
 class Step(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="steps")
     step_number = models.IntegerField(blank = True)
     instruction = models.CharField(max_length = 2000)
     picture = models.ImageField(upload_to='steps', blank=True)

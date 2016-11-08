@@ -78,7 +78,7 @@ constructor() {
       credentials: 'include',
       method: 'post',  
       headers: {  
-          "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+          "Content-type": "application/x-www-form-urlencoded; charset=unicode",
           "X-CSRFToken": getCookie('csrftoken')
       },  
       body: body  

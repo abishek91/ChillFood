@@ -110,3 +110,24 @@ def add_comment(request, recipe_id):
 		return JsonResponse({"recipe":recipe.to_json_full(request.user)})
 	return JsonResponse({"error":"Invalid parameters"})
 
+@login_required
+def recipe_pic(request, recipe_id):
+    recipe = get_object_or_404(Recipe, id=recipe_id)
+    
+    
+    if not recipe.pic:
+        print(settings.MEDIA_ROOT+'\\food.jpg')
+        with open(settings.MEDIA_ROOT+'\\food.jpg', "rb") as f:
+            pic = f.read()
+        content_type = 'image/png'
+    else:
+        pic = recipe.pic
+        content_type = guess_type(pic.name)
+
+    return HttpResponse(pic, content_type=content_type)
+
+@login_required
+def app(request):
+
+    return render(request, 'app.html')
+
