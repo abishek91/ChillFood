@@ -1,4 +1,6 @@
 import React from 'react';
+import {Collection, CollectionItem} from 'react-materialize';
+
 
 export default class Ingredients extends React.Component {
   render() {
@@ -6,12 +8,15 @@ export default class Ingredients extends React.Component {
      var recipeIngredients = JSON.parse(this.props.ingredients)
      var id = 0;
      recipeIngredients.forEach(function(ingredient){
-        ingredientsRows.push(<li key={++id}>{ingredient.fields.display}</li>);
+        ingredientsRows.push(<CollectionItem className="recipe-details-text" key={++id}>{ingredient.fields.display}</CollectionItem>);
      });
     return (
-        <ul>
+      <span>
+        <div className="heading">Ingredients</div>
+        <Collection>
           {ingredientsRows}
-        </ul>
+        </Collection>
+      </span>
     );
   }
 }

@@ -22120,12 +22120,16 @@
 	        _react2.default.createElement(
 	          _reactMaterialize.Col,
 	          { s: 5, className: 'offset-s1' },
-	          _react2.default.createElement('img', { className: 'recipe-image', height: '400', width: '400', src: recipe_image_url, alt: 'recipe pic' }),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'recipe-pic' },
+	            _react2.default.createElement('img', { src: recipe_image_url, alt: 'recipe pic' })
+	          ),
 	          _react2.default.createElement(_recipeTitle2.default, { difficulty: this.state.recipe.difficulty.difficulty__avg, tastiness: this.state.recipe.tastiness.tastiness__avg,
 	            title: this.state.recipe.title, cook: this.state.recipe.cook }),
 	          _react2.default.createElement(
-	            'button',
-	            { className: 'bookmark' },
+	            _reactMaterialize.Button,
+	            { waves: 'light' },
 	            'Bookmark'
 	          ),
 	          _react2.default.createElement(
@@ -22433,7 +22437,7 @@
   \************************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -22444,6 +22448,8 @@
 	var _react = __webpack_require__(/*! react */ 1);
 	
 	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactMaterialize = __webpack_require__(/*! react-materialize */ 182);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -22463,28 +22469,28 @@
 	  }
 	
 	  _createClass(Ingredients, [{
-	    key: "render",
+	    key: 'render',
 	    value: function render() {
 	      var ingredientsRows = [];
 	      var recipeIngredients = JSON.parse(this.props.ingredients);
 	      var id = 0;
 	      recipeIngredients.forEach(function (ingredient) {
 	        ingredientsRows.push(_react2.default.createElement(
-	          "li",
-	          { key: ++id },
+	          _reactMaterialize.CollectionItem,
+	          { className: 'recipe-details-text', key: ++id },
 	          ingredient.fields.display
 	        ));
 	      });
 	      return _react2.default.createElement(
-	        "span",
+	        'span',
 	        null,
 	        _react2.default.createElement(
-	          "div",
-	          { className: "heading" },
-	          "Ingredients"
+	          'div',
+	          { className: 'heading' },
+	          'Ingredients'
 	        ),
 	        _react2.default.createElement(
-	          "ul",
+	          _reactMaterialize.Collection,
 	          null,
 	          ingredientsRows
 	        )
@@ -23006,7 +23012,7 @@
   \******************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -23017,6 +23023,8 @@
 	var _react = __webpack_require__(/*! react */ 1);
 	
 	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactMaterialize = __webpack_require__(/*! react-materialize */ 182);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -23036,7 +23044,7 @@
 	  }
 	
 	  _createClass(Steps, [{
-	    key: "render",
+	    key: 'render',
 	    value: function render() {
 	      var stepRows = [];
 	      var steps = JSON.parse(this.props.steps);
@@ -23044,36 +23052,40 @@
 	      steps.forEach(function (step) {
 	        var imageUrl = "/step_image/" + step.pk;
 	        stepRows.push(_react2.default.createElement(
-	          "div",
-	          { key: ++id, className: "row-padding" },
+	          _reactMaterialize.CollectionItem,
+	          { key: ++id, className: 'row-padding' },
 	          _react2.default.createElement(
-	            "div",
-	            { className: "step-padding sub-heading" },
-	            "Step ",
+	            'div',
+	            { className: 'step-padding recipe-details-text sub-heading' },
+	            'Step ',
 	            step.fields.step_number,
-	            " "
+	            ' '
 	          ),
 	          step.fields.picture.name ? _react2.default.createElement(
-	            "span",
+	            'span',
 	            null,
-	            _react2.default.createElement("img", { height: "100", width: "100", src: imageUrl, alt: "step pic" })
+	            _react2.default.createElement('img', { height: '100', width: '100', src: imageUrl, alt: 'step pic' })
 	          ) : null,
 	          _react2.default.createElement(
-	            "div",
-	            { className: "instruction" },
+	            'div',
+	            { className: 'recipe-details-text' },
 	            step.fields.instruction
 	          )
 	        ));
 	      });
 	      return _react2.default.createElement(
-	        "span",
+	        'span',
 	        null,
 	        _react2.default.createElement(
-	          "div",
-	          { className: "heading row-padding" },
-	          "Steps"
+	          'div',
+	          { className: 'heading recipe-details-text row-padding' },
+	          'Steps'
 	        ),
-	        stepRows
+	        _react2.default.createElement(
+	          _reactMaterialize.Collection,
+	          null,
+	          stepRows
+	        )
 	      );
 	    }
 	  }]);
