@@ -22263,7 +22263,7 @@
 	            _react2.default.createElement(_equipment2.default, { equipment: this.state.recipe.equipment })
 	          ),
 	          _react2.default.createElement(
-	            _reactMaterialize.Row,
+	            'div',
 	            { className: 'row-padding' },
 	            _react2.default.createElement(_ingredients2.default, { ingredients: this.state.recipe.ingredients })
 	          ),
@@ -27942,7 +27942,7 @@
 				this.props.comments.forEach(function (comment) {
 					var commenterProfileImageUrl = '/profile_image/' + comment.user.id;
 					commentRows.push(_react2.default.createElement(
-						'div',
+						_reactMaterialize.Row,
 						{ key: ++id },
 						_react2.default.createElement(
 							'div',

@@ -36,7 +36,7 @@ export default class Comments extends React.Component {
   	this.props.comments.forEach(function(comment){
 	  	var commenterProfileImageUrl = '/profile_image/' + comment.user.id;
 	  	commentRows.push(
-	  			<div key={++id}>
+	  			<Row key={++id}>
 	        		<div className="profile-pic	left"><img className="profile-pic left" src={commenterProfileImageUrl} alt="recipe pic" /></div>
 	        		<div>
 	        			<p>
@@ -45,13 +45,13 @@ export default class Comments extends React.Component {
 	        			</p>
 	  					<span>{comment.text}</span>
 	  				</div>
-	  			</div>
+	  			</Row>
 	  			);
   	});
     return (
     	
         <span>
-		     <div>
+		     <div>	
 		     	<Row>
 		        <img height="40" width="40" src="/static/images/comments-icon.png" alt="clock" />
 		        <span className="comments-title"> Comments </span>
