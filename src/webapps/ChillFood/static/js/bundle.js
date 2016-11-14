@@ -33789,9 +33789,7 @@
 	  // Each Todo
 	  return _react2.default.createElement(
 	    'li',
-	    { className: 'list-group-item row', onClick: function onClick() {
-	        remove(item.id);
-	      } },
+	    { className: 'list-group-item row' },
 	    _react2.default.createElement(
 	      'div',
 	      { className: 'col s1' },
@@ -33799,8 +33797,21 @@
 	    ),
 	    _react2.default.createElement(
 	      'div',
-	      { className: 'col s3' },
+	      { className: 'col s10' },
 	      item.instruction
+	    ),
+	    _react2.default.createElement(
+	      'button',
+	      { className: 'col s1 waves-effect waves-blue btn btn-flat',
+	        type: 'button',
+	        onClick: function onClick() {
+	          remove(item.id);
+	        } },
+	      _react2.default.createElement(
+	        'i',
+	        { className: 'material-icons blue-text' },
+	        'remove'
+	      )
 	    )
 	  );
 	};
