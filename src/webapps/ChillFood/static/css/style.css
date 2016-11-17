@@ -182,3 +182,24 @@ div.card-image  img {
   padding-left: 10px;
   padding-right: 10px;
 }
+
+.below {
+  /*position: fixed;*/
+  line-height: 10px;
+  padding-top: 0px;
+}
+
+.navbar-fixed > nav > .slim {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  line-height: 20px;
+}
+
+.navbar-fixed {
+    height: 100px!important;
+}
+
+.options {
+  padding: 10px;
+  width: 100px; 
+}

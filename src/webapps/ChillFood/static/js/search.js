@@ -28,8 +28,8 @@ function search(e) {
     search_word = $("#search").val();
     sessionStorage.setItem('search', search_word);
     console.log('pathname',location.pathname)
-    if (location.pathname !== '/') {
-        location.pathname = '/';
+    if (location.pathname !== '/')
+        // location.pathname = '/';
     }
 
     //Delay for other keystrokes

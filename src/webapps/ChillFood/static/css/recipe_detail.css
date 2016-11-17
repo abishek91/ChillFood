@@ -106,11 +106,11 @@ div.recipe-pic {
 }
 
 div.recipe-pic  img {        
+    width: 100%;
     position:absolute; 
     top:0; 
     bottom:0; 
     margin: auto;
-    /*width:100%;*/
 }
 
 .recipe-details-text {

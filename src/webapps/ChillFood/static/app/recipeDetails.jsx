@@ -1,4 +1,5 @@
 import React from 'react';
+import SearchBar from './searchBar.jsx'
 import Category from './category.jsx'
 import Equipment from './equipment.jsx'
 import Calories from './calories.jsx'
@@ -27,7 +28,8 @@ constructor() {
 
  componentDidMount() {
   var self = this;
-  var url = '/recipe_json/' + recipeId 
+
+  var url = '/recipe_json/' + this.props.params.recipeId 
   fetch(url,{  
       credentials: 'include'})
     .then(function(response) {
@@ -56,19 +58,19 @@ constructor() {
 
   addDifficulty(difficulty) {
     var body = 'difficulty=' + difficulty;
-    var url = '/add_rating/' + recipeId;
+    var url = '/add_rating/' + this.props.params.recipeId;
     this.postData(url, body)
   }
 
   addTastiness(tastiness) {
     var body =  'tastiness=' + tastiness;
-    var url = '/add_rating/' + recipeId;
+    var url = '/add_rating/' + this.props.params.recipeId;
     this.postData(url, body)
   }
 
   addComment(comment) {
     var body = 'text=' + comment;
-    var url = '/add_comment/' + recipeId;
+    var url = '/add_comment/' + this.props.params.recipeId;
     this.postData(url, body)
   }
 
@@ -100,43 +102,46 @@ constructor() {
     var recipe_image_url = "/recipe_image/" + this.state.recipe.id;
     return (
       <div>
-      <Row>
-        <Col s={6} className="recipe-pic">
-          <img src={recipe_image_url} 
-          alt="recipe pic" 
-          className="big left z-depth-1 frame" />
-        </Col>
-        <Col s={6}>
-          <RecipeTitle 
-            difficulty={this.state.recipe.difficulty.difficulty__avg} 
-            tastiness={this.state.recipe.tastiness.tastiness__avg}
-            title={this.state.recipe.title} 
-            cook={this.state.recipe.cook} 
-            time={this.state.recipe.time}
-            calories={this.state.recipe.calories}
-            />
-            <div className="row-padding">
-              <Category categories={this.state.recipe.categories} />
-              <Equipment equipment={this.state.recipe.equipment} />
-            </div>
-        </Col>
-      </Row>
-      <Row>
-        <Col s={6} className="offset-s1">
-            
-            
-            <div className="row-padding">
-              <Ingredients ingredients={this.state.recipe.ingredients} />
-            </div>
-            <Steps steps={this.state.recipe.steps} />
-        </Col>
-        <Col s={5}>
-          <Comments onNewComments={this.addComment} onNewDifficultyRating={this.addDifficulty} 
-                    onNewTastinessRating={this.addTastiness} comments={this.state.recipe.comments}
-                    difficulty={this.state.recipe.user_rating.difficulty}
-                    tastiness={this.state.recipe.user_rating.tastiness} />
-        </Col>
-      </Row>
+        <SearchBar />
+        <div className="container">
+          <Row>
+            <Col s={6} className="recipe-pic">
+              <img src={recipe_image_url} 
+              alt="recipe pic" 
+              className="big left z-depth-1 frame" />
+            </Col>
+            <Col s={5}>
+              <RecipeTitle 
+                difficulty={this.state.recipe.difficulty.difficulty__avg} 
+                tastiness={this.state.recipe.tastiness.tastiness__avg}
+                title={this.state.recipe.title} 
+                cook={this.state.recipe.cook} 
+                time={this.state.recipe.time}
+                calories={this.state.recipe.calories}
+                />
+                <div className="row-padding">
+                  <Category categories={this.state.recipe.categories} />
+                  <Equipment equipment={this.state.recipe.equipment} />
+                </div>
+            </Col>
+          </Row>
+          <Row>
+            <Col s={6}>
+                
+                
+                <div className="row-padding">
+                  <Ingredients ingredients={this.state.recipe.ingredients} />
+                </div>
+                <Steps steps={this.state.recipe.steps} />
+            </Col>
+            <Col s={5}>
+              <Comments onNewComments={this.addComment} onNewDifficultyRating={this.addDifficulty} 
+                        onNewTastinessRating={this.addTastiness} comments={this.state.recipe.comments}
+                        difficulty={this.state.recipe.user_rating.difficulty}
+                        tastiness={this.state.recipe.user_rating.tastiness} />
+            </Col>
+          </Row>
+        </div>
       </div>
     );
   }

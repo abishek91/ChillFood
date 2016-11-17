@@ -15,58 +15,70 @@ from functools import reduce
 from .models import *
 from .forms import *
 
-# if sys.stdout.encoding != 'cp850':
-#   sys.stdout = codecs.getwriter('cp850')(sys.stdout.buffer, 'strict')
-# if sys.stderr.encoding != 'cp850':
-#   sys.stderr = codecs.getwriter('cp850')(sys.stderr.buffer, 'strict')
-@transaction.atomic
+ 
+
 @login_required
 def recipes(request):
-    v_from = request.GET.get('from', '0')
-    v_search = request.GET.get('search')
-    v_user_id = request.GET.get('user_id','0')
+    form = SearchForm(request.GET);
 
-    if re.match(r"\d",v_from):
-        v_from = int(v_from) 
-    else:
-        #TODO: Raise a 400 malformed query error
-        v_from = 0
-
-    if re.match(r"\d",v_user_id):
-        v_user_id = int(v_user_id) 
-    else:
-        #TODO: Raise a 400 malformed query error
-        v_user_id = 0
-
-    
-    v_next = None
-    # post_id = request.GET.get('to', 0)
-
+    if not form.is_valid():
+        return JsonResponse(dict(form.errors.items()),status=406)        
+    print('start');
     limit = 6
-    print('search',v_search)
-    #TODO: Look for a way not to load the whole table
-    if v_search and len(v_search):
-        lista = v_search.split()
-        recipes = Recipe.objects.filter(reduce(lambda x, y: x | y, [Q(title__icontains=word) for word in lista])).order_by('-views')
-    else:
-        recipes = Recipe.objects.filter().order_by('-views')
-    
-    if v_user_id:
-        recipes = recipes.filter(cook__id=v_user_id).order_by('-views')
-
-    #TODO: More elaborate query for homepage
-    ##.annotate(rating=Avg('comment__tastiness'))\
-    data = recipes[v_from:v_from+limit]
     query = []
-    if (len(recipes[v_from+limit:])):
-        query.append('from=%d' % (v_from+limit))
-        if v_search:
-            query.append('search=%s' % v_search)
-        if v_user_id:
-            query.append('user_id=%d' % v_user_id)
+    v_next = None
 
-        if query:
-            v_next = '%s?%s' % (request.path,'&'.join(query))
+    #Filter
+    if form.cleaned_data['search']:
+        print('search',form.cleaned_data['search']);
+        lista = form.cleaned_data['search'].split()
+        query = reduce(lambda x, y: x | y, [Q(title__icontains=word) for word in lista])
+
+    if form.cleaned_data['user_id']:
+        query &= Q(cook__id=v_user_id)
+
+    #Order
+    print( form.cleaned_data['sort_id']);
+    if form.cleaned_data['sort_id'] == Sort.difficulty:
+        sort = '-difficulty'
+    elif form.cleaned_data['sort_id'] == Sort.calories:
+        sort = '-calories'       
+    elif form.cleaned_data['sort_id'] == Sort.tastiness:
+        sort = '-tastiness'
+    else:    
+        sort = '-views'
+
+    #Execute Query
+    recipes = Recipe
+
+    if query:
+        print('search2',query);
+
+        recipes = Recipe.objects.filter(query) 
+    else:
+        recipes = Recipe.objects.filter() 
+
+    print(sort);
+    new_recipes = recipes \
+             .annotate(difficulty=Avg('rating__difficulty'), \
+                       tastiness=Avg('rating__tastiness')) \
+             .order_by(sort)    
+    print(new_recipes)
+    
+    #TODO: More elaborate query for homepage
+    skip = form.cleaned_data['skip']
+    print(skip)
+    data = new_recipes[skip:skip+limit]
+    next_url_filters = []
+    if (len(new_recipes[skip+limit:])):
+        next_url_filters.append('skip=%d' % (skip+limit))
+        if form.cleaned_data['search']:
+            next_url_filters.append('search=%s' % form.cleaned_data['search'] )
+        if form.cleaned_data['user_id']:
+            next_url_filters.append('user_id=%d' % form.cleaned_data['user_id'] )
+
+        if next_url_filters:
+            v_next = '%s?%s' % (request.path,'&'.join(next_url_filters))
 
     result = {
         "data": list(map(lambda x: x.to_json(), data)),

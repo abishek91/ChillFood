@@ -7,7 +7,7 @@ const GenericList = ({ItemTemplate, items, remove}) => {
   const itemNode = items.map((item, index) => {
     return (<ItemTemplate index={index+1} item={item} key={index+1} remove={remove}/>)
   });
-  return (<ul>{itemNode}</ul>);
+  return (<div id="post_container" className="list">{itemNode}</div>);
 }
 
 // Contaner Component

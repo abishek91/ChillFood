@@ -22,9 +22,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
 
     <script src="{% static 'js/token.js' %}"></script>
-    <script src="{% static 'js/search.js' %}"></script>
+    <!-- <script src="{% static 'js/search.js' %}"></script> -->
 
-  {% block scripts %}
+    {% block scripts %}
     {% endblock %}
 
     <!--Let browser know website is optimized for mobile-->
@@ -33,56 +33,16 @@
   </head>
   <body>
 
-    <!-- Dropdown Structure -->
-    <ul id="dropdown1" class="dropdown-content">
-      <li><a href="{% url 'logout' %}"><i class="material-icons left">power_settings_new</i>Sign Out</a></li>                    
-    </ul>
-
-    <div class="navbar-fixed">
-      <nav>
-        <div class="nav-wrapper blue">
-
-          <a class="brand-logo" href="{% url 'index' %}">
-            <img alt="ChillFood" src="{% static 'images/ChillFood-white.png' %}" class="logo">
-          </a>
-
-          <ul class="right hide-on-med-and-down">
-            <li>
-              <a href="/app/#/recipe/create">                
-                <i class="material-icons">add</i>
-              </a>
-            </li>
-
-            <li>
-              <a class="name dropdown-button white-text right-align" href="#!" data-activates="dropdown1">
-                {% if user.photo %}
-                  <img class="left user_photo z-depth-1" src="{% url 'user_photo' user.id %}">
-                {% endif %}
-                {{ user.name }}
-                <i class="material-icons right">arrow_drop_down</i>
-              </a>
-            </li>
-          </ul>
-          <form class="right col s6">
-            <div class="input-field">
-              <input id="search" type="search" required>
-              <label for="search">
-                <i class="material-icons">search</i>
-              </label>
-              <i class="material-icons">close</i>
-            </div>
-          </form>
-
-        </div>
-      </nav>
-    </div>
-    {% if not user.is_confirmed %} 
-      <div class="row">
-        <div class="col s12 red center white-text z-depth-1">Please, confirm your email address.</div>  
-      </div>    
-    {% endif %}
+    
+    <script type="text/javascript">
+      var userName = '{{user.name}}'
+      var userId = {{user.id}}
+    </script>
+    
     {% block content %}
     {% endblock %}
+
+    
 
   </body>
 </html>

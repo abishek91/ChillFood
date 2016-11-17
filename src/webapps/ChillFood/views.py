@@ -11,8 +11,6 @@ import os
 
 from django.conf import settings
 
-
-
 @login_required
 def index(request):
     context = {}

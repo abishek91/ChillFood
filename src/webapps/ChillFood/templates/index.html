@@ -2,15 +2,11 @@
 {% load static %}
 
 {% block scripts %}
-    <script src="{% static 'js/recipe.js' %}"></script>
+    <!-- <script src="{% static 'js/recipe.js' %}"></script> -->
 {% endblock %}
 
 {% block content %}
-    <div class="container-less">
-        <!-- <h1>Welcome!!!</h1> -->
-
-        {% include 'p_recipes.html' %}
-    </div>
-
+    <div id="root"></div>
+    <script src="{% static 'js/bundle.js' %}"></script>    
 {% endblock %}
 

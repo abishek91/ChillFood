@@ -4,13 +4,12 @@
 {% block scripts %}
     <link href="{% static 'css/common.css' %}" rel="stylesheet">
     <link href="{% static 'css/recipe_detail.css' %}" rel="stylesheet">
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
-    
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">  
 {% endblock %}
 
 {% block content %}
 
-    <div class="container-less margin" id="root"></div>
+    <div id="root"></div>
 
     <script type="text/javascript">
       var recipeId = {{recipe.id}}
