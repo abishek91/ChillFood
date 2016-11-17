@@ -90,7 +90,7 @@ export default class SearchBar extends React.Component {
             <Buttons />
             <SearchForm text={search.text} handleSearch={this.handleSearch} />            
           </div>
-          <Row className="slim blue-text below z-depth-1">
+          <Row className="slim white blue-text below z-depth-1">
               <Col s={3}className=""><span href="#test1">Filter #1</span></Col>
               <Col s={3}className=""><span className="" href="#test2">Filter #2</span></Col>
               <Col s={3}className=""><span className="" href="#test3">Filter #3</span></Col>

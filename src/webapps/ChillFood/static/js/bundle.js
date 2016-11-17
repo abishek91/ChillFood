@@ -22288,7 +22288,7 @@
 	          ),
 	          _react2.default.createElement(
 	            _reactMaterialize.Row,
-	            { className: 'slim blue-text below z-depth-1' },
+	            { className: 'slim white blue-text below z-depth-1' },
 	            _react2.default.createElement(
 	              _reactMaterialize.Col,
 	              { s: 3, className: '' },

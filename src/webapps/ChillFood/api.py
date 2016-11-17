@@ -25,7 +25,7 @@ def recipes(request):
         return JsonResponse(dict(form.errors.items()),status=406)        
     print('start');
     limit = 6
-    query = []
+    query = Q()
     v_next = None
 
     #Filter
@@ -35,7 +35,7 @@ def recipes(request):
         query = reduce(lambda x, y: x | y, [Q(title__icontains=word) for word in lista])
 
     if form.cleaned_data['user_id']:
-        query &= Q(cook__id=v_user_id)
+        query &= Q(cook__id=form.cleaned_data['user_id'])
 
     #Order
     print( form.cleaned_data['sort_id']);
