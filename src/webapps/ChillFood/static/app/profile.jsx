@@ -106,7 +106,7 @@ constructor(props) {
       <div>
         <SearchBar handleSearch={this.handleSearch} />
         <ProfileDetails profile={this.state.user} follow={this.follow} unfollow={this.unfollow} />
-
+        <div className="name container">Uploaded recipes</div>
         <SearchResults next={this.state.next} data={this.state.data} load_posts={this.load_posts} />
       </div>
     );

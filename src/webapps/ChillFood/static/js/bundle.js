@@ -35289,6 +35289,11 @@
 	        null,
 	        _react2.default.createElement(_searchBar2.default, { handleSearch: this.handleSearch }),
 	        _react2.default.createElement(_profileDetails2.default, { profile: this.state.user, follow: this.follow, unfollow: this.unfollow }),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'name container' },
+	          'Uploaded recipes'
+	        ),
 	        _react2.default.createElement(_searchResults2.default, { next: this.state.next, data: this.state.data, load_posts: this.load_posts })
 	      );
 	    }
@@ -35367,6 +35372,8 @@
 	        window.location.href = profileLink;
 	        location.reload();
 	      };
+	      var myProfile = false;
+	      if (profile.id == userId) myProfile = true;
 	      JSON.parse(profile.followers).forEach(function (follower) {
 	        var userProfileImageUrl = '/profile_image/' + follower.pk;
 	        var profileLink = '/#/profile/' + follower.pk;
@@ -35387,7 +35394,7 @@
 	            )
 	          )
 	        ));
-	        if (userId == follower.pk) isFollowing = true;
+	        if (!myProfile && userId == follower.pk) isFollowing = true;
 	      });
 	
 	      JSON.parse(profile.following).forEach(function (following) {
@@ -35410,7 +35417,8 @@
 	          )
 	        ));
 	      });
-	      var follow = isFollowing ? _react2.default.createElement(
+	
+	      if (!myProfile) var follow = isFollowing ? _react2.default.createElement(
 	        _reactMaterialize.Button,
 	        { className: 'follow', onClick: this.props.unfollow, type: 'button' },
 	        'Unfollow'

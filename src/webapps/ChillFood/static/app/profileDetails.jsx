@@ -28,6 +28,9 @@ export default class Category extends React.Component {
           window.location.href = profileLink
           location.reload()
       }
+      var myProfile = false;
+      if(profile.id == userId)
+        myProfile = true;
       JSON.parse(profile.followers).forEach(function(follower){
           var userProfileImageUrl = '/profile_image/' + follower.pk;
           var profileLink = '/#/profile/' + follower.pk;
@@ -36,7 +39,7 @@ export default class Category extends React.Component {
                                 <img height="50" width="50" src={userProfileImageUrl} alt="profile pic" /> 
                                 <div><a onClick={() => redirect(profileLink)} href={profileLink}>{follower.fields.name}</a></div>
                               </Col>)
-          if(userId == follower.pk)
+          if(!myProfile && userId == follower.pk)
             isFollowing = true
       })
 
@@ -48,9 +51,10 @@ export default class Category extends React.Component {
                                 <div><a onClick={() => redirect(profileLink)} href={profileLink}>{following.fields.name}</a></div>
                               </Col>)
       })
-      var follow = isFollowing ? <Button className="follow" onClick={this.props.unfollow} type="button">Unfollow</Button> :
-                                 <Button className="follow" onClick={this.props.follow} type="button">Follow</Button>;
 
+      if(!myProfile)
+        var follow = isFollowing ? <Button className="follow" onClick={this.props.unfollow} type="button">Unfollow</Button> :
+                                   <Button className="follow" onClick={this.props.follow} type="button">Follow</Button>;
 
     return (
       <Row className="container">
