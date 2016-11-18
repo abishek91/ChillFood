@@ -33,9 +33,9 @@ class Recipe(models.Model):
     video_link = models.CharField(max_length = 200, blank = True)
     date_time = models.DateTimeField(auto_now_add=True)
     views = models.IntegerField(default=0, blank=True)
-    category = models.ManyToManyField(Category)
-    equipment = models.ManyToManyField(Equipment)
-    cuisine = models.ManyToManyField(Cuisine)
+    category_set = models.ManyToManyField(Category)
+    equipment_set = models.ManyToManyField(Equipment)
+    cuisine_set = models.ManyToManyField(Cuisine)
 
     def to_json(self):
         result = {

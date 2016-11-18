@@ -6,10 +6,6 @@
 {% endblock %}
 
 {% block content %}
-    <script type="text/javascript">
-      var g_sort_by = {{user.preferences.sort_by}}
-    </script>
-
     <div id="root"></div>
     <script src="{% static 'js/bundle.js' %}"></script>    
 {% endblock %}
