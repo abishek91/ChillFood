@@ -1,5 +1,5 @@
 import React from 'react';
-import {Row, Col, Input, Icon, Button} from 'react-materialize';
+import {Row, Col, Input, Icon, Button, NavItem, Dropdown, Badge} from 'react-materialize';
 import querystring from 'querystring'
 
 const sortOptions = [ {label:'time',value: 5},
@@ -100,6 +100,19 @@ export default class SearchBar extends React.Component {
             </a>
 
             <Buttons />
+            <span id="yay" className="right">
+              <Dropdown  trigger={
+                <span >
+                 <Button floating large className='red' waves='light' icon='notifications' />
+                  <div className="numberCircle"><span>1</span></div>
+                </span>
+              }>
+              <NavItem>one</NavItem>
+              <NavItem>two</NavItem>
+              <NavItem divider />
+              <NavItem>three</NavItem>
+            </Dropdown> 
+          </span>
             <SearchForm text={search.text} handleSearch={this.handleSearch} />            
           </div>
           <Row className="slim white blue-text below z-depth-1">
@@ -156,19 +169,25 @@ class SearchForm extends React.Component {
   }
 
   render() {
-    return (<form className="right col s6">
+    return (
+      <span><form className="right col s6">
+      
                 <div className="input-field">
                   <input id="search" 
                     type="search" 
                     value={this.state.text} 
                     onChange={(e) => this.handleSearch(e.target.value)} 
                     required/>
+
+                  
                   <label htmlFor="search">
                     <i className="material-icons">search</i>
+
                   </label>
                   <i className="material-icons">close</i>
                 </div>
-              </form>);  
+              </form>
+                                    </span> );  
   }
 }
 

@@ -22370,6 +22370,43 @@
 	              _react2.default.createElement('img', { alt: 'ChillFood', src: static_files + 'images/ChillFood-white.png', className: 'logo' })
 	            ),
 	            _react2.default.createElement(Buttons, null),
+	            _react2.default.createElement(
+	              'span',
+	              { id: 'yay', className: 'right' },
+	              _react2.default.createElement(
+	                _reactMaterialize.Dropdown,
+	                { trigger: _react2.default.createElement(
+	                    'span',
+	                    null,
+	                    _react2.default.createElement(_reactMaterialize.Button, { floating: true, large: true, className: 'red', waves: 'light', icon: 'notifications' }),
+	                    _react2.default.createElement(
+	                      'div',
+	                      { className: 'numberCircle' },
+	                      _react2.default.createElement(
+	                        'span',
+	                        null,
+	                        '1'
+	                      )
+	                    )
+	                  ) },
+	                _react2.default.createElement(
+	                  _reactMaterialize.NavItem,
+	                  null,
+	                  'one'
+	                ),
+	                _react2.default.createElement(
+	                  _reactMaterialize.NavItem,
+	                  null,
+	                  'two'
+	                ),
+	                _react2.default.createElement(_reactMaterialize.NavItem, { divider: true }),
+	                _react2.default.createElement(
+	                  _reactMaterialize.NavItem,
+	                  null,
+	                  'three'
+	                )
+	              )
+	            ),
 	            _react2.default.createElement(SearchForm, { text: search.text, handleSearch: this.handleSearch })
 	          ),
 	          _react2.default.createElement(
@@ -22498,31 +22535,35 @@
 	      var _this4 = this;
 	
 	      return _react2.default.createElement(
-	        'form',
-	        { className: 'right col s6' },
+	        'span',
+	        null,
 	        _react2.default.createElement(
-	          'div',
-	          { className: 'input-field' },
-	          _react2.default.createElement('input', { id: 'search',
-	            type: 'search',
-	            value: this.state.text,
-	            onChange: function onChange(e) {
-	              return _this4.handleSearch(e.target.value);
-	            },
-	            required: true }),
+	          'form',
+	          { className: 'right col s6' },
 	          _react2.default.createElement(
-	            'label',
-	            { htmlFor: 'search' },
+	            'div',
+	            { className: 'input-field' },
+	            _react2.default.createElement('input', { id: 'search',
+	              type: 'search',
+	              value: this.state.text,
+	              onChange: function onChange(e) {
+	                return _this4.handleSearch(e.target.value);
+	              },
+	              required: true }),
+	            _react2.default.createElement(
+	              'label',
+	              { htmlFor: 'search' },
+	              _react2.default.createElement(
+	                'i',
+	                { className: 'material-icons' },
+	                'search'
+	              )
+	            ),
 	            _react2.default.createElement(
 	              'i',
 	              { className: 'material-icons' },
-	              'search'
+	              'close'
 	            )
-	          ),
-	          _react2.default.createElement(
-	            'i',
-	            { className: 'material-icons' },
-	            'close'
 	          )
 	        )
 	      );

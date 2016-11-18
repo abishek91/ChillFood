@@ -48,3 +48,26 @@
 	padding: 0 20px 0 20px;	
 	border-color: #dcdcdc;
 }
+
+.numberCircle {
+    border-radius: 50%;
+    overflow: hidden;
+    width: 20px; 
+    position: relative;
+    top: -60px;
+    left: 35px;
+    z-index: 10;
+}
+.numberCircle span {
+    text-align: center;
+    line-height: 18px;
+    display: block;
+    font-size: 13px;
+    color: orange;
+    background-color: white; 
+}
+
+.notifications {
+	float: right;
+	padding: 0 5px 0 5px;
+}
