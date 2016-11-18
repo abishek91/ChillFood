@@ -11,7 +11,7 @@ constructor() {
 
  componentDidMount() {
   var self = this;
-  var url = '/profile_json/1';// + this.props.userId; 
+  var url = '/profile_json/' + this.props.params.userId; 
   fetch(url,{  
       credentials: 'include'})
     .then(function(response) {

@@ -138,7 +138,7 @@ def follow(request, user_id):
 	followee = User.objects.get(id=user_id)
 	follower = User.objects.get(id=request.user.id)
 	follower.following.add(followee)
-	return JsonResponse({"success":"true"})
+	return JsonResponse({"user":followee.to_json()})
 
 @login_required
 def unfollow(request, user_id):
@@ -146,7 +146,7 @@ def unfollow(request, user_id):
 	follower = User.objects.get(id=request.user.id)
 	
 	follower.following.remove(followee)
-	return JsonResponse({"success":"true"})
+	return JsonResponse({"user":followee.to_json()})
 
 @login_required
 def profile_json(request, user_id):

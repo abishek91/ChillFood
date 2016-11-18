@@ -2,10 +2,11 @@
 {% load static %}
 
 {% block scripts %}
+  <link href="{% static 'css/profile.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-<div id="root"></div>
+<div class="post_container" id="root"></div>
   <script type="text/javascript">
     var userId = {{profile.id}}
   </script>

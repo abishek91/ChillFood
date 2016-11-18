@@ -34,10 +34,17 @@
 	background-color: white;
 }
 
-.image {
-	width: 100%;
-}
-
 .name-link {
 	font-size: 2em;
+}
+
+.name {
+	font-size: 2em;
+}
+
+.box {
+	border: 0.5px solid;
+	margin: 10px;	
+	padding: 0 20px 0 20px;	
+	border-color: #dcdcdc;
 }
