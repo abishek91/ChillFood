@@ -5,6 +5,7 @@ from django.http import JsonResponse,HttpResponseBadRequest
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
+from django.db.models.functions import Coalesce
 from django.db import transaction
 from django.db.models import Q
 import re
@@ -16,17 +17,22 @@ from .models import *
 from .forms import *
 
  
-
+@transaction.atomic
 @login_required
 def recipes(request):
     form = SearchForm(request.GET);
 
     if not form.is_valid():
         return JsonResponse(dict(form.errors.items()),status=406)        
+    
     print('start');
     limit = 6
     query = Q()
     v_next = None
+
+    preferences = Preferences.objects.get(pk=request.user.id);
+    preferences.sort_by = form.cleaned_data['sort_id'];
+    preferences.save();
 
     #Filter
     if form.cleaned_data['search']:
@@ -38,13 +44,15 @@ def recipes(request):
         query &= Q(cook__id=form.cleaned_data['user_id'])
 
     #Order
-    print( form.cleaned_data['sort_id']);
+    print('sort_id', form.cleaned_data['sort_id']);
     if form.cleaned_data['sort_id'] == Sort.difficulty:
-        sort = '-difficulty'
+        sort = 'difficulty'
     elif form.cleaned_data['sort_id'] == Sort.calories:
         sort = '-calories'       
     elif form.cleaned_data['sort_id'] == Sort.tastiness:
         sort = '-tastiness'
+    elif form.cleaned_data['sort_id'] == Sort.time:
+        sort = 'time'
     else:    
         sort = '-views'
 
@@ -52,16 +60,15 @@ def recipes(request):
     recipes = Recipe
 
     if query:
-        print('search2',query);
-
         recipes = Recipe.objects.filter(query) 
     else:
         recipes = Recipe.objects.filter() 
 
+    print('time',sort)
     print(sort);
     new_recipes = recipes \
-             .annotate(difficulty=Avg('rating__difficulty'), \
-                       tastiness=Avg('rating__tastiness')) \
+             .annotate(difficulty=Coalesce(Avg('rating__difficulty'),10), \
+                       tastiness=Coalesce(Avg('rating__tastiness'),-1),) \
              .order_by(sort)    
     print(new_recipes)
     

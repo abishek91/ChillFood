@@ -9,6 +9,21 @@ from django.db.models import Avg
 from .login.models import User
 
 
+CATEGORIES = (
+    ('Veg', 'Veg'),
+    ('Vegan', 'Vegan'),
+    ('Non-veg', 'Non-veg')
+)
+
+class Category(models.Model):
+    name = models.CharField(max_length = 200, choices=CATEGORIES)
+
+class Equipment(models.Model):
+    name = models.CharField(max_length = 200)
+
+class Cuisine(models.Model):
+    name = models.CharField(max_length = 200)
+
 class Recipe(models.Model):
     pic = models.ImageField(upload_to='recipes', blank=True)
     title = models.CharField(max_length = 200)
@@ -18,6 +33,9 @@ class Recipe(models.Model):
     video_link = models.CharField(max_length = 200, blank = True)
     date_time = models.DateTimeField(auto_now_add=True)
     views = models.IntegerField(default=0, blank=True)
+    category = models.ManyToManyField(Category)
+    equipment = models.ManyToManyField(Equipment)
+    cuisine = models.ManyToManyField(Cuisine)
 
     def to_json(self):
         result = {
@@ -28,13 +46,12 @@ class Recipe(models.Model):
           "video_link": self.video_link,
           "date_time": self.date_time,
           "views": self.views,
-          "tastiness": self.rating_set.all().aggregate(Avg('tastiness'))['tastiness__avg']
+          "calories": self.calories,
+          "tastiness": self.tastiness,
+          "difficulty": self.difficulty,
+          # "tastiness": self.rating_set.all().aggregate(Avg('tastiness'))['tastiness__avg']
+          # "tastiness": self.rating_set.all().aggregate(Avg('tastiness'))['tastiness__avg']
         }
-
-        # if  hasattr(self, 'rating'):
-        #     result["rating"] = self.rating 
-        # else:
-        #     result["rating"] = 0
 
         return result
 
@@ -74,23 +91,6 @@ class Recipe(models.Model):
 
         return result
 
-CATEGORIES = (
-    ('Veg', 'Veg'),
-    ('Vegan', 'Vegan'),
-    ('Non-veg', 'Non-veg')
-)
-
-class Category(models.Model):
-    name = models.CharField(max_length = 200, choices=CATEGORIES)
-    recipes = models.ManyToManyField(Recipe)
-
-class Equipment(models.Model):
-    name = models.CharField(max_length = 200)
-    recipes = models.ManyToManyField(Recipe)
-
-class Cuisine(models.Model):
-    name = models.CharField(max_length = 200)
-    recipes = models.ManyToManyField(Recipe)
 
     
 class Ingredient(models.Model):
@@ -143,20 +143,22 @@ class Rating(models.Model):
     difficulty = models.DecimalField(blank = True, decimal_places=1, max_digits=2, null=True)
 
 PREFERENCE_SORT_TYPE = (
-    (1, 'Difficulty'),
-    (2, 'Tastiness')
+    (1, 'Views'),
+    (2, 'Tastiness'),
+    (3, 'Calories'),
+    (4, 'Tastiness'),
+    (5, 'Time')
 )
 
 class Preferences(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    categories = ArrayField(models.CharField(max_length = 50, blank = True))
-    appliances = ArrayField(models.CharField(max_length = 50, blank = True))
-    cuisines = ArrayField(models.CharField(max_length = 50, blank = True))
-    price_min = models.IntegerField(blank = True)
-    price_max = models.IntegerField(blank = True)
-    has_video = models.BooleanField()
-    calories = models.IntegerField(blank = True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     sort_by = models.IntegerField(choices=PREFERENCE_SORT_TYPE, default = 1) 
+    price_min = models.IntegerField(blank = True, default = 0)
+    price_max = models.IntegerField(blank = True, default = ~0)
+    has_video = models.BooleanField(default = False)
+    category = models.ManyToManyField(Category)
+    equipment = models.ManyToManyField(Equipment)
+    cuisine = models.ManyToManyField(Cuisine)
     
 LIST_TYPE = (
     (1, 'Category'),

@@ -9,6 +9,7 @@ class Sort(IntEnum):
     difficulty = 2
     calories = 3
     tastiness = 4
+    time = 5
 
 initial = {
             'skip': 0,

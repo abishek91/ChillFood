@@ -2,22 +2,31 @@ import React from 'react';
 import {Row, Col, Input, Icon, Button} from 'react-materialize';
 import querystring from 'querystring'
 
-const sortOptions = [ {label:'views',value: 1},
+const sortOptions = [ {label:'time',value: 5},
+                      {label:'tastiness',value: 4},
+                      {label:'views',value: 1},
                       {label:'difficulty',value: 2},
                       {label:'calories',value: 3},
-                      {label:'tastiness',value: 4}]
+                      ]
 
 export default class SearchBar extends React.Component {
 
   constructor(props) {
     super(props);
+    console.log('g_sort_id',g_sort_by);
+    
+    let sort = sortOptions[0];
+    for (var i in sortOptions) {
+      if (sortOptions[i].value == g_sort_by) {
+        sort = sortOptions[i];
+      }
+    }
+
     this.state = {
       search:  {
         text:'',
         userId: 0,
-        sortBy:{
-          label:'Views'
-        }
+        sortBy: sort
       }
     };
 
@@ -26,23 +35,26 @@ export default class SearchBar extends React.Component {
   }
 
   handleSort(value) {
-    this.props.handleSearch('',0,value);
-    //Close  drop down
+    this.handleSearch(null,null,value);
+     //Close  drop down
   }
 
-  handleSearch(value) {
+  handleSearch(text, userId, sortBy) {
     // console.log(location);
     let search = this.state.search;
 
-    search.text = value;
-
+    if (text)
+      search.text = text;
+    if (sortBy)
+      search.sortBy = sortBy;
+    
     this.setState({
       search: search
     });
 
     console.log(window.location.pathname, location.hash);
     if (/^#\/(\?.*)?$/.test(location.hash)) {
-      this.props.handleSearch(value)
+      this.props.handleSearch(text, userId, sortBy)
     } else {
       console.log(this.search,querystring.stringify(search))
       window.location = '/#/?' + querystring.stringify(search);

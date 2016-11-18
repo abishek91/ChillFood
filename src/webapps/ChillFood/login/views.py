@@ -16,6 +16,7 @@ import re
 # Local Libraries
 from .models import *
 from .forms import *
+from ..models import *
 from django.conf import settings
 
 # Views
@@ -74,6 +75,9 @@ def register(request):
                                         )
 
     new_user.save()
+
+    preferences = Preferences(user=new_user)
+    preferences.save()
 
     new_user = authenticate(username=form.cleaned_data['username'],
                             password=form.cleaned_data['password'])

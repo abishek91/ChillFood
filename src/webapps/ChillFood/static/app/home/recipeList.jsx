@@ -10,13 +10,6 @@ export default class RecipeList extends React.Component {
   constructor(props) {
     super(props);    
     this.state = {
-      search: {
-        text:'asd',
-        userId: 0,
-        sortBy:{
-          label:'Views'
-        }
-      },
       data: [],
       next: false
     }
@@ -52,17 +45,7 @@ export default class RecipeList extends React.Component {
   
   handleSearch(text, userId, sortBy) {
     let self = this;
-
-    let search = this.state.search
-
-    if (text)
-      search.text = text;
-    if (sortBy)
-      search.sortBy = sortBy;
-    this.setState({
-      search: search
-    });
-
+    
     this.recipe.get('api/recipes',text,userId,sortBy ? sortBy.value : 0)
     .then(function (data) {
       // console.log('handleSearch',self.recipe.next);
@@ -84,7 +67,7 @@ export default class RecipeList extends React.Component {
       return (<RecipeThumbnail recipe={recipe} key={index}/>)
     });
     return (<div>
-              <SearchBar search={this.state.search} handleSearch={this.handleSearch} />
+              <SearchBar handleSearch={this.handleSearch} />
               <div className="container">            
                   <div className="progress">
                         <div className="indeterminate"></div>
