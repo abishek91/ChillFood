@@ -33,3 +33,11 @@
 .bg-white {
 	background-color: white;
 }
+
+.image {
+	width: 100%;
+}
+
+.name-link {
+	font-size: 2em;
+}

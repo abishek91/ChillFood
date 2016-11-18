@@ -133,8 +133,28 @@ def profile(request, user_id):
 	context = {"profile": user}
 	return render(request, 'profile.html',context)
 
+@login_required
+def follow(request, user_id):
+	followee = User.objects.get(id=user_id)
+	follower = User.objects.get(id=request.user.id)
+	follower.following.add(followee)
+	return JsonResponse({"success":"true"})
 
+@login_required
+def unfollow(request, user_id):
+	followee = User.objects.get(id=user_id)
+	follower = User.objects.get(id=request.user.id)
+	
+	follower.following.remove(followee)
+	return JsonResponse({"success":"true"})
 
+@login_required
+def profile_json(request, user_id):
+	user = get_object_or_404(User, id=user_id)
+	return JsonResponse({"user":user.to_json()})
+
+def display_users(request, user_id):
+    return render(request, 'root.html')
 
 
 
