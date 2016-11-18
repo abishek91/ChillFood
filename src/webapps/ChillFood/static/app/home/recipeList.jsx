@@ -2,7 +2,7 @@ import React from 'react';
 import {render} from 'react-dom';
 import SearchBar from '../searchBar.jsx'
 import Recipe from '../api/recipe.jsx'
-import RecipeThumbnail from './recipeThumbnail.jsx'
+import SearchResults from '../searchResults.jsx'
 import querystring from 'querystring';
 
 
@@ -63,25 +63,10 @@ export default class RecipeList extends React.Component {
   render() {
   
     // Map through the items
-    const recipeNode = this.state.data.map((recipe, index) => {
-      return (<RecipeThumbnail recipe={recipe} key={index}/>)
-    });
+
     return (<div>
               <SearchBar handleSearch={this.handleSearch} />
-              <div className="container">            
-                  <div className="progress">
-                        <div className="indeterminate"></div>
-                  </div>  
-                  <div id="post_container" className="list">{recipeNode}</div>
-                  <div className={"center-align " + (this.state.next ? '':'hidden')}>
-                      <button id="next" 
-                              type="button" 
-                              onClick={()=>this.load_posts()}
-                              className="waves-effect waves-blue btn btn-flat">
-                              load more...
-                      </button>
-                  </div>
-              </div>
+              <SearchResults next={this.state.next} data={this.state.data} load_posts={this.load_posts} />
             </div>);
   }
 }
