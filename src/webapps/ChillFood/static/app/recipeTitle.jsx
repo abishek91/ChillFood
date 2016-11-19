@@ -4,7 +4,7 @@ import {Row, Col, Input, Icon, Button} from 'react-materialize';
 
 export default class RecipeTitle extends React.Component {
   render() {
-    var profileLink = '/profile/' + this.props.cook.id;
+    var profileLink = '/#/profile/' + this.props.cook.id;
     return (
       <span>
         <Row>
@@ -21,6 +21,7 @@ export default class RecipeTitle extends React.Component {
             </Col>
             <Col s={12} className="cook">
               <Icon>person</Icon> <a href={profileLink}>{this.props.cook.name}</a>
+
             </Col>
             <Col s={12} className="cook">
               <Icon>query_builder</Icon> {this.props.time} min

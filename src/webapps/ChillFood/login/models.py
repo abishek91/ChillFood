@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.core import serializers
 import datetime
 
 
@@ -28,7 +29,9 @@ class User(AbstractUser):
     return {
       "id": self.id,
       "name": self.name,
-      "photo": str(self.photo)
+      "photo": str(self.photo),
+      "following": serializers.serialize('json',self.following.all()),
+      "followers": serializers.serialize('json',self.followers.all())
     }
 
   def to_json_full(self):

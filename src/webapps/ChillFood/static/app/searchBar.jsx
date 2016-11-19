@@ -1,7 +1,7 @@
 import React from 'react';
-import {Row, Col, Input, Icon, Button} from 'react-materialize';
+import {Row, Col, Input, Icon, Button, NavItem, Dropdown, Badge} from 'react-materialize';
 import querystring from 'querystring'
-//TODO: REMOVE
+import Notifications from './notifications.jsx'
 
 export default class SearchBar extends React.Component {
 
@@ -54,6 +54,8 @@ export default class SearchBar extends React.Component {
               </a>
 
               <Buttons />
+              <Notifications />
+
               <SearchForm text={this.state.text} handleSearch={this.handleSearch} />            
             </div>            
           </nav>           
@@ -96,19 +98,25 @@ class SearchForm extends React.Component {
   }
 
   render() {
-    return (<form className="right col s6">
+    return (
+      <span><form className="right col s6">
+      
                 <div className="input-field">
                   <input id="search" 
                     type="search" 
                     value={this.state.text} 
                     onChange={(e) => this.handleSearch(e.target.value)} 
                     required/>
+
+                  
                   <label htmlFor="search">
                     <i className="material-icons">search</i>
+
                   </label>
                   <i className="material-icons">close</i>
                 </div>
-              </form>);  
+              </form>
+        </span> );  
   }
 }
 

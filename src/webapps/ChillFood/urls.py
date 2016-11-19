@@ -41,13 +41,19 @@ urlpatterns = [
     url(r'^api/recipes$', api.recipes, name='recipes'),
     url(r'^api/lists$', api.lists, name='lists'),
     url(r'^api/preferences$', api.preferences, name='preferences'),
+    url(r'^profile/(?P<user_id>\d+)$', views.profile),
+    url(r'^profile_json/(?P<user_id>\d+)$', views.profile_json),
+    url(r'^profile/(?P<user_id>\d+)/followers$', views.display_users),
+    url(r'^profile/(?P<user_id>\d+)/following$', views.display_users),
     #Recipe Creation
     url(r'^api/recipe/create$', api.recipe_create,name='recipe_create'),
     #Comments
     url(r'^add_comment/(?P<recipe_id>\d+)$', views.add_comment, name='add_comment'),
     url(r'^add_rating/(?P<recipe_id>\d+)$', views.add_rating, name='add_rating'),
     #User
-    url(r'^profile/(?P<user_id>\d+)$', views.profile),
-         
+    url(r'^follow/(?P<user_id>\d+)$', views.follow, name='follow'),
+    url(r'^unfollow/(?P<user_id>\d+)$', views.unfollow, name='unfollow'),
+    url(r'^notifications$',views.notifications, name='notifications'),
+    url(r'^readNotifications$',views.readNotifications, name='readNotifications')         
 ]
 
