@@ -79,10 +79,6 @@
 	
 	var _profile2 = _interopRequireDefault(_profile);
 	
-	var _app = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./app.jsx\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-	
-	var _app2 = _interopRequireDefault(_app);
-	
 	var _reactRouter = __webpack_require__(/*! react-router */ 238);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -98,6 +94,7 @@
 	  _react2.default.createElement(_reactRouter.Route, { path: '/recipe/create', component: _recipeCreate2.default }),
 	  _react2.default.createElement(_reactRouter.Route, { path: '/recipe/:recipeId', component: _recipeDetails2.default })
 	), document.getElementById('root'));
+	// import App from './app.jsx'
 
 /***/ },
 /* 1 */
@@ -35569,7 +35566,7 @@
 	            { s: 3, className: '' },
 	            _react2.default.createElement(
 	              'a',
-	              { className: 'name dropdown-button', 'data-activates': 'dropdown2' },
+	              { className: 'dropdown-button', 'data-activates': 'dropdown2' },
 	              'Sort by: ',
 	              sortBy.label,
 	              _react2.default.createElement(

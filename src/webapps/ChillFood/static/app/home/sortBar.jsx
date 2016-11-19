@@ -27,7 +27,7 @@ export default class SortBar extends React.Component {
                   
                 </Col>
                 <Col s={3} className="">
-                  <a className="name dropdown-button" data-activates="dropdown2">
+                  <a className="dropdown-button" data-activates="dropdown2">
                     Sort by: {sortBy.label}
                     <span className="material-icons">arrow_drop_down</span>
                   </a>
