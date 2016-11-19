@@ -65,7 +65,7 @@ class RecipeIngredientForm(forms.Form):
 class RecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
-        exclude = ['cook','pic','ingredients']
+        exclude = ['cook','pic','ingredients','category_set','equipment_set','cuisine_set']
     
     def clean(self):
         cleaned_data = super(RecipeForm, self).clean()

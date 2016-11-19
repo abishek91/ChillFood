@@ -56,12 +56,14 @@ class Recipe(models.Model):
           "date_time": self.date_time,
           "views": self.views,
           "calories": self.calories,
-          "tastiness": self.tastiness,
-          "difficulty": self.difficulty,
-          # "tastiness": self.rating_set.all().aggregate(Avg('tastiness'))['tastiness__avg']
-          # "tastiness": self.rating_set.all().aggregate(Avg('tastiness'))['tastiness__avg']
         }
 
+        if (hasattr(self,"tastiness")):
+          result['tastiness'] = self.tastiness
+
+        if (hasattr(self,"difficulty")):
+          result['difficulty'] = self.difficulty
+          
         return result
 
     def to_json_full(self, user):

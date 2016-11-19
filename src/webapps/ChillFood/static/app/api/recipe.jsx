@@ -3,7 +3,7 @@
  */
 var querystring = require('querystring')
 
-const url = 'api/recipes'
+const url = '/api/recipes'
 
 export default class Recipe {
 

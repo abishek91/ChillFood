@@ -27024,7 +27024,7 @@
 	 */
 	var querystring = __webpack_require__(/*! querystring */ 216);
 	
-	var url = 'api/recipes';
+	var url = '/api/recipes';
 	
 	var Recipe = function () {
 	    function Recipe() {
@@ -29388,15 +29388,16 @@
 	        },
 	        body: JSON.stringify(body)
 	      }).then(function (response) {
+	        if (!response.ok) {
+	          throw Error(response.statusText);
+	        }
+	
 	        return response.text();
 	      }).then(function (text) {
 	        var recipe = JSON.parse(text);
 	        console.log('Recipe Saved', recipe);
-	        parent.location.hash = "";
-	        location.pathname = 'recipe/' + recipe.id;
-	        self.setState({
-	          recipe: recipe
-	        });
+	        parent.location.hash = '/recipe/' + recipe.id;
+	        location.pathname = '/recipe/' + recipe.id;
 	      }).catch(function (error) {
 	        Materialize.toast('There has been a problem, please contact your administrator.');
 	        console.log('There has been a problem with your fetch operation: ' + error.message, 400);
@@ -29813,7 +29814,7 @@
 	  });
 	  return _react2.default.createElement(
 	    'div',
-	    { id: 'post_container', className: 'list' },
+	    { id: 'post_container' },
 	    itemNode
 	  );
 	};
@@ -35216,7 +35217,7 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	          value: true
+	    value: true
 	});
 	
 	var _react = __webpack_require__(/*! react */ 1);
@@ -35231,53 +35232,55 @@
 	
 	var _reactRouter = __webpack_require__(/*! react-router */ 238);
 	
+	var _reactMaterialize = __webpack_require__(/*! react-materialize */ 173);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var Item = function Item(_ref) {
-	          var index = _ref.index,
-	              item = _ref.item,
-	              remove = _ref.remove;
+	    var index = _ref.index,
+	        item = _ref.item,
+	        remove = _ref.remove;
 	
-	          // Each Todo
-	          return _react2.default.createElement(
-	                    'li',
-	                    { className: 'list-group-item row', onClick: function onClick() {
-	                                        remove(item.id);
-	                              } },
-	                    _react2.default.createElement(
-	                              'div',
-	                              { className: 'col s1' },
-	                              index
-	                    ),
-	                    _react2.default.createElement(
-	                              'div',
-	                              { className: 'col s4' },
-	                              item.ingredient_name
-	                    ),
-	                    _react2.default.createElement(
-	                              'div',
-	                              { className: 'col s3' },
-	                              item.quantity
-	                    ),
-	                    _react2.default.createElement(
-	                              'div',
-	                              { className: 'col s3' },
-	                              item.price
-	                    ),
-	                    _react2.default.createElement(
-	                              'button',
-	                              { className: 'col s1 waves-effect waves-blue btn btn-flat',
-	                                        type: 'button',
-	                                        onClick: function onClick() {
-	                                                  remove(item.id);
-	                                        } },
-	                              _react2.default.createElement(
-	                                        'i',
-	                                        { className: 'material-icons blue-text' },
-	                                        'remove'
-	                              )
-	                    )
-	          );
+	    //  Each Todo
+	    return _react2.default.createElement(
+	        _reactMaterialize.Row,
+	        { className: '', onClick: function onClick() {
+	                remove(item.id);
+	            } },
+	        _react2.default.createElement(
+	            'div',
+	            { className: 'col s1' },
+	            index
+	        ),
+	        _react2.default.createElement(
+	            'div',
+	            { className: 'col s4' },
+	            item.ingredient_name
+	        ),
+	        _react2.default.createElement(
+	            'div',
+	            { className: 'col s3' },
+	            item.quantity
+	        ),
+	        _react2.default.createElement(
+	            'div',
+	            { className: 'col s3' },
+	            item.price
+	        ),
+	        _react2.default.createElement(
+	            'button',
+	            { className: 'col s1 waves-effect waves-blue btn btn-flat',
+	                type: 'button',
+	                onClick: function onClick() {
+	                    remove(item.id);
+	                } },
+	            _react2.default.createElement(
+	                'i',
+	                { className: 'material-icons blue-text' },
+	                'remove'
+	            )
+	        )
+	    );
 	};
 	
 	exports.default = Item;
@@ -35301,6 +35304,8 @@
 	
 	var _reactDom = __webpack_require__(/*! react-dom */ 34);
 	
+	var _reactMaterialize = __webpack_require__(/*! react-materialize */ 173);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var Item = function Item(_ref) {
@@ -35311,8 +35316,8 @@
 	
 	  // Each Todo
 	  return _react2.default.createElement(
-	    'li',
-	    { className: 'list-group-item row' },
+	    _reactMaterialize.Row,
+	    { className: 'list-group-item' },
 	    _react2.default.createElement(
 	      'div',
 	      { className: 'col s1' },
