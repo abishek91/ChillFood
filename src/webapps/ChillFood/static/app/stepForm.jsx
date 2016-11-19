@@ -1,6 +1,6 @@
 import React from 'react';
 import {render} from 'react-dom';
-import { Button, Card, Row, Col } from 'react-materialize';
+import {Row, Col, Input, Icon, Button} from 'react-materialize';
 import IngredientForm from './ingredientForm.jsx'
 
 

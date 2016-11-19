@@ -14,12 +14,14 @@
     <!--Import Google Icon Font-->
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="{% static 'css/materialize.css' %}"  media="screen,projection"/>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css" />
+    
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.js"></script>
+
+    <script src="/static/js/jquery.materialize-autocomplete.js"></script>
 
     <script src="{% static 'js/token.js' %}"></script>
     <!-- <script src="{% static 'js/search.js' %}"></script> -->
@@ -32,7 +34,7 @@
 
   </head>
   <body>
-    
+  
     <script type="text/javascript">
       var userName = '{{user.name}}'
       var userId = {{user.id}}
@@ -41,8 +43,6 @@
     
     {% block content %}
     {% endblock %}
-
-    
 
   </body>
 </html>

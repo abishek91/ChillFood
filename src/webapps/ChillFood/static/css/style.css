@@ -189,17 +189,39 @@ div.card-image  img {
   padding-top: 0px;
 }
 
-.navbar-fixed > nav > .slim {
+.slim {
+  position: fixed;
+  top: 64px;
+  width: 100%;
   padding-top: 5px;
   padding-bottom: 5px;
   line-height: 20px;
+  z-index: 999!important;
 }
 
-.navbar-fixed {
-    height: 100px!important;
+.option {
+  line-height: 30px;
+  padding-left: 40px;
+  padding-right: 40px;
 }
 
 .options {
   padding: 10px;
   width: 100px; 
+}
+
+#slide-out {
+  z-index:0!important;
+}
+
+.side-nav {
+  padding-top: 90px;
+  box-shadow: none!important;
+}
+.container.recipes {
+  margin-left: 420px;
+}
+
+.switch label {
+  font-size:15px!important;
 }

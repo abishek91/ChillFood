@@ -39,14 +39,15 @@ urlpatterns = [
     #API
     #List of Recipes 
     url(r'^api/recipes$', api.recipes, name='recipes'),
-    # url(r'^api/recipes/(?P<user_id>\d+)$', api.get_recipes, name='get_recipes'),
-    url(r'^profile/(?P<user_id>\d+)$', views.profile),
+    url(r'^api/lists$', api.lists, name='lists'),
+    url(r'^api/preferences$', api.preferences, name='preferences'),
     #Recipe Creation
     url(r'^api/recipe/create$', api.recipe_create,name='recipe_create'),
     #Comments
     url(r'^add_comment/(?P<recipe_id>\d+)$', views.add_comment, name='add_comment'),
     url(r'^add_rating/(?P<recipe_id>\d+)$', views.add_rating, name='add_rating'),
-
+    #User
+    url(r'^profile/(?P<user_id>\d+)$', views.profile),
          
 ]
 

@@ -3,17 +3,29 @@
  */
 var querystring = require('querystring')
 
-let url = 'api/recipes'
+const url = 'api/recipes'
 
 export default class Recipe {
 
-  get(url, query, userId, sort_id) {
+  get(query, userId, sort_id, categories, cuisines, equipments,hasVideo) {
     self = this;
+    
+    if (!categories)
+        categories = []
+    if (!cuisines)
+        cuisines = []
+    if (!equipments)
+        equipments = []
     
     return this.connect(url + '?' +
      querystring.stringify({search: query, 
                             user_id: userId,
-                            sort_id:sort_id}));
+                            sort_id: sort_id,
+                            categories: categories,
+                            cuisines: cuisines,
+                            equipments: equipments,
+                            has_video: hasVideo,
+                        }));
   }
 
   connect(url){

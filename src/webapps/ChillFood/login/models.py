@@ -31,6 +31,14 @@ class User(AbstractUser):
       "photo": str(self.photo)
     }
 
+  def to_json_full(self):
+    return {
+      "id": self.id,
+      "name": self.name,
+      "photo": str(self.photo),
+      "preferences": self.preferences.to_json()
+    }
+
   def get_age(self):
     from datetime import date
     today = date.today()

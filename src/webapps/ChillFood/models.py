@@ -17,13 +17,22 @@ CATEGORIES = (
 
 class Category(models.Model):
     name = models.CharField(max_length = 200, choices=CATEGORIES)
-
+    def to_json(self):
+        return {"id": self.id,
+                "text": self.name}
+    
 class Equipment(models.Model):
     name = models.CharField(max_length = 200)
-
+    def to_json(self):
+        return {"id": self.id,
+                "text": self.name}
+    
 class Cuisine(models.Model):
     name = models.CharField(max_length = 200)
-
+    def to_json(self):
+        return {"id": self.id,
+                "text": self.name}
+    
 class Recipe(models.Model):
     pic = models.ImageField(upload_to='recipes', blank=True)
     title = models.CharField(max_length = 200)
@@ -33,9 +42,9 @@ class Recipe(models.Model):
     video_link = models.CharField(max_length = 200, blank = True)
     date_time = models.DateTimeField(auto_now_add=True)
     views = models.IntegerField(default=0, blank=True)
-    category_set = models.ManyToManyField(Category)
-    equipment_set = models.ManyToManyField(Equipment)
-    cuisine_set = models.ManyToManyField(Cuisine)
+    category_set = models.ManyToManyField(Category,related_name='recipes')
+    equipment_set = models.ManyToManyField(Equipment,related_name='recipes')
+    cuisine_set = models.ManyToManyField(Cuisine,related_name='recipes')
 
     def to_json(self):
         result = {
@@ -160,6 +169,15 @@ class Preferences(models.Model):
     equipment = models.ManyToManyField(Equipment)
     cuisine = models.ManyToManyField(Cuisine)
     
+    def to_json(self):
+      return {
+        "sort_by": self.sort_by,
+        "has_video": int(self.has_video),
+        "categories": list(map(lambda x: x.id, self.category.all())),
+        "equipments": list(map(lambda x: x.id, self.equipment.all())),
+        "cuisines": list(map(lambda x: x.id, self.cuisine.all()))
+      }
+
 LIST_TYPE = (
     (1, 'Category'),
     (2, 'Applicance'),

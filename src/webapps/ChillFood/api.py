@@ -32,8 +32,23 @@ def recipes(request):
 
     preferences = Preferences.objects.get(pk=request.user.id);
     preferences.sort_by = form.cleaned_data['sort_id'];
-    preferences.save();
+    preferences.has_video = form.cleaned_data['has_video'];
 
+    preferences.category.clear();
+    categories = Category.objects.filter(pk__in=form.cleaned_data['categories']);
+    preferences.category.set(categories)
+
+    preferences.cuisine.clear();
+    cuisines = Cuisine.objects.filter(pk__in=form.cleaned_data['cuisines']);
+    preferences.cuisine.set(cuisines)
+
+    preferences.equipment.clear();
+    equipments = Equipment.objects.filter(pk__in=form.cleaned_data['equipments']);
+    preferences.equipment.set(equipments)
+
+    preferences.save();
+    p2 = Preferences.objects.get(pk=request.user.id);
+    print('av',len(p2.category.all()))
     #Filter
     if form.cleaned_data['search']:
         print('search',form.cleaned_data['search']);
@@ -42,6 +57,32 @@ def recipes(request):
 
     if form.cleaned_data['user_id']:
         query &= Q(cook__id=form.cleaned_data['user_id'])
+
+    if form.cleaned_data['has_video']:
+        query &= ~Q(video_link="")
+
+    if form.cleaned_data['categories']:
+        lista = form.cleaned_data['categories']
+        query &= reduce(lambda x, y: x | y, [Q(category_set__id=int(category_id)) for category_id in lista])
+
+    if form.cleaned_data['equipments']:
+        lista = form.cleaned_data['equipments']
+        query &= reduce(lambda x, y: x & y, [Q(equipment_set__id=int(equipment_id)) for equipment_id in lista])
+
+    if form.cleaned_data['cuisines']:
+        lista = form.cleaned_data['cuisines']
+        query &= reduce(lambda x, y: x | y, [Q(cuisine_set__id=int(cuisine_id)) for cuisine_id in lista])
+
+
+    # if form.cleaned_data['price_min']:
+    #     query &= Q(price__gte=form.cleaned_data['price_min'])
+        
+    # if form.cleaned_data['price_max']:
+    #     query &= Q(price__lte=form.cleaned_data['price_max'])
+
+    if form.cleaned_data['has_video']:
+        query &= Q(video_link="")
+
 
     #Order
     print('sort_id', form.cleaned_data['sort_id']);
@@ -191,3 +232,16 @@ def recipe_create(request, recipe_id = 0):
     # recipe = Recipe.get(pk=recipe.id)
 
     return JsonResponse(recipe.to_json(), safe=False);
+
+@login_required
+def lists(request):    
+    categories = [c.to_json() for c in Category.objects.all()]
+    equipments = [c.to_json() for c in Equipment.objects.all()]
+    cuisines = [c.to_json() for c in Cuisine.objects.all()]
+
+    return JsonResponse({'categories':categories,\
+                         'equipments':equipments,\
+                         'cuisines':cuisines}, safe=False);
+@login_required
+def preferences(request):
+    return JsonResponse(request.user.preferences.to_json(), safe=False);
