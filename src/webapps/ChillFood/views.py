@@ -84,16 +84,29 @@ def add_rating(request, recipe_id):
 
 	tastiness = rating.tastiness
 	difficulty = rating.difficulty
+	notification_text = request.user.name + " has added a";
+	appender = ""
 
 	if 'tastiness' in request.POST and request.POST['tastiness']:
 		tastiness = request.POST['tastiness']
+		notification_text += appender + " tastiness rating of " + tastiness;
+		appender = " and a "
 	if 'difficulty' in request.POST and request.POST['difficulty']:
 		difficulty = request.POST['difficulty']
+		notification_text +=  appender + "difficulty rating of " + difficulty;
 	if not tastiness and not difficulty:
-		return JsonResponse({"error":"Invalid parametersq"})
+		return JsonResponse({"error":"Invalid parameters"})
+
+		
+
 	rating.tastiness = tastiness
 	rating.difficulty = difficulty
 	rating.save()
+
+	notification_text += " to your recipe " + recipe.title;
+	notification = Notification(user=recipe.cook, text=notification_text,read=False,
+								link=reverse('recipe_detail', kwargs={'recipe_id':recipe.id}) + '#/recipe/' + str(recipe.id))
+	notification.save()
 
 	return JsonResponse({"recipe":recipe.to_json_full(request.user)})
 
@@ -104,6 +117,12 @@ def add_comment(request, recipe_id):
 		text = request.POST['text']
 		new_comment = Comment( recipe=recipe, user=request.user, text=text)
 		new_comment.save()
+		notification_text = request.user.name + " has added a comment to your recipe " + recipe.title;
+
+		notification = Notification(user=recipe.cook, text=notification_text,read=False,
+									link=reverse('recipe_detail', kwargs={'recipe_id':recipe.id}) + '#/recipe/' + str(recipe.id))
+		notification.save()
+
 		return JsonResponse({"recipe":recipe.to_json_full(request.user)})
 	return JsonResponse({"error":"Invalid parameters"})
 
@@ -156,7 +175,17 @@ def profile_json(request, user_id):
 def display_users(request, user_id):
     return render(request, 'root.html')
 
+@login_required
+def notifications(request):
+	return JsonResponse({"notifications": serializers.serialize("json", Notification.objects.filter(user=request.user).order_by('-id'))})
 
+@login_required
+def readNotifications(request):
+	unread = Notification.objects.filter(read=False)
+	for notification in unread:
+		notification.read = True;
+		notification.save()
+	return notifications(request)
 
 
 

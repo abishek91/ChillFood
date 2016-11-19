@@ -169,3 +169,11 @@ LIST_TYPE = (
 class List(models.Model):
     description = models.CharField(max_length = 200)
     type = models.IntegerField(choices=LIST_TYPE)
+
+class Notification(models.Model):
+    text = models.CharField(max_length=200)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    link = models.CharField(max_length=200)
+    read = models.BooleanField(default = False)
+    date_time = models.DateTimeField(auto_now_add=True)
+    

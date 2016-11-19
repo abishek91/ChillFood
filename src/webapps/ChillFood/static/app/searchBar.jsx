@@ -1,6 +1,7 @@
 import React from 'react';
 import {Row, Col, Input, Icon, Button, NavItem, Dropdown, Badge} from 'react-materialize';
 import querystring from 'querystring'
+import Notifications from './notifications.jsx'
 
 const sortOptions = [ {label:'time',value: 5},
                       {label:'tastiness',value: 4},
@@ -38,6 +39,7 @@ export default class SearchBar extends React.Component {
     this.handleSearch(null,null,value);
      //Close  drop down
   }
+
 
   handleSearch(text, userId, sortBy) {
     // console.log(location);
@@ -100,19 +102,7 @@ export default class SearchBar extends React.Component {
             </a>
 
             <Buttons />
-            <span id="yay" className="right">
-              <Dropdown  trigger={
-                <span >
-                 <Button floating large className='red' waves='light' icon='notifications' />
-                  <div className="numberCircle"><span>1</span></div>
-                </span>
-              }>
-              <NavItem>one</NavItem>
-              <NavItem>two</NavItem>
-              <NavItem divider />
-              <NavItem>three</NavItem>
-            </Dropdown> 
-          </span>
+            <Notifications />
             <SearchForm text={search.text} handleSearch={this.handleSearch} />            
           </div>
           <Row className="slim white blue-text below z-depth-1">

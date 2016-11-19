@@ -53,6 +53,8 @@ urlpatterns = [
     url(r'^follow/(?P<user_id>\d+)$', views.follow, name='follow'),
     url(r'^unfollow/(?P<user_id>\d+)$', views.unfollow, name='unfollow'),
 
+    url(r'^notifications$',views.notifications, name='notifications'),
+    url(r'^readNotifications$',views.readNotifications, name='readNotifications')
          
 ]
 

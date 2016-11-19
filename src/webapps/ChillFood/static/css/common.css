@@ -71,3 +71,12 @@
 	float: right;
 	padding: 0 5px 0 5px;
 }
+
+.dropdown-content {
+	width: 300px !important;
+	margin-top: 40px;
+}
+
+.wide {
+	width: 300px;
+}
