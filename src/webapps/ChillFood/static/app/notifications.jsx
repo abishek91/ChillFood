@@ -53,7 +53,7 @@ export default class Notifications extends React.Component {
     })
     var unreadBubble = unread ? <div className="numberCircle"><span>{unread}</span></div> : null;
     return (
-        <span className="right wide">
+        <span className="right">
           <Dropdown trigger={
             <span>
              <Button floating large className='red' waves='light' icon='notifications' onClick={() => this.readNotifications(unread)} />
