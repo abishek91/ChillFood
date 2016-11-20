@@ -43,9 +43,7 @@ export default class SearchBar extends React.Component {
     return (
       <div>
         <div className="navbar-fixed">
-          <ul id="dropdown1" className="dropdown-content">
-            <li><a href="/logout"><i className="material-icons left">power_settings_new</i>Sign Out</a></li>                    
-          </ul>
+               
 
           <nav>
             <div className="nav-wrapper blue">
@@ -56,7 +54,8 @@ export default class SearchBar extends React.Component {
               <Buttons />
               <Notifications />
 
-              <SearchForm text={this.state.text} handleSearch={this.handleSearch} />            
+              <SearchForm text={this.state.text} handleSearch={this.handleSearch} /> 
+
             </div>            
           </nav>           
         </div>    
@@ -67,17 +66,22 @@ export default class SearchBar extends React.Component {
 
 
 const Buttons = ({user}) => {
+    var profileLink = '/#/profile/' + userId;
+
   return (<ul className="right hide-on-med-and-down">
             <li>
               <a href="/#/recipe/create">                
                 <i className="material-icons">add</i>
               </a>
             </li>
-
-            <li><a className="name dropdown-button" data-activates="dropdown1">{userName}<i className="material-icons right">arrow_drop_down</i></a></li>
             <li>
-
-            </li>
+             <Dropdown trigger={
+             <a className="name dropdown-button" data-activates="dropdown1">{userName}<i className="material-icons right">arrow_drop_down</i></a>
+          }>
+           <NavItem href={profileLink}><i className="material-icons left">perm_identity</i>Profile</NavItem>
+           <NavItem href="/logout"><i className="material-icons left">power_settings_new</i>Sign Out</NavItem>
+        </Dropdown>     
+        </li>
           </ul>);  
 }
 

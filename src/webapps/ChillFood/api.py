@@ -237,7 +237,12 @@ def recipe_create(request, recipe_id = 0):
         step.save()
         # recipe.steps.add(step)
     
-    # recipe = Recipe.get(pk=recipe.id)
+    user = User.objects.get(id=request.user.id)
+    notification_text = user.name + " has uploaded a new recipe " + recipe.title;
+    for follower in user.followers.all():
+        notification = Notification(user=follower, text=notification_text,read=False,
+                                        link=reverse('recipe_detail', kwargs={'recipe_id':recipe.id}) + '#/recipe/' + str(recipe.id))
+        notification.save()
 
     return JsonResponse(recipe.to_json(), safe=False);
 

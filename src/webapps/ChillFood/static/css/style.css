@@ -196,7 +196,7 @@ div.card-image  img {
   padding-top: 5px;
   padding-bottom: 5px;
   line-height: 20px;
-  z-index: 900!important;
+  z-index: 20!important;
 }
 
 .option {
