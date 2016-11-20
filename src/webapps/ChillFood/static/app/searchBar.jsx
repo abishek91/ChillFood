@@ -78,6 +78,7 @@ const Buttons = ({user}) => {
              <Dropdown trigger={
              <a className="name dropdown-button" data-activates="dropdown1">{userName}<i className="material-icons right">arrow_drop_down</i></a>
           }>
+           <NavItem href='#/party/list'><i className="material-icons left">people</i>Party</NavItem>
            <NavItem href={profileLink}><i className="material-icons left">perm_identity</i>Profile</NavItem>
            <NavItem href="/logout"><i className="material-icons left">power_settings_new</i>Sign Out</NavItem>
         </Dropdown>     

@@ -47,7 +47,7 @@ export default class RecipeCreate extends React.Component{
       var recipe = JSON.parse(text);
       console.log('Recipe Saved',recipe)
       parent.location.hash = '/recipe/'+recipe.id;
-      location.pathname = '/recipe/'+recipe.id
+      // location.pathname = '/recipe/'+recipe.id
     })
     .catch(function(error) {
       Materialize.toast('There has been a problem, please contact your administrator.');

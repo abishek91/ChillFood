@@ -32,12 +32,12 @@ export default class RecipeThumbnail extends React.Component {
         <div className="list-item">
           <div  className="card list-content">
             <div className="card-image">
-              <a className="post_detail" href={'/recipe/'+recipe.id+'/#/recipe/'+recipe.id}>
+              <a className="post_detail" href={'#/recipe/'+recipe.id}>
                 <img id="post_pic" src={'/recipe/'+recipe.id+'/pic'}/>
               </a>
             </div>
             <div className="card-content">
-              <a className="post_detail" href={'/recipe/'+recipe.id+'/#/recipe/'+recipe.id}>
+              <a className="post_detail" href={'#/recipe/'+recipe.id}>
                 <h5 id="post_title">{recipe.title}</h5> 
               </a>
             </div>  
