@@ -17,13 +17,21 @@ initial = {
             'sort_id': Sort.views
         }
         
-class SearchForm(forms.Form):   
-    
+class SearchForm(forms.ModelForm): 
+    category=forms.ModelMultipleChoiceField(queryset=Category.objects.all(),required=False)
+    equipment=forms.ModelMultipleChoiceField(queryset=Equipment.objects.all(),required=False)
+    cuisine=forms.ModelMultipleChoiceField(queryset=Cuisine.objects.all(),required=False)
+    sort_by = forms.IntegerField(initial=Sort.views,required=False) 
+
+    class Meta:
+        model = Preferences
+        exclude = ['user','price_min','price_max']    
+        
+        
     search = forms.CharField(required=False)
     skip = forms.IntegerField(initial=0,required=False)
     user_id = forms.IntegerField(initial=0,required=False)
-    sort_id = forms.IntegerField(initial=Sort.views,required=False)
-    # sort_by = models.IntegerField(choices=PREFERENCE_SORT_TYPE, default = 1) 
+    # sort_id = forms.IntegerField(initial=Sort.views,required=False)
     # price_min = models.IntegerField(blank = True, default = 0)
     # price_max = models.IntegerField(blank = True, default = ~0)
     has_video = forms.BooleanField(required = False)
@@ -31,7 +39,7 @@ class SearchForm(forms.Form):
     # category_choices = [(c.id, c.name) for c in Category.objects.all()]
     # equipment_choices = [(c.id, c.name) for c in Equipment.objects.all()]
     # cuisine_choices = [(c.id, c.name) for c in Cuisine.objects.all()]
-
+    
     # categories = forms.MultipleChoiceField(required = False, choices=category_choices)
     # equipments = forms.MultipleChoiceField(required = False, choices=equipment_choices)
     # cuisines = forms.MultipleChoiceField(required = False, choices=cuisine_choices)

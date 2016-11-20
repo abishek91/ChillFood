@@ -39,19 +39,19 @@ def recipes(request):
     v_next = None
 
     preferences = Preferences.objects.get(pk=request.user.id);
-    preferences.sort_by = form.cleaned_data['sort_id'];
+    preferences.sort_by = form.cleaned_data['sort_by'];
     preferences.has_video = form.cleaned_data['has_video'];
 
     preferences.category.clear();
-    categories = Category.objects.filter(pk__in=form.cleaned_data['categories']);
+    categories = Category.objects.filter(pk__in=form.cleaned_data['category']);
     preferences.category.set(categories)
 
     preferences.cuisine.clear();
-    cuisines = Cuisine.objects.filter(pk__in=form.cleaned_data['cuisines']);
+    cuisines = Cuisine.objects.filter(pk__in=form.cleaned_data['cuisine']);
     preferences.cuisine.set(cuisines)
 
     preferences.equipment.clear();
-    equipments = Equipment.objects.filter(pk__in=form.cleaned_data['equipments']);
+    equipments = Equipment.objects.filter(pk__in=form.cleaned_data['equipment']);
     preferences.equipment.set(equipments)
 
     preferences.save();
@@ -69,17 +69,17 @@ def recipes(request):
     if form.cleaned_data['has_video']:
         query &= ~Q(video_link="")
 
-    if form.cleaned_data['categories']:
-        lista = form.cleaned_data['categories']
-        query &= reduce(lambda x, y: x | y, [Q(category_set__id=int(category_id)) for category_id in lista])
+    if form.cleaned_data['category']:
+        lista = form.cleaned_data['category']
+        query &= reduce(lambda x, y: x | y, [Q(category_set__id=int(category.id)) for category in lista])
 
-    if form.cleaned_data['equipments']:
-        lista = form.cleaned_data['equipments']
-        query &= reduce(lambda x, y: x & y, [Q(equipment_set__id=int(equipment_id)) for equipment_id in lista])
+    if form.cleaned_data['equipment']:
+        lista = form.cleaned_data['equipment']
+        query &= reduce(lambda x, y: x & y, [Q(equipment_set__id=int(equipment.id)) for equipment in lista])
 
-    if form.cleaned_data['cuisines']:
-        lista = form.cleaned_data['cuisines']
-        query &= reduce(lambda x, y: x | y, [Q(cuisine_set__id=int(cuisine_id)) for cuisine_id in lista])
+    if form.cleaned_data['cuisine']:
+        lista = form.cleaned_data['cuisine']
+        query &= reduce(lambda x, y: x | y, [Q(cuisine_set__id=int(cuisine.id)) for cuisine in lista])
 
 
     # if form.cleaned_data['price_min']:
@@ -93,14 +93,14 @@ def recipes(request):
 
 
     #Order
-    print('sort_id', form.cleaned_data['sort_id']);
-    if form.cleaned_data['sort_id'] == Sort.difficulty:
+    print('sort_by', form.cleaned_data['sort_by']);
+    if form.cleaned_data['sort_by'] == Sort.difficulty:
         sort = 'difficulty'
-    elif form.cleaned_data['sort_id'] == Sort.calories:
+    elif form.cleaned_data['sort_by'] == Sort.calories:
         sort = '-calories'       
-    elif form.cleaned_data['sort_id'] == Sort.tastiness:
+    elif form.cleaned_data['sort_by'] == Sort.tastiness:
         sort = '-tastiness'
-    elif form.cleaned_data['sort_id'] == Sort.time:
+    elif form.cleaned_data['sort_by'] == Sort.time:
         sort = 'time'
     else:    
         sort = '-views'
@@ -109,6 +109,8 @@ def recipes(request):
     recipes = Recipe
 
     if query:
+        print('query',query)
+
         recipes = Recipe.objects.filter(query) 
     else:
         recipes = Recipe.objects.filter() 
@@ -127,14 +129,23 @@ def recipes(request):
     data = new_recipes[skip:skip+limit]
     next_url_filters = []
     if (len(new_recipes[skip+limit:])):
-        next_url_filters.append('skip=%d' % (skip+limit))
-        if form.cleaned_data['search']:
-            next_url_filters.append('search=%s' % form.cleaned_data['search'] )
-        if form.cleaned_data['user_id']:
-            next_url_filters.append('user_id=%d' % form.cleaned_data['user_id'] )
+        v_next = request.get_full_path()
+        re.sub(r'skip=\d+\&',v_next,'')
+        print(v_next)
+        v_next += '&skip=%d' % (skip+limit)
+        print(v_next)
+        re.sub(r'\\&',v_next,'?')
+        print(request.path,v_next)
 
-        if next_url_filters:
-            v_next = '%s?%s' % (request.path,'&'.join(next_url_filters))
+        # next_url_filters.append('skip=%d' % (skip+limit))
+        # if form.cleaned_data['search']:
+        #     next_url_filters.append('search=%s' % form.cleaned_data['search'] )
+        # if form.cleaned_data['user_id']:
+        #     next_url_filters.append('user_id=%d' % form.cleaned_data['user_id'] )
+        # if form.cleaned_data['sort_by']
+
+        # if next_url_filters:
+        # v_next = '%s?%s' % (request.path,v_next)
 
     result = {
         "data": list(map(lambda x: x.to_json(), data)),

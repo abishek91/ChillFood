@@ -16,14 +16,15 @@ export default class Recipe {
         cuisines = []
     if (!equipments)
         equipments = []
-    
+    if (!sort_id)
+        sort_id = 0
     return this.connect(url + '?' +
      querystring.stringify({search: query, 
                             user_id: userId,
-                            sort_id: sort_id,
-                            categories: categories,
-                            cuisines: cuisines,
-                            equipments: equipments,
+                            sort_by: sort_id,
+                            category: categories,
+                            cuisine: cuisines,
+                            equipment: equipments,
                             has_video: hasVideo,
                         }));
   }
