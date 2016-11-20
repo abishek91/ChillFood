@@ -93,7 +93,7 @@ def add_rating(request, recipe_id):
 		appender = " and a "
 	if 'difficulty' in request.POST and request.POST['difficulty']:
 		difficulty = request.POST['difficulty']
-		notification_text +=  appender + "difficulty rating of " + difficulty;
+		notification_text +=  appender + " difficulty rating of " + difficulty;
 	if not tastiness and not difficulty:
 		return JsonResponse({"error":"Invalid parameters"})
 
@@ -157,6 +157,10 @@ def follow(request, user_id):
 	followee = User.objects.get(id=user_id)
 	follower = User.objects.get(id=request.user.id)
 	follower.following.add(followee)
+	notification_text = request.user.name + " has followed you ";
+	notification = Notification(user=followee, text=notification_text,read=False,
+									link='#/profile/' + str(follower.id))
+	notification.save()
 	return JsonResponse({"user":followee.to_json()})
 
 @login_required
@@ -177,6 +181,7 @@ def display_users(request, user_id):
 
 @login_required
 def notifications(request):
+	print(request.user.id)
 	return JsonResponse({"notifications": serializers.serialize("json", Notification.objects.filter(user=request.user).order_by('-id'))})
 
 @login_required
