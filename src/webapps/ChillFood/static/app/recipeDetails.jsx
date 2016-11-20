@@ -5,6 +5,7 @@ import Equipment from './equipment.jsx'
 import Calories from './calories.jsx'
 import Time from './time.jsx'
 import Ingredients from './ingredients.jsx'
+import PartyCreate from './party/partyCreate.jsx'
 import RecipeTitle from './recipeTitle.jsx'
 import Steps from './steps.jsx'
 import Comments from './comments.jsx'
@@ -131,6 +132,7 @@ constructor() {
                 
                 <div className="row-padding">
                   <Ingredients ingredients={this.state.recipe.ingredients} />
+                  <PartyCreate recipe_id={this.state.recipe.id} recipe_title={this.state.recipe.title}/>
                 </div>
                 <Steps steps={this.state.recipe.steps} />
             </Col>

@@ -1,6 +1,9 @@
+from django.views.decorators.csrf import csrf_exempt
 # Django Libraries
 import datetime
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.core import serializers
+from django.core.mail import send_mail
 from django.http import JsonResponse,HttpResponseBadRequest
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -8,6 +11,12 @@ from django.db.models import Avg
 from django.db.models.functions import Coalesce
 from django.db import transaction
 from django.db.models import Q
+from django.http import Http404
+
+import hashlib  
+import random 
+ROUNDS = 4000
+
 import re
 import json
 from functools import reduce
@@ -242,6 +251,102 @@ def lists(request):
     return JsonResponse({'categories':categories,\
                          'equipments':equipments,\
                          'cuisines':cuisines}, safe=False);
+
 @login_required
 def preferences(request):
     return JsonResponse(request.user.preferences.to_json(), safe=False);
+
+@transaction.atomic
+@login_required
+@csrf_exempt
+def party_create(request):
+    context={}
+    party = Party()
+
+    if request.method == "GET":
+        raise Http404("Url does not exist")
+
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+
+    #Validations
+    form = PartyForm(body, instance=party)
+    print(request.user)
+
+    if not form.is_valid():
+        return JsonResponse(dict(form.errors.items()),status=406)        
+    
+    party.host = request.user
+    party.save();
+    
+    for guest_id in body['guests']:  
+      print('a') 
+      guest = Guest(user_id=guest_id, party=party)
+      guest.save()
+    
+    #Save Parent
+    print('guests',party.guests)
+    print('guests',form['guests'])
+    print('guests',len(party.guests.all()))
+    
+    # for guest in party.guests.all():TODO: Ask OH
+    for guest in Guest.objects.filter(party_id=party.id):
+        print('tests', guest.status)
+        random_number = str(random.randrange(1000))
+        hash = hashlib.sha256()
+
+        # for i in range(ROUNDS):
+        key = str(party.id) + str(guest.id)
+        print(key)
+        hash.update(key.encode('utf-8'))
+        hash.update(random_number.encode('utf-8'))
+
+        token =  hash.hexdigest();
+        guest.token = random_number + ';' + token
+        guest.save()
+        send_invitation(request.get_host(), party.host.name,\
+         guest, party.recipe.title, party.date, token)
+
+    party.save();
+
+    return JsonResponse(party.to_json(), safe=False);
+
+
+def send_invitation(host, from_name, guest, recipe_title, date, token):
+
+    email_body = ("Hi, is me %s. \n I want to cook %s on %s. "+\
+                 "Do you want to do it together?\n\n"+\
+                 "Click here to confirm: http://%s%s" \
+                 "\n\n\n\n"+\
+                 "Click here to decline: http://%s%s" )\
+                 % (from_name, 
+                    recipe_title,
+                    str(date),
+                    host, 
+                    reverse('party_confirm', args=[guest.party_id,guest.user_id,token]),
+                    host, 
+                    reverse('party_decline', args=[guest.party_id,guest.user_id,token]))
+
+    send_mail(subject="Do you want to cook %s?" % recipe_title,
+              message=email_body,
+              from_email="cdelacru@andrew.cmu.edu",
+              recipient_list=[guest.user.username])
+
+@login_required
+def parties(request):    
+    lista = [c.to_json() for c in Party.objects.all()]
+
+    return JsonResponse(lista, safe=False);
+
+
+@login_required
+def user(request): 
+    name = request.GET.get('name')
+
+    # near = request.GET.get('near')
+    # if near:
+    #     #TODO: Some cool logic
+
+    lista = [{'id':c.id, 'text':c.name}for c in User.objects.filter(name__icontains=name)]
+
+    return JsonResponse(lista, safe=False);

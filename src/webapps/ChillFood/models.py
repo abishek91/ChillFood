@@ -7,6 +7,7 @@ from django.utils.dateformat import DateFormat
 from django.utils.formats import get_format
 from django.db.models import Avg
 from .login.models import User
+from datetime import date, datetime
 
 
 CATEGORIES = (
@@ -197,3 +198,31 @@ class Notification(models.Model):
     read = models.BooleanField(default = False)
     date_time = models.DateTimeField(auto_now_add=True)
     
+
+class Party(models.Model):
+    name = models.CharField(max_length=200)
+    date = models.DateField(default=date.today)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    host = models.ForeignKey(User, on_delete=models.CASCADE, related_name="parties")
+    guests = models.ManyToManyField(User, through='Guest', related_name="my_invitations")
+
+    def to_json(self):
+      return {
+        "id": self.id,
+        "name": self.name,
+        "date": self.date,
+        "host": self.host.to_json(),
+        "guests": list(map(lambda x: x.to_json(), self.guests.all())),
+      }
+
+class Guest(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    party = models.ForeignKey(Party, on_delete=models.CASCADE)
+    status = models.IntegerField(blank = True, default = 0)
+    token = models.CharField(max_length=200)
+
+    def to_json(self):
+      return {
+        "user": self.user.to_json(),
+        "status": self.status,
+      }

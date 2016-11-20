@@ -78,4 +78,12 @@ class RecipeForm(forms.ModelForm):
         #     raise forms.ValidationError("Passwords did not match.")
 
         return cleaned_data
+
+class PartyForm(forms.ModelForm):
+    class Meta:
+        model = Party
+        exclude = ['host']
+
+    # recipe_id = forms.IntegerField()
+    
     

@@ -54,6 +54,13 @@ urlpatterns = [
     url(r'^follow/(?P<user_id>\d+)$', views.follow, name='follow'),
     url(r'^unfollow/(?P<user_id>\d+)$', views.unfollow, name='unfollow'),
     url(r'^notifications$',views.notifications, name='notifications'),
-    url(r'^readNotifications$',views.readNotifications, name='readNotifications')         
+    url(r'^readNotifications$',views.readNotifications, name='readNotifications'),
+    #Party
+    url(r'^api/party/create$', api.party_create),
+    url(r'^api/party/confirm/(?P<party_id>.+)/(?P<user_id>.+)/(?P<token>.+)$', views.party_confirm, name='party_confirm'),
+    url(r'^api/party/decline/(?P<party_id>\d+)/(?P<user_id>\d+)/(?P<token>.+)$', views.party_decline, name='party_decline'),
+    url(r'^api/parties$', api.parties),
+    url(r'^api/user$', api.user),
+
 ]
 

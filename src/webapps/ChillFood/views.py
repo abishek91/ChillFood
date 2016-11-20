@@ -187,8 +187,34 @@ def readNotifications(request):
 		notification.save()
 	return notifications(request)
 
+def party_confirm(request, party_id, user_id, token):
+  guest = get_object_or_404(Guest, party_id = party_id, user_id = user_id)
 
+  if len(guest.token) == 0:
+    raise Http404("Invitation has already been answered.")
 
+  [random_number,real_token] = guest.token.split(';')
 
+  if token == real_token:
+    guest.token = "";
+    guest.status = 1;
+    guest.save(); 
+    return render(request, 'party_confirm.html', {})
+  else:
+    raise Http404("Token does not exist")
 
+def party_decline(request, party_id, user_id, token):
+  guest = get_object_or_404(Guest, party_id = party_id, user_id = user_id)
 
+  if not guest.token:
+    raise Http404("Token does not exist")
+
+  [random_number,real_token] = guest.token.split(';')
+  
+  if token == real_token:
+    guest.token = "";
+    guest.status = -1;
+    guest.save(); 
+    return render(request, 'party_decline.html', {})
+  else:
+    raise Http404("Token does not exist")
