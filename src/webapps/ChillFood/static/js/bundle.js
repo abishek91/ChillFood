@@ -79,6 +79,10 @@
 	
 	var _profile2 = _interopRequireDefault(_profile);
 	
+	var _partyList = __webpack_require__(/*! ./party/partyList.jsx */ 314);
+	
+	var _partyList2 = _interopRequireDefault(_partyList);
+	
 	var _reactRouter = __webpack_require__(/*! react-router */ 236);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -92,8 +96,10 @@
 	  _react2.default.createElement(_reactRouter.Route, { path: '/profile/:userId/following', component: _following2.default }),
 	  _react2.default.createElement(_reactRouter.Redirect, { from: 'x/:userId', to: 'profile/:userId' }),
 	  _react2.default.createElement(_reactRouter.Route, { path: '/recipe/create', component: _recipeCreate2.default }),
-	  _react2.default.createElement(_reactRouter.Route, { path: '/recipe/:recipeId', component: _recipeDetails2.default })
+	  _react2.default.createElement(_reactRouter.Route, { path: '/recipe/:recipeId', component: _recipeDetails2.default }),
+	  _react2.default.createElement(_reactRouter.Route, { path: '/party/list', component: _partyList2.default })
 	), document.getElementById('root'));
+	
 	// import App from './app.jsx'
 
 /***/ },
@@ -22242,6 +22248,8 @@
 	
 	var _notifications2 = _interopRequireDefault(_notifications);
 	
+	var _reactRouter = __webpack_require__(/*! react-router */ 236);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -22303,6 +22311,20 @@
 	          _react2.default.createElement(
 	            'ul',
 	            { id: 'dropdown1', className: 'dropdown-content' },
+	            _react2.default.createElement(
+	              'li',
+	              null,
+	              _react2.default.createElement(
+	                _reactRouter.Link,
+	                { to: '/party/list' },
+	                _react2.default.createElement(
+	                  'i',
+	                  { className: 'material-icons left' },
+	                  'people'
+	                ),
+	                'Parties'
+	              )
+	            ),
 	            _react2.default.createElement(
 	              'li',
 	              null,
@@ -36972,16 +36994,23 @@
 	  value: true
 	});
 	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /*
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * party.jsx - Handle requests to the /api/part[y|ies]
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+	
+	
+	var _api = __webpack_require__(/*! ./api.jsx */ 313);
+	
+	var _api2 = _interopRequireDefault(_api);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	/*
-	 * lists.jsx - Handle requests to the /api/lists
-	 */
 	var querystring = __webpack_require__(/*! querystring */ 216);
 	
 	var url = '/api/party/create';
+	var url_get = '/api/parties';
 	
 	var Party = function () {
 	  function Party() {
@@ -36989,6 +37018,26 @@
 	  }
 	
 	  _createClass(Party, [{
+	    key: 'get',
+	    value: function get() {
+	      return (0, _api2.default)(url_get).then(function (data) {
+	        this.next = data.next;
+	        return data;
+	      }.bind(this));
+	    }
+	  }, {
+	    key: 'load_more',
+	    value: function load_more() {
+	      if (this.next) {
+	        return (0, _api2.default)(this.next).then(function (data) {
+	          this.next = data.next;
+	          return data;
+	        }.bind(this));
+	      } else {
+	        return Promise.resolve([]);
+	      }
+	    }
+	  }, {
 	    key: 'create',
 	    value: function create(party) {
 	      var self = this;
@@ -37026,6 +37075,236 @@
 	}();
 	
 	exports.default = Party;
+
+/***/ },
+/* 313 */
+/*!********************************!*\
+  !*** ./static/app/api/api.jsx ***!
+  \********************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var get = function get(url) {
+	  var self = undefined;
+	
+	  var promise = new Promise(function (resolve, reject) {
+	    fetch(url, {
+	      credentials: 'include',
+	      method: 'GET',
+	      headers: {
+	        "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+	        "X-CSRFToken": getCookie('csrftoken')
+	      }
+	    }).then(function (response) {
+	      if (!response.ok) {
+	        throw Error(response.statusText);
+	      }
+	
+	      return response.text();
+	    }).then(function (text) {
+	      var data = JSON.parse(text);
+	      resolve(data);
+	    }).catch(function (error) {
+	      Materialize.toast('There has been a problem, please contact your administrator.');
+	      console.log('There has been a problem with your fetch operation: ' + error.message, 400);
+	      reject(error);
+	    });
+	  });
+	
+	  return promise;
+	};
+	
+	exports.default = get;
+
+/***/ },
+/* 314 */
+/*!****************************************!*\
+  !*** ./static/app/party/partyList.jsx ***!
+  \****************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactDom = __webpack_require__(/*! react-dom */ 34);
+	
+	var _reactMaterialize = __webpack_require__(/*! react-materialize */ 174);
+	
+	var _searchBar = __webpack_require__(/*! ../searchBar.jsx */ 173);
+	
+	var _searchBar2 = _interopRequireDefault(_searchBar);
+	
+	var _list = __webpack_require__(/*! ../api/list.jsx */ 300);
+	
+	var _list2 = _interopRequireDefault(_list);
+	
+	var _party = __webpack_require__(/*! ../api/party.jsx */ 312);
+	
+	var _party2 = _interopRequireDefault(_party);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var PartyList = function (_React$Component) {
+	  _inherits(PartyList, _React$Component);
+	
+	  function PartyList(props) {
+	    _classCallCheck(this, PartyList);
+	
+	    var _this = _possibleConstructorReturn(this, (PartyList.__proto__ || Object.getPrototypeOf(PartyList)).call(this, props));
+	
+	    _this.state = {
+	      data: []
+	    };
+	    _this.api = new _party2.default();
+	    _this.load_more = _this.load_more.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(PartyList, [{
+	    key: 'load_more',
+	    value: function load_more() {
+	      this.api.load_more().then(function (data) {
+	        console.log(data);
+	
+	        this.setState(function (prevState, props) {
+	          return {
+	            data: prevState.data.concat(data.data),
+	            next: !!data.next
+	          };
+	        });
+	      }.bind(this));
+	    }
+	  }, {
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      this.api.get().then(function (data) {
+	        this.setState({
+	          data: data.data,
+	          next: !!data.next
+	        });
+	      }.bind(this));
+	    }
+	  }, {
+	    key: 'guests',
+	    value: function guests(data) {
+	      return data.map(function (item, index) {
+	
+	        var status = { color: 'grey', text: 'Invited' };
+	
+	        if (item.status == 1) {
+	          status = { color: 'blue', text: 'Attending' };
+	        }
+	
+	        if (item.status == -1) {
+	          status = { color: 'red', text: 'No attending' };
+	        }
+	
+	        return _react2.default.createElement(
+	          'li',
+	          { key: index },
+	          item.user.name,
+	          _react2.default.createElement(
+	            'span',
+	            { className: "text new badge " + status.color },
+	            status.text
+	          )
+	        );
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+	
+	      // Map through the items
+	      var items = this.state.data.map(function (item, index) {
+	        return _react2.default.createElement(
+	          _reactMaterialize.CollapsibleItem,
+	          { header: item.name, icon: 'people', key: index },
+	          _react2.default.createElement(
+	            _reactMaterialize.Row,
+	            null,
+	            _react2.default.createElement(
+	              _reactMaterialize.Col,
+	              { s: 11, className: 'right-align grey-text' },
+	              item.date
+	            )
+	          ),
+	          _react2.default.createElement(
+	            _reactMaterialize.Row,
+	            null,
+	            _react2.default.createElement(
+	              _reactMaterialize.Col,
+	              { s: 10, offset: 's1' },
+	              _react2.default.createElement(
+	                'ul',
+	                null,
+	                _this2.guests(item.guests)
+	              )
+	            )
+	          )
+	        );
+	      });
+	
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(_searchBar2.default, { handleSearch: this.handleSearch }),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'container' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'progress' },
+	            _react2.default.createElement('div', { className: 'indeterminate' })
+	          ),
+	          _react2.default.createElement(
+	            _reactMaterialize.Collapsible,
+	            { popout: true, accordion: true },
+	            items
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: "center-align " + (this.state.next ? '' : 'hidden') },
+	            _react2.default.createElement(
+	              'button',
+	              { id: 'next',
+	                type: 'button',
+	                onClick: function onClick() {
+	                  return _this2.load_more();
+	                },
+	                className: 'waves-effect waves-blue btn btn-flat' },
+	              'load more...'
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return PartyList;
+	}(_react2.default.Component);
+	
+	exports.default = PartyList;
 
 /***/ }
 /******/ ]);

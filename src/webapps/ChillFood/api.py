@@ -12,11 +12,10 @@ from django.db.models.functions import Coalesce
 from django.db import transaction
 from django.db.models import Q
 from django.http import Http404
+from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 
 import hashlib  
 import random 
-ROUNDS = 4000
-
 import re
 import json
 from functools import reduce
@@ -258,7 +257,6 @@ def preferences(request):
 
 @transaction.atomic
 @login_required
-@csrf_exempt
 def party_create(request):
     context={}
     party = Party()
@@ -311,7 +309,6 @@ def party_create(request):
 
     return JsonResponse(party.to_json(), safe=False);
 
-
 def send_invitation(host, from_name, guest, recipe_title, date, token):
 
     email_body = ("Hi, is me %s. \n I want to cook %s on %s. "+\
@@ -333,11 +330,36 @@ def send_invitation(host, from_name, guest, recipe_title, date, token):
               recipient_list=[guest.user.username])
 
 @login_required
-def parties(request):    
-    lista = [c.to_json() for c in Party.objects.all()]
+def parties(request): 
+    #Variables
+    result = {}  
+    PAGE_SIZE = 3
+        
+    #Set page number
+    page = request.GET.get('page','1')
 
-    return JsonResponse(lista, safe=False);
+    # if re.match(r'^\d+$',page):
+    #     page = int(page)
+    # else:
+    #     page = 1
 
+    #Get Data
+    lista = [c.to_json() for c in Party.objects.filter(host_id = request.user.id).order_by('-date','-id')]
+    
+    #Paginate the result
+    paginated_list = Paginator(lista, PAGE_SIZE)
+
+    try:
+        current_page = paginated_list.page(page)
+    except (EmptyPage, PageNotAnInteger) as error:
+        return JsonResponse({'error':str(error)},status=400)
+
+    result['data'] = current_page.object_list
+
+    if current_page.has_next():
+        result['next'] = '%s?page=%d' % (request.path,current_page.next_page_number())
+
+    return JsonResponse(result,safe=False)
 
 @login_required
 def user(request): 
@@ -347,6 +369,7 @@ def user(request):
     # if near:
     #     #TODO: Some cool logic
 
-    lista = [{'id':c.id, 'text':c.name}for c in User.objects.filter(name__icontains=name)]
+    users = request.user.following.filter(name__icontains=name)
+    lista = [{'id':c.id, 'text':c.name}for c in users]
 
     return JsonResponse(lista, safe=False);

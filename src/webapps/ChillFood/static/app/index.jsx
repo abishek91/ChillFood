@@ -6,6 +6,8 @@ import RecipeList from './home/recipeList.jsx'
 import Followers from './followers.jsx'
 import Following from './following.jsx'
 import Profile from './profile.jsx'
+import PartyList from './party/partyList.jsx'
+
 // import App from './app.jsx'
 import { Router, Route, hashHistory, Redirect } from 'react-router'
 
@@ -18,5 +20,6 @@ render((
     <Redirect from="x/:userId" to="profile/:userId" />
     <Route path="/recipe/create" component={RecipeCreate} />
     <Route path="/recipe/:recipeId" component={RecipeDetails} />
+    <Route path="/party/list" component={PartyList} />
   </Router>
 ), document.getElementById('root'));

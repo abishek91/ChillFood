@@ -196,7 +196,7 @@ div.card-image  img {
   padding-top: 5px;
   padding-bottom: 5px;
   line-height: 20px;
-  z-index: 999!important;
+  z-index: 900!important;
 }
 
 .option {
@@ -224,4 +224,10 @@ div.card-image  img {
 
 .switch label {
   font-size:15px!important;
+}
+
+
+
+span.badge.new:after {
+    content: " "!important;
 }

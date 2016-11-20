@@ -1,12 +1,35 @@
 /*
- * lists.jsx - Handle requests to the /api/lists
+ * party.jsx - Handle requests to the /api/part[y|ies]
  */
+import get from './api.jsx'
+
 var querystring = require('querystring')
 
 const url = '/api/party/create'
+const url_get = '/api/parties'
 
 export default class Party {
-    
+  
+  get() {
+    return get(url_get)
+    .then(function (data) {
+      this.next = data.next;
+      return data
+    }.bind(this));    
+  }
+
+  load_more() {
+    if (this.next) {
+      return get(this.next)
+      .then(function (data) {
+        this.next = data.next;
+        return data
+      }.bind(this));
+    } else {
+      return Promise.resolve([])
+    }
+  }
+
   create(party){
     let self = this;
 

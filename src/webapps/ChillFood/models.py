@@ -207,12 +207,14 @@ class Party(models.Model):
     guests = models.ManyToManyField(User, through='Guest', related_name="my_invitations")
 
     def to_json(self):
+      guests = Guest.objects.filter(party_id=self.id);
+
       return {
         "id": self.id,
         "name": self.name,
-        "date": self.date,
+        "date": self.date.strftime("%B %d, %Y"),
         "host": self.host.to_json(),
-        "guests": list(map(lambda x: x.to_json(), self.guests.all())),
+        "guests": list(map(lambda x: x.to_json(), guests)),
       }
 
 class Guest(models.Model):
