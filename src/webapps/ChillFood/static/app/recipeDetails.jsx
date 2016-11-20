@@ -9,9 +9,9 @@ import PartyCreate from './party/partyCreate.jsx'
 import RecipeTitle from './recipeTitle.jsx'
 import Steps from './steps.jsx'
 import Comments from './comments.jsx'
+import ShareBar from './shareBar.jsx'
 import ReactStars from 'react-stars'
 import { Button, Card, Row, Col } from 'react-materialize';
-
 
 export default class RecipeDetails extends React.Component {
 
@@ -98,6 +98,7 @@ constructor() {
   }
 
   render() {
+    
     if(!this.state.recipe)
       return null;
     var recipe_image_url = "/recipe_image/" + this.state.recipe.id;
@@ -137,6 +138,7 @@ constructor() {
                 <Steps steps={this.state.recipe.steps} />
             </Col>
             <Col s={5}>
+              <ShareBar title={this.props.name} image={recipe_image_url}/>
               <Comments onNewComments={this.addComment} onNewDifficultyRating={this.addDifficulty} 
                         onNewTastinessRating={this.addTastiness} comments={this.state.recipe.comments}
                         difficulty={this.state.recipe.user_rating.difficulty}

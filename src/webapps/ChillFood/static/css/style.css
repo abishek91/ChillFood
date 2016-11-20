@@ -231,3 +231,17 @@ div.card-image  img {
 span.badge.new:after {
     content: " "!important;
 }
+
+.icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}
+
+.share-bar > div > svg > path { 
+  fill:#818181;
+}
+
+.share-bar div {
+  display: inline;
+}
