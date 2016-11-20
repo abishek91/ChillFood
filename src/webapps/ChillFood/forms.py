@@ -18,10 +18,7 @@ initial = {
         }
         
 class SearchForm(forms.Form):   
-    category_choices = [(c.id, c.name) for c in Category.objects.all()]
-    equipment_choices = [(c.id, c.name) for c in Equipment.objects.all()]
-    cuisine_choices = [(c.id, c.name) for c in Cuisine.objects.all()]
-
+    
     search = forms.CharField(required=False)
     skip = forms.IntegerField(initial=0,required=False)
     user_id = forms.IntegerField(initial=0,required=False)
@@ -30,9 +27,14 @@ class SearchForm(forms.Form):
     # price_min = models.IntegerField(blank = True, default = 0)
     # price_max = models.IntegerField(blank = True, default = ~0)
     has_video = forms.BooleanField(required = False)
-    categories = forms.MultipleChoiceField(required = False, choices=category_choices)
-    equipments = forms.MultipleChoiceField(required = False, choices=equipment_choices)
-    cuisines = forms.MultipleChoiceField(required = False, choices=cuisine_choices)
+    
+    # category_choices = [(c.id, c.name) for c in Category.objects.all()]
+    # equipment_choices = [(c.id, c.name) for c in Equipment.objects.all()]
+    # cuisine_choices = [(c.id, c.name) for c in Cuisine.objects.all()]
+
+    # categories = forms.MultipleChoiceField(required = False, choices=category_choices)
+    # equipments = forms.MultipleChoiceField(required = False, choices=equipment_choices)
+    # cuisines = forms.MultipleChoiceField(required = False, choices=cuisine_choices)
     
     def clean(self):
         cleaned_data = super(SearchForm, self).clean()
