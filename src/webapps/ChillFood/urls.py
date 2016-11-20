@@ -36,6 +36,8 @@ urlpatterns = [
     url(r'^confirm/(?P<username>.+)/(?P<token>.+)$', login.confirm, name='confirm'),    
     url(r'^logout$',logout_then_login, name='logout'),
     url(r'^register$', login.register, name='register'), 
+    url(r'^change_password/(?P<user_id>\d+)/(?P<token>[\w\-]+)$', views.change_password, name='change_password'),
+    url(r'^forgot_password$', views.forgot_password, name='forgot_password'),
     #API
     #List of Recipes 
     url(r'^api/recipes$', api.recipes, name='recipes'),

@@ -5,8 +5,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.shortcuts import get_object_or_404, redirect, reverse
 from mimetypes import guess_type
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.http import JsonResponse
+from django.contrib.auth.tokens import default_token_generator
+from .forms import *
+from django.core.mail import send_mail
 import os
 
 from django.conf import settings
@@ -223,3 +226,60 @@ def party_decline(request, party_id, user_id, token):
     return render(request, 'party_decline.html', {})
   else:
     raise Http404("Token does not exist")
+
+def send_authentication_email(request, user):
+	context = {}
+	token = default_token_generator.make_token(user)
+	email_body = """
+	Please click the link below to change your chillfood password
+
+	http://%s%s
+	""" % (request.get_host(), reverse('change_password', args=(user.id, token)))
+	send_mail(subject="Password reset for ChillFood.com",
+			  message=email_body,
+			  from_email="chillfood@chillfood.com",
+			  recipient_list=[user.username])
+	context['email'] = user.username
+	return render(request, 'needs_confirmation.html', context)
+
+
+def forgot_password(request):
+	if request.method == 'GET':
+		context = {}
+		context['form'] = ForgotPasswordForm()
+		return render(request, 'forgot_password.html', context)
+	if 'email' in request.POST and request.POST['email']:
+		email = request.POST['email']
+		user = get_object_or_404(User, username=email)
+		return send_authentication_email(request, user)
+	return JsonResponse({"error":"Invalid parameters"})
+
+def change_password(request, user_id, token):
+	context = {}
+	context['user_id'] = user_id
+	context['token'] = token
+	user = get_object_or_404(User, id=user_id)
+	if request.method == 'GET':
+		if default_token_generator.check_token(user, token):
+			context['form'] = ChangePasswordForm()
+			
+			return render(request, 'change_password.html', context)
+		else:
+			raise Http404
+
+	form = ChangePasswordForm(request.POST)
+	errors = [];
+	context['errors'] = errors
+	context['form'] = form
+
+	if not form.is_valid():
+		errors.append('form invalid')
+		return render(request, 'change_password.html', context)
+
+	if not user.check_password(request.POST['old_password']):
+		errors.append('Old password is incorrect')
+		return render(request, 'change_password.html', context)
+	user.set_password(request.POST['password1'])
+	user.save()
+
+	return redirect(reverse('index'))

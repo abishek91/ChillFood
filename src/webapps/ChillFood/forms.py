@@ -96,4 +96,24 @@ class PartyForm(forms.ModelForm):
 
     # recipe_id = forms.IntegerField()
     
-    
+
+class ForgotPasswordForm(forms.Form):
+    email = forms.EmailField(max_length = 200, label='Email id')
+
+class ChangePasswordForm(forms.Form):
+    old_password = forms.CharField(max_length = 200, 
+                                label='Old Password', 
+                                widget = forms.PasswordInput())
+    password1 = forms.CharField(max_length = 200, 
+                                label='New Password', 
+                                widget = forms.PasswordInput())
+    password2 = forms.CharField(max_length = 200, 
+                                label='Confirm new password',  
+                                widget = forms.PasswordInput())
+    def clean(self):
+        cleaned_data = super(ChangePasswordForm, self).clean()
+        password1 = cleaned_data.get('password1')
+        password2 = cleaned_data.get('password2')
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("New Passwords did not match.")
+        return cleaned_data
