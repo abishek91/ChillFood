@@ -42014,6 +42014,27 @@
 	
 	var url = '/api/recipes';
 	
+	//LOCATION TEMPORARILY HERE
+	function getLocation() {
+	  var p = Promise.resolve(null);
+	
+	  if (navigator.geolocation) {
+	    p = new Promise(function (resolve, reject) {
+	      navigator.geolocation.getCurrentPosition(function (position) {
+	        console.log('inside', position);
+	        resolve(position.coords);
+	      }, function (error) {
+	        console.log(error);
+	        resolve(null);
+	      });
+	    });
+	  }
+	
+	  return p;
+	}
+	//LOCATION TEMPORARILY HERE
+	
+	
 	var Recipe = function () {
 	  function Recipe() {
 	    _classCallCheck(this, Recipe);
@@ -42022,20 +42043,33 @@
 	  _createClass(Recipe, [{
 	    key: 'get',
 	    value: function get(query, userId, sort_id, categories, cuisines, equipments, hasVideo) {
-	      self = this;
-	
+	      var self = this;
+	      console.log('this.props.params.', userId);
+	      var lat = 0;
+	      var lon = 0;
 	      if (!categories) categories = [];
 	      if (!cuisines) cuisines = [];
 	      if (!equipments) equipments = [];
 	      if (!sort_id) sort_id = 0;
-	      return this.connect(url + '?' + querystring.stringify({ search: query,
-	        user_id: userId,
-	        sort_by: sort_id,
-	        category: categories,
-	        cuisine: cuisines,
-	        equipment: equipments,
-	        has_video: hasVideo
-	      }));
+	
+	      var promise = getLocation().then(function (coords) {
+	        if (coords) {
+	          lat = coords.latitude;
+	          lon = coords.longitude;
+	        }
+	        return self.connect(url + '?' + querystring.stringify({ search: query,
+	          user_id: userId,
+	          sort_by: sort_id,
+	          category: categories,
+	          cuisine: cuisines,
+	          equipment: equipments,
+	          has_video: hasVideo,
+	          location_lat: lat,
+	          location_lon: lon
+	        }));
+	      });
+	
+	      return promise;
 	    }
 	  }, {
 	    key: 'connect',
@@ -43175,8 +43209,9 @@
 	    key: 'handleSearch',
 	    value: function handleSearch(text, userId, sortBy) {
 	      var self = this;
+	      console.log('hola', userId, 3, this.props.params.userId);
 	
-	      this.recipe.get('api/recipes', text, userId, sortBy ? sortBy.value : 0).then(function (data) {
+	      this.recipe.get(text, userId, sortBy ? sortBy.value : 1).then(function (data) {
 	        // console.log('handleSearch',self.recipe.next);
 	        this.setState({
 	          data: data,
@@ -43467,7 +43502,7 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -43489,55 +43524,50 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	var SearchResults = function (_React$Component) {
-	  _inherits(SearchResults, _React$Component);
+	    _inherits(SearchResults, _React$Component);
 	
-	  function SearchResults() {
-	    _classCallCheck(this, SearchResults);
+	    function SearchResults() {
+	        _classCallCheck(this, SearchResults);
 	
-	    return _possibleConstructorReturn(this, (SearchResults.__proto__ || Object.getPrototypeOf(SearchResults)).apply(this, arguments));
-	  }
-	
-	  _createClass(SearchResults, [{
-	    key: 'render',
-	    value: function render() {
-	      var _this2 = this;
-	
-	      if (!this.props.data) return null;
-	      var recipeNode = this.props.data.map(function (recipe, index) {
-	        return _react2.default.createElement(_recipeThumbnail2.default, { recipe: recipe, key: index });
-	      });
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'container' },
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'progress' },
-	          _react2.default.createElement('div', { className: 'indeterminate' })
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { id: 'post_container', className: 'list' },
-	          recipeNode
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: "center-align " + (this.props.next ? '' : 'hidden') },
-	          _react2.default.createElement(
-	            'button',
-	            { id: 'next',
-	              type: 'button',
-	              onClick: function onClick() {
-	                return _this2.props.load_posts();
-	              },
-	              className: 'waves-effect waves-blue btn btn-flat' },
-	            'load more...'
-	          )
-	        )
-	      );
+	        return _possibleConstructorReturn(this, (SearchResults.__proto__ || Object.getPrototypeOf(SearchResults)).apply(this, arguments));
 	    }
-	  }]);
 	
-	  return SearchResults;
+	    _createClass(SearchResults, [{
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+	
+	            if (!this.props.data) return null;
+	            var recipeNode = this.props.data.map(function (recipe, index) {
+	                return _react2.default.createElement(_recipeThumbnail2.default, { recipe: recipe, key: index });
+	            });
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'container' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { id: 'post_container', className: 'list' },
+	                    recipeNode
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: "center-align " + (this.props.next ? '' : 'hidden') },
+	                    _react2.default.createElement(
+	                        'button',
+	                        { id: 'next',
+	                            type: 'button',
+	                            onClick: function onClick() {
+	                                return _this2.props.load_posts();
+	                            },
+	                            className: 'waves-effect waves-blue btn btn-flat' },
+	                        'load more...'
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+	
+	    return SearchResults;
 	}(_react2.default.Component);
 	
 	exports.default = SearchResults;

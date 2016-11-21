@@ -5,7 +5,8 @@ from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core import serializers
-import datetime
+from math import radians, cos, sin, asin, sqrt
+import datetime, sys
 
 
 # Validators
@@ -20,7 +21,8 @@ class User(AbstractUser):
   photo = models.ImageField(upload_to="user_photo", blank=True)
   following = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='followers', symmetrical=False)
   is_confirmed = models.BooleanField(default=False)
-  location = models.CharField(max_length = 200, blank = True)
+  location_lat = models.DecimalField(max_digits=9, decimal_places=6)
+  location_lon = models.DecimalField(max_digits=9, decimal_places=6)
   
   def __unicode__(self):
     return self.name
@@ -53,3 +55,21 @@ class User(AbstractUser):
       return 0
 
   age = property(get_age)
+
+  def distance(self,lon,lat):
+    """
+    Calculate the great circle distance between two points 
+    on the earth (specified in decimal degrees)
+    """
+    if not self.location_lon or not self.location_lat:
+      return None
+
+    # convert decimal degrees to radians 
+    lon1, lat1, lon2, lat2 = map(radians, [self.location_lon, self.location_lat, lon, lat])
+    # haversine formula 
+    dlon = lon2 - lon1 
+    dlat = lat2 - lat1 
+    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
+    c = 2 * asin(sqrt(a)) 
+    km = 6367 * c
+    return km

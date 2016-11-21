@@ -43,8 +43,9 @@ constructor(props) {
   
   handleSearch(text, userId, sortBy) {
     let self = this;
+    console.log('hola',userId,3,this.props.params.userId)
     
-    this.recipe.get('api/recipes',text,userId,sortBy ? sortBy.value : 0)
+    this.recipe.get(text,userId,sortBy ? sortBy.value : 1)
     .then(function (data) {
       // console.log('handleSearch',self.recipe.next);
       this.setState({

@@ -10,9 +10,6 @@ export default class SearchResults extends React.Component {
     });
     return (
           <div className="container">            
-              <div className="progress">
-                    <div className="indeterminate"></div>
-              </div>  
               <div id="post_container" className="list">{recipeNode}</div>
               <div className={"center-align " + (this.props.next ? '':'hidden')}>
                   <button id="next" 

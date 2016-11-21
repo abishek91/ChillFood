@@ -13,11 +13,12 @@ from django.db import transaction
 from django.db.models import Q
 from django.http import Http404
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
+from django.contrib.gis.geos import GEOSGeometry
 
 import hashlib  
 import random 
 import re
-import json
+import json, sys
 from functools import reduce
 
 # Local Libraries
@@ -55,8 +56,13 @@ def recipes(request):
     preferences.equipment.set(equipments)
 
     preferences.save();
-    p2 = Preferences.objects.get(pk=request.user.id);
-    print('av',len(p2.category.all()))
+
+    #Update Location
+    if form.cleaned_data['location_lat'] and form.cleaned_data['location_lon']:
+        request.user.location_lat = form.cleaned_data['location_lat'] 
+        request.user.location_lon = form.cleaned_data['location_lon']
+        request.user.save();
+        
     #Filter
     if form.cleaned_data['search']:
         print('search',form.cleaned_data['search']);
@@ -172,7 +178,6 @@ def recipe_create(request, recipe_id = 0):
 
     if request.method == "GET":
         return JsonResponse(recipe.to_json(), safe=False);
-        # return render(request, 'recipe_create.html', context)
 
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
@@ -192,16 +197,6 @@ def recipe_create(request, recipe_id = 0):
     
     recipe_ingredients = []
     for recipe_ingredient in body['ingredients']:
-        print('Ingredients')
-        # recipe_ingredient['recipe_id'] = recipe.id;
-
-        # if 'ingredient' not in recipe_ingredient:# my_ingredient.id:
-        #     print('hey')
-        #     return JsonResponse([{'ingredients.ingredient': 'Ingredient is required.'}],status=406)        
-        # else:
-        #     my_ingredient = IngredientForm(recipe_ingredient['ingredient']);
-        #     recipe_ingredient['ingredient'] = my_ingredient
-
         form = RecipeIngredientForm(recipe_ingredient)
         if not form.is_valid():
             return JsonResponse(dict(form.errors.items()),status=406)
@@ -209,12 +204,9 @@ def recipe_create(request, recipe_id = 0):
 
     steps = []
     for step in body['steps']:
-        print('Steps')
-        # form['recipe_id'] = recipe.id;
         form = StepForm(step)
         if not form.is_valid():
             return JsonResponse(dict(form.errors.items()),status=406)
-        # form.recipe_id = recipe.id;
         steps.append(form);
 
     #Save Parent
@@ -378,7 +370,7 @@ def parties(request):
     return JsonResponse(result,safe=False)
 
 @login_required
-def user(request): 
+def user_query(request): 
     name = request.GET.get('name')
 
     # near = request.GET.get('near')
@@ -388,4 +380,34 @@ def user(request):
     users = request.user.following.filter(name__icontains=name)
     lista = [{'id':c.id, 'text':c.name}for c in users]
 
+    return JsonResponse(lista, safe=False);
+
+@login_required
+def user(request): 
+    name = request.GET.get('name')
+
+    # near = request.GET.get('near')
+    # if near:
+    #     #TODO: Some cool logic
+    lon = request.user.location_lon
+    lat = request.user.location_lat
+
+    #TODO: Find a better way to do this
+    # users = User.objects.all()
+    users = User.objects.filter(name__icontains=name).exclude(pk=request.user.id)
+    # users = request.user.following.filter(name__icontains=name)
+    print('hey',len(users))
+    lista = []
+    if lon and lat:
+        for u in users:
+            user_dic ={'id':u.id, 'text':u.name}
+            user_dic['distance'] = u.distance(lon,lat)
+            if user_dic['distance'] != None:
+                user_dic['text'] ="%s (%0.2f km)" % (u.name, u.distance(lon,lat))
+            lista.append(user_dic)
+
+        lista = sorted(lista,key=lambda x: x['distance'] if  x['distance'] else sys.maxsize)
+    else:
+        lista = [{'id':c.id, 'text':c.name, 'distance':None}for c in users]
+        
     return JsonResponse(lista, safe=False);

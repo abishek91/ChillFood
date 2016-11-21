@@ -72,6 +72,8 @@ def register(request):
                                         password=form.cleaned_data['password'],
                                         bio=form.cleaned_data['bio'],
                                         birthdate=form.cleaned_data['birthdate'],
+                                        location_lon=0,
+                                        location_lat=0,
                                         )
 
     new_user.save()

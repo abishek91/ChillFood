@@ -5,11 +5,36 @@ var querystring = require('querystring')
 
 const url = '/api/recipes'
 
+
+//LOCATION TEMPORARILY HERE
+function getLocation() {
+  let p = Promise.resolve(null)
+  
+  if (navigator.geolocation) {
+    p = new Promise(function (resolve, reject) {
+      navigator.geolocation.getCurrentPosition(function (position){
+        console.log('inside',position)
+        resolve(position.coords);
+      },function (error) {
+        console.log(error);
+        resolve(null);
+      });
+    });  
+  } 
+
+  return p;
+}
+//LOCATION TEMPORARILY HERE
+
+
+
 export default class Recipe {
 
   get(query, userId, sort_id, categories, cuisines, equipments,hasVideo) {
-    self = this;
-    
+    const self = this;
+    console.log('this.props.params.',userId)
+    let lat = 0;
+    let lon = 0;
     if (!categories)
         categories = []
     if (!cuisines)
@@ -18,7 +43,14 @@ export default class Recipe {
         equipments = []
     if (!sort_id)
         sort_id = 0
-    return this.connect(url + '?' +
+
+    let promise = getLocation()
+    .then(function(coords) {
+      if (coords) {
+        lat = coords.latitude;
+        lon = coords.longitude;
+      }
+      return self.connect(url + '?' +
      querystring.stringify({search: query, 
                             user_id: userId,
                             sort_by: sort_id,
@@ -26,7 +58,12 @@ export default class Recipe {
                             cuisine: cuisines,
                             equipment: equipments,
                             has_video: hasVideo,
+                            location_lat: lat,
+                            location_lon: lon,
                         }));
+    })
+
+    return promise;
   }
 
   connect(url){

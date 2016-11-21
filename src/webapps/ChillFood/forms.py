@@ -44,6 +44,10 @@ class SearchForm(forms.ModelForm):
     # equipments = forms.MultipleChoiceField(required = False, choices=equipment_choices)
     # cuisines = forms.MultipleChoiceField(required = False, choices=cuisine_choices)
     
+    location_lat = forms.DecimalField(initial = 0,required=False)
+    location_lon = forms.DecimalField(initial = 0,required=False)
+
+
     def clean(self):
         cleaned_data = super(SearchForm, self).clean()
         for key, value in cleaned_data.items():
