@@ -273,16 +273,12 @@ def change_password(request, user_id, token):
 
 
 def sign_s3(request):
-    S3_BUCKET ='grumblrdelacruzpaulino'# 
-    print(os.environ.get('AWS_STORAGE_BUCKET_NAME'))
+    S3_BUCKET = os.environ['AWS_STORAGE_BUCKET_NAME'] 
 
-    print('1')
     file_name = request.GET.get('file_name')
     file_type = request.GET.get('file_type')
-    print('2')
     s3 = boto3.client('s3')
 
-    print('3')
     presigned_post = s3.generate_presigned_post(
     Bucket = S3_BUCKET,
     Key = file_name,
@@ -293,8 +289,7 @@ def sign_s3(request):
     ],
     ExpiresIn = 3600
     )
-    print('4')
-
+    
     return JsonResponse({
         'data': presigned_post,
         'url': 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, file_name)
