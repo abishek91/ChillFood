@@ -22,6 +22,7 @@ export default class Category extends React.Component {
       var followLink = '/follow/' + profile.id;
       var unfollowLink = '/unfollow/' + profile.id;
       var followerRows = [];
+      var followers, following;
       var followingRows = [];
       var isFollowing = false;
       var redirect = function(profileLink) {
@@ -31,7 +32,11 @@ export default class Category extends React.Component {
       var myProfile = false;
       if(profile.id == userId)
         myProfile = true;
-      JSON.parse(profile.followers).forEach(function(follower){
+
+      var profile_followers = JSON.parse(profile.followers);
+      var profile_following = JSON.parse(profile.following);
+
+      profile_followers.forEach(function(follower){
           var userProfileImageUrl = '/profile_image/' + follower.pk;
           var profileLink = '/#/profile/' + follower.pk;
 
@@ -42,8 +47,15 @@ export default class Category extends React.Component {
           if(!myProfile && userId == follower.pk)
             isFollowing = true
       })
+      if(profile_followers.length)
+      {
+         followers = <div className="box">
+                        <Row><a href={followerUrl}>Followers</a></Row>
+                        <Row className="list">{followerRows}</Row>
+                      </div>
+      }
 
-      JSON.parse(profile.following).forEach(function(following){
+      profile_following.forEach(function(following){
           var userProfileImageUrl = '/profile_image/' + following.pk;
           var profileLink = '/#/profile/' + following.pk;
           followingRows.push( <Col key={following.pk}>
@@ -51,6 +63,13 @@ export default class Category extends React.Component {
                                 <div><a onClick={() => redirect(profileLink)} href={profileLink}>{following.fields.name}</a></div>
                               </Col>)
       })
+      if(profile_following.length)
+      {
+         following =  <div className="box">
+                        <Row><a href={followingUrl}>Following</a></Row>
+                        <Row>{followingRows}</Row>
+                      </div>
+      }
 
       if(!myProfile)
         var follow = isFollowing ? <Button className="follow" onClick={this.props.unfollow} type="button">Unfollow</Button> :
@@ -69,14 +88,8 @@ export default class Category extends React.Component {
           </div>   
         </Col>
         <Col className="offset-s3">
-          <div className="box">
-            <Row><a href={followerUrl}>Followers</a></Row>
-            <Row className="list">{followerRows}</Row>
-          </div>
-          <div className="box">
-            <Row><a href={followingUrl}>Following</a></Row>
-            <Row>{followingRows}</Row>
-          </div>
+          {followers}
+          {following}
         </Col>
       </Row>
     );
