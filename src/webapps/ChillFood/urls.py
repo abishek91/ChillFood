@@ -30,7 +30,7 @@ urlpatterns = [
     url(r'^recipe/(?P<recipe_id>\d+)/$', views.recipe_detail, name='recipe_detail'),
     url(r'^recipe_json/(?P<recipe_id>\d+)/$', views.recipe_detail_json, name='recipe_detail_json'),
     url(r'^app', views.app,name='app'),
-    url(r'^recipe/(?P<recipe_id>\d+)/pic$', views.recipe_pic,name='recipe_pic'),
+    url(r'^recipe/(?P<recipe_id>\d+)/pic$', views.recipe_image,name='recipe_pic'),
     #Login Module
     url(r'^login$', login.login, name='login'),
     url(r'^confirm/(?P<username>.+)/(?P<token>.+)$', login.confirm, name='confirm'),    
@@ -63,6 +63,9 @@ urlpatterns = [
     url(r'^api/party/decline/(?P<party_id>\d+)/(?P<user_id>\d+)/(?P<token>.+)$', views.party_decline, name='party_decline'),
     url(r'^api/parties$', api.parties),
     url(r'^api/user$', api.user),
+    #Aws
+    url(r'^sign_s3$', views.sign_s3, name='sign_s3'),
+
 
 ]
 

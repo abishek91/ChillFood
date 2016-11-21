@@ -75,27 +75,19 @@ class RecipeIngredientForm(forms.Form):
 class RecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
-        exclude = ['cook','pic','ingredients','category_set','equipment_set','cuisine_set']
+        exclude = ['pic', 'cook','ingredients','category_set','equipment_set','cuisine_set']
     
     def clean(self):
         cleaned_data = super(RecipeForm, self).clean()
 
         #TODO: Add cook
-        # password = cleaned_data.get('password')
-        # password2 = cleaned_data.get('password2')
-
-        # if password and password2 and password != password2:
-        #     raise forms.ValidationError("Passwords did not match.")
-
+        
         return cleaned_data
 
 class PartyForm(forms.ModelForm):
     class Meta:
         model = Party
         exclude = ['host']
-
-    # recipe_id = forms.IntegerField()
-    
 
 class ForgotPasswordForm(forms.Form):
     email = forms.EmailField(max_length = 200, label='Email id')

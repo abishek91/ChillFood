@@ -28,6 +28,10 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+#AWS
+AWS_STORAGE_BUCKET_NAME = 'grumblrdelacruzpaulino'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -77,7 +81,7 @@ WSGI_APPLICATION = 'webapps.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'chillfood',
+        'NAME': 'chillfood_3',
         'USER': 'chillfood',
         'PASSWORD': 'chillfood',
         'HOST': 'localhost',
@@ -123,6 +127,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 MEDIA_ROOT =os.path.join(PROJECT_ROOT, "images")#os.path.join(),
 MEDIA_URL = '/images/'
+
+# MEDIA_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+
 
 # Authentication
 AUTH_USER_MODEL = 'ChillFood.User'

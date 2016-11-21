@@ -1,14 +1,13 @@
 import React from 'react';
 import {render} from 'react-dom';
-import RecipeDetails from './recipeDetails.jsx'
-import ListApp from './listApp.jsx'
-import { Router, Route, hashHistory } from 'react-router'
 import { Button, Card, Row, Col } from 'react-materialize';
+import ListApp from './listApp.jsx'
 import StepForm from './stepForm.jsx'
 import IngredientForm from './ingredientForm.jsx'
 import Ingredient from './ingredient.jsx'
 import Item from './item.jsx'
 import Tags from './tags.jsx'
+import RecipePictures from './recipePictures.jsx'
 
 
 export default class RecipeCreate extends React.Component{ 
@@ -22,8 +21,10 @@ export default class RecipeCreate extends React.Component{
       ingredients: [],
       steps: [],
     }
+    this.picture = ""
     this.appliances = [{id:1,name:'hey'},{id:2,name:'hey2'}]
     this.handleChange = this.handleChange.bind(this);
+    this.updatePicture = this.updatePicture.bind(this);
   }
   
   handleSave() {
@@ -46,24 +47,34 @@ export default class RecipeCreate extends React.Component{
 
     var recipe = this.state;
 
-    recipe.title = this.refs.titleInput.value,
-    recipe.time = this.refs.timeInput.value,
-    recipe.calories = this.refs.caloriesInput.value,
-    recipe.video_link = this.refs.video_linkInput.value,
-    
+    recipe.title = this.refs.titleInput.value;
+    recipe.time = this.refs.timeInput.value;
+    recipe.calories = this.refs.caloriesInput.value;
+    recipe.video_link = this.refs.video_linkInput.value;
+    if (this.remote_pic) {
+      recipe.remote_pic = this.remote_pic
+    }
+
     this.props.handleSave(recipe)
   }
 
   handleChange() {
     var recipe = this.props.value;
 
-    recipe.title = this.refs.titleInput.value,
-    recipe.time = this.refs.timeInput.value,
-    recipe.calories = this.refs.caloriesInput.value,
-    recipe.video_link = this.refs.video_linkInput.value,
+    recipe.title = this.refs.titleInput.value
+    recipe.time = this.refs.timeInput.value
+    recipe.calories = this.refs.caloriesInput.value
+    recipe.video_link = this.refs.video_linkInput.value
+    if (this.remote_pic) {
+      recipe.remote_pic = this.remote_pic
+    }
     
     this.props.handleChange(recipe)
     // console.log('inside',recipe)
+  }
+
+  updatePicture(url) {
+    this.remote_pic = url;
   }
 
   // Add todo handler
@@ -138,7 +149,11 @@ export default class RecipeCreate extends React.Component{
 
   render () {
     return (
-      <div className="container s6" method="post">
+      <Row>
+        <Col s={12}>
+            <RecipePictures updatePicture={this.updatePicture} />
+        </Col>
+        <Col s={6}>
           <Row>
             <input type="text" 
             name="title" 
@@ -201,7 +216,8 @@ export default class RecipeCreate extends React.Component{
           <button className="right btn waves-effect waves-light blue" type="button" onClick={() => this.handleSave() } >
               Save
           </button>
-      </div> 
+        </Col>         
+      </Row>
     );
   }
   

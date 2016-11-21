@@ -1,6 +1,5 @@
 import React from 'react';
 import {render} from 'react-dom';
-import RecipeDetails from './recipeDetails.jsx'
 import { Router, Route, hashHistory } from 'react-router'
 import {Row, Col} from 'react-materialize';
 

@@ -36,6 +36,7 @@ class Cuisine(models.Model):
     
 class Recipe(models.Model):
     pic = models.ImageField(upload_to='recipes', blank=True)
+    remote_pic = models.CharField(max_length = 2000, blank=True)
     title = models.CharField(max_length = 200)
     cook = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     time = models.IntegerField()
@@ -57,6 +58,7 @@ class Recipe(models.Model):
           "date_time": self.date_time,
           "views": self.views,
           "calories": self.calories,
+          "remote_pic":self.remote_pic
         }
 
         if (hasattr(self,"tastiness")):

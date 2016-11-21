@@ -1,7 +1,7 @@
 import React from 'react';
 import {render} from 'react-dom';
-import SearchBar from './searchBar.jsx'
 import { Button, Card, Row, Col } from 'react-materialize';
+import SearchBar from '../searchBar.jsx'
 import RecipeCreateForm from './recipeCreateForm.jsx';
 
 export default class RecipeCreate extends React.Component{
@@ -62,15 +62,13 @@ export default class RecipeCreate extends React.Component{
     return (
       <div>
         <SearchBar />              
-        <Row>
-          <Col s={7}>
-            <RecipeCreateForm 
-                value = {this.state.recipe}
-                handleChange = {(e) => this.handleUserInput(e)}
-                handleSave = {this.handleSave.bind(this)}
-            />       
-          </Col>
-        </Row>
+        <div className="container">
+          <RecipeCreateForm 
+              value = {this.state.recipe}
+              handleChange = {(e) => this.handleUserInput(e)}
+              handleSave = {this.handleSave.bind(this)}
+          />       
+        </div>
       </div>
     );
   }
