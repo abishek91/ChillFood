@@ -22397,16 +22397,6 @@
 	        ),
 	        _react2.default.createElement(
 	          _reactMaterialize.NavItem,
-	          { href: '#/edit_profile' },
-	          _react2.default.createElement(
-	            'i',
-	            { className: 'material-icons left' },
-	            'pencil'
-	          ),
-	          'Edit Profile'
-	        ),
-	        _react2.default.createElement(
-	          _reactMaterialize.NavItem,
 	          { href: '/logout' },
 	          _react2.default.createElement(
 	            'i',
