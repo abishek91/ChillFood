@@ -22397,6 +22397,16 @@
 	        ),
 	        _react2.default.createElement(
 	          _reactMaterialize.NavItem,
+	          { href: '#/edit_profile' },
+	          _react2.default.createElement(
+	            'i',
+	            { className: 'material-icons left' },
+	            'pencil'
+	          ),
+	          'Edit Profile'
+	        ),
+	        _react2.default.createElement(
+	          _reactMaterialize.NavItem,
 	          { href: '/logout' },
 	          _react2.default.createElement(
 	            'i',
@@ -43312,6 +43322,7 @@
 	      var followLink = '/follow/' + profile.id;
 	      var unfollowLink = '/unfollow/' + profile.id;
 	      var followerRows = [];
+	      var followers, following;
 	      var followingRows = [];
 	      var isFollowing = false;
 	      var redirect = function redirect(profileLink) {
@@ -43320,7 +43331,11 @@
 	      };
 	      var myProfile = false;
 	      if (profile.id == userId) myProfile = true;
-	      JSON.parse(profile.followers).forEach(function (follower) {
+	
+	      var profile_followers = JSON.parse(profile.followers);
+	      var profile_following = JSON.parse(profile.following);
+	
+	      profile_followers.forEach(function (follower) {
 	        var userProfileImageUrl = '/profile_image/' + follower.pk;
 	        var profileLink = '/#/profile/' + follower.pk;
 	
@@ -43342,8 +43357,28 @@
 	        ));
 	        if (!myProfile && userId == follower.pk) isFollowing = true;
 	      });
+	      if (profile_followers.length) {
+	        followers = _react2.default.createElement(
+	          'div',
+	          { className: 'box' },
+	          _react2.default.createElement(
+	            _reactMaterialize.Row,
+	            null,
+	            _react2.default.createElement(
+	              'a',
+	              { href: followerUrl },
+	              'Followers'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            _reactMaterialize.Row,
+	            { className: 'list' },
+	            followerRows
+	          )
+	        );
+	      }
 	
-	      JSON.parse(profile.following).forEach(function (following) {
+	      profile_following.forEach(function (following) {
 	        var userProfileImageUrl = '/profile_image/' + following.pk;
 	        var profileLink = '/#/profile/' + following.pk;
 	        followingRows.push(_react2.default.createElement(
@@ -43363,6 +43398,26 @@
 	          )
 	        ));
 	      });
+	      if (profile_following.length) {
+	        following = _react2.default.createElement(
+	          'div',
+	          { className: 'box' },
+	          _react2.default.createElement(
+	            _reactMaterialize.Row,
+	            null,
+	            _react2.default.createElement(
+	              'a',
+	              { href: followingUrl },
+	              'Following'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            _reactMaterialize.Row,
+	            null,
+	            followingRows
+	          )
+	        );
+	      }
 	
 	      if (!myProfile) var follow = isFollowing ? _react2.default.createElement(
 	        _reactMaterialize.Button,
@@ -43400,42 +43455,8 @@
 	        _react2.default.createElement(
 	          _reactMaterialize.Col,
 	          { className: 'offset-s3' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'box' },
-	            _react2.default.createElement(
-	              _reactMaterialize.Row,
-	              null,
-	              _react2.default.createElement(
-	                'a',
-	                { href: followerUrl },
-	                'Followers'
-	              )
-	            ),
-	            _react2.default.createElement(
-	              _reactMaterialize.Row,
-	              { className: 'list' },
-	              followerRows
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'box' },
-	            _react2.default.createElement(
-	              _reactMaterialize.Row,
-	              null,
-	              _react2.default.createElement(
-	                'a',
-	                { href: followingUrl },
-	                'Following'
-	              )
-	            ),
-	            _react2.default.createElement(
-	              _reactMaterialize.Row,
-	              null,
-	              followingRows
-	            )
-	          )
+	          followers,
+	          following
 	        )
 	      );
 	    }
