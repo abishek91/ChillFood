@@ -70,7 +70,7 @@ export default class RecipeThumbnail extends React.Component {
                 <div className="grey-text col s6">
                   <div id="post_rating" title="difficulty">{difficulty_icon}</div>              
                 </div>
-                <div className="grey-text col s6 right-align">
+                <div className="grey-text col s6 right-align hidden">
                   <span id="post_time">{recipe.views}&nbsp;&nbsp;Views </span>
                 </div>    
               </div>
