@@ -41657,7 +41657,9 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var sortOptions = [{ label: 'time', value: 5 }, { label: 'tastiness', value: 4 }, { label: 'views', value: 1 }, { label: 'difficulty', value: 2 }, { label: 'calories', value: 3 }];
+	var sortOptions = [{ label: 'time', value: 5 }, { label: 'tastiness', value: 4 },
+	// {label:'views',value: 1},
+	{ label: 'difficulty', value: 2 }, { label: 'calories', value: 3 }];
 	
 	var RecipeList = function (_React$Component) {
 	  _inherits(RecipeList, _React$Component);
@@ -42319,6 +42321,10 @@
 	        );
 	      };
 	
+	      var difficulty = function difficulty(i) {
+	        return _react2.default.createElement('img', { width: '20', src: '/static/images/chef.png', key: i });
+	      };
+	
 	      var stars = [];
 	      for (var i = 1; i <= recipe.tastiness; i++) {
 	        stars.push(star(i));
@@ -42333,6 +42339,20 @@
 	        stars.push(star_empty(i));
 	      }
 	
+	      var difficulty_icon = [];
+	      if (recipe.difficulty != 10) {
+	        for (var i = 1; i <= recipe.difficulty; i++) {
+	          difficulty_icon.push(difficulty(i));
+	        }
+	      }
+	      // if ((i - recipe.tastiness) == 0.5) {
+	      //     difficulty_icon.push(star_half(i)) 
+	      //     i+=1;
+	      // }
+	
+	      // for (; i <= 5; i++) {
+	      //     difficulty_icon.push(difficulty(i));
+	      // }
 	      return (
 	        // <Row>
 	        _react2.default.createElement(
@@ -42374,7 +42394,7 @@
 	                  { className: 'grey-text col s6' },
 	                  _react2.default.createElement(
 	                    'div',
-	                    { id: 'post_rating' },
+	                    { id: 'post_rating', title: 'tastiness' },
 	                    stars
 	                  )
 	                ),
@@ -42397,8 +42417,8 @@
 	                  { className: 'grey-text col s6' },
 	                  _react2.default.createElement(
 	                    'div',
-	                    { id: 'post_rating' },
-	                    recipe.difficulty < 6 ? 'Dif: ' + recipe.difficulty : ''
+	                    { id: 'post_rating', title: 'difficulty' },
+	                    difficulty_icon
 	                  )
 	                ),
 	                _react2.default.createElement(

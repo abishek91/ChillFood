@@ -13,6 +13,8 @@ export default class RecipeThumbnail extends React.Component {
     const star_empty = (i) => <i className="material-icons" key={i}>star_border</i>
     const star_half = (i) => <i className="material-icons" key={i}>star_half</i>
 
+    const difficulty = (i) => <img width="20" src="/static/images/chef.png" key={i}/>
+    
     let stars = []
     for (var i = 1; i <= recipe.tastiness; i++) {
         stars.push(star(i));
@@ -27,6 +29,20 @@ export default class RecipeThumbnail extends React.Component {
         stars.push(star_empty(i));
     }
 
+    let difficulty_icon = []
+    if (recipe.difficulty != 10) {
+      for (var i = 1; i <= recipe.difficulty; i++) {
+          difficulty_icon.push(difficulty(i));
+      }
+    }
+    // if ((i - recipe.tastiness) == 0.5) {
+    //     difficulty_icon.push(star_half(i)) 
+    //     i+=1;
+    // }
+
+    // for (; i <= 5; i++) {
+    //     difficulty_icon.push(difficulty(i));
+    // }
     return (
       // <Row>
         <div className="list-item">
@@ -44,7 +60,7 @@ export default class RecipeThumbnail extends React.Component {
             <div className="card-footer">
               <div className="row">
                 <div className="grey-text col s6">
-                  <div id="post_rating">{stars}</div>              
+                  <div id="post_rating" title="tastiness">{stars}</div>              
                 </div>
                 <div className="grey-text col s6 right-align">
                   <span id="post_time">{recipe.time}</span>&nbsp;&nbsp;Min
@@ -52,7 +68,7 @@ export default class RecipeThumbnail extends React.Component {
               </div>
               <div className="row">
                 <div className="grey-text col s6">
-                  <div id="post_rating">{recipe.difficulty < 6 ? 'Dif: '+recipe.difficulty : ''}</div>              
+                  <div id="post_rating" title="difficulty">{difficulty_icon}</div>              
                 </div>
                 <div className="grey-text col s6 right-align">
                   <span id="post_time">{recipe.views}&nbsp;&nbsp;Views </span>
