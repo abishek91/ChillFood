@@ -56,7 +56,7 @@ export default class Notifications extends React.Component {
         <span className="right">
           <Dropdown trigger={
             <span>
-             <Button floating large className='red' waves='light' icon='notifications' onClick={() => this.readNotifications(unread)} />
+             <Button floating large className='notification-icon' waves='light' icon='notifications' onClick={() => this.readNotifications(unread)} />
               {unreadBubble}
             </span>
           }>
