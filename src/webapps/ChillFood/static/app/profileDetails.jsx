@@ -39,35 +39,22 @@ export default class Category extends React.Component {
       profile_followers.forEach(function(follower){
           var userProfileImageUrl = '/profile_image/' + follower.pk;
           var profileLink = '/#/profile/' + follower.pk;
-
-          followerRows.push(  <Col key={follower.pk}>
-                                <img height="50" width="50" src={userProfileImageUrl} alt="profile pic" /> 
-                                <div><a onClick={() => redirect(profileLink)} href={profileLink}>{follower.fields.name}</a></div>
-                              </Col>)
           if(!myProfile && userId == follower.pk)
             isFollowing = true
       })
       if(profile_followers.length)
       {
-         followers = <div className="box">
-                        <Row><a href={followerUrl}>Followers</a></Row>
-                        <Row className="list">{followerRows}</Row>
+         followers = <div className="follower-div">
+                        <div className="follower-font">Followers</div>
+                        <div><a className="num" href={followerUrl}>{profile_followers.length}</a></div>
                       </div>
       }
 
-      profile_following.forEach(function(following){
-          var userProfileImageUrl = '/profile_image/' + following.pk;
-          var profileLink = '/#/profile/' + following.pk;
-          followingRows.push( <Col key={following.pk}>
-                                <img height="50" width="50" src={userProfileImageUrl} alt="profile pic" /> 
-                                <div><a onClick={() => redirect(profileLink)} href={profileLink}>{following.fields.name}</a></div>
-                              </Col>)
-      })
       if(profile_following.length)
       {
-         following =  <div className="box">
-                        <Row><a href={followingUrl}>Following</a></Row>
-                        <Row>{followingRows}</Row>
+         following =  <div className="follower-div">
+                        <div className="follower-font">Following</div>
+                        <div><a className="num" href={followingUrl}>{profile_following.length}</a></div>
                       </div>
       }
 
@@ -80,15 +67,20 @@ export default class Category extends React.Component {
       <Col>
           <div className="m12">
                 <img className="user_photo big left z-depth-1 frame" src={userProfileImageUrl} />
-            <span className="name">
+          </div>
+          <div>{follow}</div>
+
+      </Col>
+      <Col>
+            <div className="name">
               {profile.name}
-            </span>    
-            {bioSection}
-            <Row>{follow}</Row>
-          </div>   
-        </Col>
-        <Col className="offset-s3">
+            </div>    
+           {bioSection}
+      </Col>   
+        <Col className="tab">
           {followers}
+        </Col>
+        <Col>
           {following}
         </Col>
       </Row>

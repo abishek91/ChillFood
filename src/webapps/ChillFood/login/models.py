@@ -32,6 +32,7 @@ class User(AbstractUser):
       "id": self.id,
       "name": self.name,
       "photo": str(self.photo),
+      "bio": self.bio,
       "following": serializers.serialize('json',self.following.all()),
       "followers": serializers.serialize('json',self.followers.all())
     }

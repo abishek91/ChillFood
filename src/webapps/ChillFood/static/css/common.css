@@ -42,6 +42,19 @@
 	font-size: 2em;
 }
 
+.follower-font {
+	font-size: 1.5em;
+}
+
+.follower-div {
+	padding-top: 8px;
+}
+
+.num {
+	font-size: 1.5em;
+	margin-left: 2em;
+}
+
 .box {
 	border: 0.5px solid;
 	margin: 10px;	
@@ -84,4 +97,8 @@
 
 .notification-icon {
 	background-color: #2196F3;
+}
+
+.tab {
+	padding-left: 1em;
 }
