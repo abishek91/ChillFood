@@ -1,4 +1,5 @@
 import React from 'react';
+import SearchBar from './searchBar.jsx'
 import { Button, Card, Row, Col } from 'react-materialize';
 
 export default class DisplayUsers extends React.Component {
@@ -28,11 +29,14 @@ export default class DisplayUsers extends React.Component {
         rows.push(<Row key={i}>{columns}</Row>);
 
     return (
+      <div>
+      <SearchBar />
       <div className="container">
       <h2>{this.props.title}</h2>
         <Row>
           {rows}
         </Row>
+      </div>
       </div>
     );
   }

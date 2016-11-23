@@ -59,7 +59,7 @@ export default class Category extends React.Component {
       }
 
       if(!myProfile)
-        var follow = isFollowing ? <Button className="follow" onClick={this.props.unfollow} type="button">Unfollow</Button> :
+        var follow = isFollowing ? <Button className="unfollow" onClick={this.props.unfollow} type="button">Unfollow</Button> :
                                    <Button className="follow" onClick={this.props.follow} type="button">Follow</Button>;
 
     return (
