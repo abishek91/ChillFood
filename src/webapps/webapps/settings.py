@@ -25,7 +25,7 @@ SECRET_KEY = 'q^wr0#=5erv1$t-nv4-m@#l$#y)j76l0^8%1uuzij%web-_$em'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['http://chillfood.us-east-1.elasticbeanstalk.com/']
+ALLOWED_HOSTS = ['http://chillfood.us-east-1.elasticbeanstalk.com']
 
 
 #AWS
