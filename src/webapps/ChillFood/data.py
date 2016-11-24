@@ -117,7 +117,7 @@ def setup(request):
 		try:
 			user = User.objects.get(name='ChillFood.com')
 		except User.DoesNotExist:
-			user = User(name="ChillFood.com")
+			user = User(name="ChillFood.com", location_lat=0, location_lat=0)
 			user.save()
 		try:
 			context = save_recipe(user)
