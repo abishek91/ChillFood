@@ -13,9 +13,8 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__name__))
-BASE_DIR2 = os.path.dirname(os.path.dirname(__file__))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
@@ -153,13 +152,15 @@ LOGIN_REDIRECT_URL = '/'
 # Email
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+#MEDIA FILE (user uploaded files)
+MEDIA_ROOT = os.path.join(BASE_DIR, "..", "www", "media")
+MEDIA_URL = '/media/'
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR2, "..", "www", "static")
+STATIC_ROOT = os.path.join(BASE_DIR, "..", "www", "static")
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR2, 'static'),)
+STATICFILES_DIRS = (os.path.join(BASE_DIR, '../ChillFood/static'),)
 
-#MEDIA FILE (user uploaded files)
-MEDIA_ROOT = os.path.join(BASE_DIR2, "..", "www", "media")
-MEDIA_URL = '/media/'
+
