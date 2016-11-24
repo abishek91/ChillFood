@@ -126,8 +126,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
-MEDIA_ROOT =os.path.join(PROJECT_ROOT, "images")#os.path.join(),
-MEDIA_URL = '/images/'
+# MEDIA_ROOT =os.path.join(PROJECT_ROOT, "images")#os.path.join(),
+# MEDIA_URL = '/images/'
 
 # MEDIA_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
 # DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
@@ -147,3 +147,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 STATIC_ROOT = os.path.join(BASE_DIR2, "..", "www", "static")
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR2, 'static'),)
+
+#MEDIA FILE (user uploaded files)
+MEDIA_ROOT = os.path.join(BASE_DIR2, "..", "www", "media")
+MEDIA_URL = '/media/'
