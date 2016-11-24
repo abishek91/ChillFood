@@ -25,7 +25,7 @@ SECRET_KEY = 'q^wr0#=5erv1$t-nv4-m@#l$#y)j76l0^8%1uuzij%web-_$em'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [*]
+ALLOWED_HOSTS = ['http://chillfood.us-east-1.elasticbeanstalk.com/']
 
 
 #AWS
@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'webapps.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'chillfood_3',
+        'NAME': 'chillfood',
         'USER': 'chillfood',
         'PASSWORD': 'chillfood',
         'HOST': 'localhost',
