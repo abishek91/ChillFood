@@ -29,8 +29,8 @@ ALLOWED_HOSTS = ['*']
 
 
 #AWS
-# AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME'] 
-# AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME'] 
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
 # Application definition
 
@@ -153,8 +153,8 @@ LOGIN_REDIRECT_URL = '/'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 #MEDIA FILE (user uploaded files)
-MEDIA_ROOT = os.path.join(BASE_DIR, "..", "www", "media")
-MEDIA_URL = '/media/'
+MEDIA_ROOT =os.path.join(PROJECT_ROOT, "images")#os.path.join(),
+MEDIA_URL = '/images/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
