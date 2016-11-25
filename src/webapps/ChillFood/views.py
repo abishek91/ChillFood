@@ -273,7 +273,8 @@ def change_password(request, user_id, token):
 
 
 def sign_s3(request):
-    S3_BUCKET = os.environ['AWS_STORAGE_BUCKET_NAME'] 
+    # S3_BUCKET = os.environ['AWS_STORAGE_BUCKET_NAME'] 
+    S3_BUCKET = settings.AWS_STORAGE_BUCKET_NAME 
 
     file_name = request.GET.get('file_name')
     file_type = request.GET.get('file_type')

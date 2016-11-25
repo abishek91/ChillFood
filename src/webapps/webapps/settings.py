@@ -30,7 +30,6 @@ ALLOWED_HOSTS = ['*']
 
 #AWS
 AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME'] 
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
 # Application definition
 
@@ -42,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ChillFood',
-    'storages'
 ]
 
 MIDDLEWARE = [
