@@ -79,7 +79,8 @@ def recipe_detail(request, recipe_id):
 @login_required
 def recipe_detail_json(request, recipe_id):
     recipe = get_object_or_404(Recipe, id=recipe_id)
-
+    recipe.views += 1
+    recipe.save()
     return JsonResponse(recipe.to_json_full(request.user))
 
 @login_required
