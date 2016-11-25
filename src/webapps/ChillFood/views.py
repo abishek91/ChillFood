@@ -46,7 +46,7 @@ def profile_image(request, user_id):
         content_type = guess_type(image.name)
 
     else:
-        url = settings.BASE_DIR + '/ChillFood' + static('images/empty_profile.png')
+        url = settings.BASE_DIR2 + '/ChillFood' + static('images/empty_profile.png')
         with open(url, "rb") as empty_profie:
             image = empty_profie.read()
             content_type = 'image/png'
