@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'ChillFood'
+    'ChillFood',
+    'storages'
 ]
 
 MIDDLEWARE = [
@@ -152,9 +153,11 @@ LOGIN_REDIRECT_URL = '/'
 # Email
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+
 #MEDIA FILE (user uploaded files)
-MEDIA_ROOT =os.path.join(PROJECT_ROOT, "images")#os.path.join(),
-MEDIA_URL = '/images/'
+# MEDIA_ROOT =os.path.join(PROJECT_ROOT, "images")#os.path.join(),
+# MEDIA_URL = '/images/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
