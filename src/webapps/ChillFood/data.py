@@ -121,8 +121,9 @@ def setup(request):
 			user.save()
 		try:
 			context = save_recipe(user)
-		except:
+		except Exception as inst:
 			context = False
+			print(inst)
 			print('Exception, Recipe skipped')
 		if(context):
 			i += 1

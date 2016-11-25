@@ -31,7 +31,7 @@ def recipe_image(request, recipe_id):
         content_type = guess_type(image.name)
 
     else:
-        url = settings.BASE_DIR + '/ChillFood' + static('images/food.jpg')
+        url = settings.BASE_DIR2 + '/ChillFood' + static('images/food.jpg')
         with open(url, "rb") as empty_recipe:
             image = empty_recipe.read()
             content_type = 'image/jpg'
@@ -294,4 +294,4 @@ def sign_s3(request):
     return JsonResponse({
         'data': presigned_post,
         'url': 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, file_name)
-    },safe=False)
+    },safe=False)   
