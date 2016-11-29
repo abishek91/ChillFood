@@ -60,8 +60,8 @@ class SearchForm(forms.ModelForm):
 
 class IngredientForm(forms.ModelForm):
     class Meta:
-        model = RecipeIngredient
-        exclude = []    
+        model = Ingredient
+        exclude = [] 
 
 class StepForm(forms.ModelForm):
     class Meta:

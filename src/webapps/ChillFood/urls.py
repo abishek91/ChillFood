@@ -49,6 +49,8 @@ urlpatterns = [
     url(r'^profile/(?P<user_id>\d+)/following$', views.display_users),
     #Recipe Creation
     url(r'^api/recipe/create$', api.recipe_create,name='recipe_create'),
+    url(r'^api/ingredients$', api.ingredients),
+    url(r'^api/ingredient/create$', api.ingredient_create),
     #Comments
     url(r'^add_comment/(?P<recipe_id>\d+)$', views.add_comment, name='add_comment'),
     url(r'^add_rating/(?P<recipe_id>\d+)$', views.add_rating, name='add_rating'),

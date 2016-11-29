@@ -165,16 +165,11 @@ def recipes(request):
 def recipe_create(request, recipe_id = 0):
     context={}
     recipe = Recipe()
-    #request.user.id
+    
     if recipe_id:
         recipe = get_object_or_404(Recipe, pk=recipe_id)
     else:
         recipe.cook = request.user
-
-    # context['lists'] = {
-    #     "categories": Category.objects.all(),
-    #     "appliances": Equipment.objects.all()
-    # }
 
     if request.method == "GET":
         return JsonResponse(recipe.to_json(), safe=False);
@@ -182,6 +177,7 @@ def recipe_create(request, recipe_id = 0):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
     print(body)
+    
     #Validations
     form = RecipeForm(body, instance=recipe)
     print('ingre',body['ingredients'])
@@ -216,13 +212,16 @@ def recipe_create(request, recipe_id = 0):
     for rp in recipe_ingredients:
         # my_ingredient = rp.ingredient_id
 
-        #If the ingredient is new, save it to the database
-        # if not rp.ingredient_id:
-        my_ingredient = Ingredient(name=rp.cleaned_data['ingredient_name']);
-        my_ingredient.save()
+        # If the ingredient is new, save it to the database
+        if not rp.cleaned_data['ingredient_id']:
+            my_ingredient = Ingredient(name=rp.cleaned_data['ingredient_name']);
+            my_ingredient.save()
+            ingredient_id = my_ingredient.id
+        else:
+            ingredient_id = rp.cleaned_data['ingredient_id']
 
         recipe_ingredient = RecipeIngredient(recipe_id = recipe.id,
-                             ingredient_id = my_ingredient.id,
+                             ingredient_id = ingredient_id,
                              quantity = rp.cleaned_data['quantity'],
                              price = rp.cleaned_data['price'],
                              display = rp.cleaned_data['display']);
@@ -258,6 +257,59 @@ def lists(request):
     return JsonResponse({'categories':categories,\
                          'equipments':equipments,\
                          'cuisines':cuisines}, safe=False);
+
+
+@login_required
+def ingredients(request): 
+    #Variables
+    result = {}  
+    PAGE_SIZE = 10
+        
+    #Set page number
+    page = request.GET.get('page','1')
+    name = request.GET.get('name','')
+
+    #Get Data
+    lista = [c.to_json() for c in Ingredient.objects.filter(name__icontains = name).order_by('name')]
+    
+    #Paginate the result
+    paginated_list = Paginator(lista, PAGE_SIZE)
+
+    try:
+        current_page = paginated_list.page(page)
+    except (EmptyPage, PageNotAnInteger) as error:
+        return JsonResponse({'error':str(error)},status=400)
+
+    result['data'] = current_page.object_list
+
+    if current_page.has_next():
+        result['next'] = '%s?page=%d' % (request.path,current_page.next_page_number())
+
+    return JsonResponse(result,safe=False)
+
+
+@transaction.atomic
+@login_required
+@csrf_exempt
+def ingredient_create(request):
+    context={}
+    ingredient = Ingredient()
+
+    if request.method == "GET":
+        raise Http404("Url does not exist")
+
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+
+    #Validations
+    form = IngredientForm(body, instance=ingredient)
+
+    if not form.is_valid():
+        return JsonResponse(dict(form.errors.items()),status=406)        
+    
+    ingredient.save();
+    
+    return JsonResponse(ingredient.to_json(), safe=False);
 
 @login_required
 def preferences(request):

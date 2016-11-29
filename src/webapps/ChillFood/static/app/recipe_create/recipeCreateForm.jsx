@@ -5,6 +5,7 @@ import ListApp from './listApp.jsx'
 import StepForm from './stepForm.jsx'
 import IngredientForm from './ingredientForm.jsx'
 import Ingredient from './ingredient.jsx'
+import IngredientApi from '../api/ingredient.jsx'
 import Item from './item.jsx'
 import Tags from './tags.jsx'
 import RecipePictures from './recipePictures.jsx'
@@ -78,16 +79,23 @@ export default class RecipeCreate extends React.Component{
   }
 
   // Add todo handler
-  addIngredient(ingredient_name, quantity, price, display){
+  addIngredient(ingredient_id, ingredient_name, quantity, price, display){
     console.log('val',ingredient_name)
+    if (ingredient_id ==  null) {
+      Materialize.toast('Please, select one ingredient.',4000);
+      return;
+    } else if (ingredient_id == 0) {
+      Materialize.toast('An error has occured, could you please select your ingredient one more time.',4000);
+      return;
+    }
+    
     if (!/[\w\d]+/.test(ingredient_name)) {
-      //TODO: Pretty Message
       Materialize.toast('Please, include the name of the ingredient.',4000);
       return;
     }
 
     // Assemble data
-    const item = new RecipeIngredient(this.state.ingredients.length,ingredient_name, quantity, price, display);
+    const item = new RecipeIngredient(this.state.ingredients.length, ingredient_id, ingredient_name, quantity, price, display);
     // Update data
     this.state.ingredients.push(item);
     // Update state
@@ -113,20 +121,7 @@ export default class RecipeCreate extends React.Component{
   
   toogleApplicances(index) {
     this.appliances[index]
-    // remove = false;
-    // for (var i in this.state.appliances) {
-    //   if (this.state.appliances[i].id === index) {
-    //     remove = true
-    //     break;
-    //   }
-    // }
-
-
-
-    // const appliance = this.appliances.filter((item) => {
-    //   if(item.id === id) return item;
-    // });
-    // Update state with filter
+    
     this.setState({ingredients: remainder});
   }
   // Handle remove
@@ -145,6 +140,27 @@ export default class RecipeCreate extends React.Component{
     });
     // Update state with filter
     this.setState({steps: remainder});
+  }
+
+  getIngredientData(value, callback) {
+    let ingredient_api = new IngredientApi()
+    ingredient_api.get(value)
+    .then(function(data) {
+      console.log('ingredients',data);
+      if (data.data.length == 0) {
+        data.data = [{id:0, text: ' + '+value}]
+      }
+      callback(value,data.data);
+    })
+  }
+
+  createIngredient(item) {
+    console.log(item)
+    if (item.id == 0) {
+      let ingredient_api = new IngredientApi()
+      return ingredient_api.create(item.text.slice(3))      
+    }
+    return Promise.resolve({});
   }
 
   render () {
@@ -202,6 +218,8 @@ export default class RecipeCreate extends React.Component{
               data={this.state.ingredients}
               addItem={this.addIngredient.bind(this)}
               remove={this.handleRemoveIngredient.bind(this)}
+              getData={this.getIngredientData.bind(this)}
+              addData={this.createIngredient.bind(this)}
             />
           </Row>
           <Row>
@@ -222,26 +240,11 @@ export default class RecipeCreate extends React.Component{
   }
   
 }
-// 
-// export const RecipeCreateForm = ({addItem}) => {
-//   // Input tracker
-//   let input;
-
-//   return (
-//     <form className="container" method="post">
-//        <div className="row">
-//         <input type="text" name="title" placeholder="Title" ref={node => {
-//           input = node;
-//         }}/>
-//        </div>
-//     </form> 
-//   );
-// };
 
 
 // ========================================
-function RecipeIngredient(ingredient_id, ingredient_name, quantity, price, display) {
-  this.id = ingredient_id;
+function RecipeIngredient(id, ingredient_id, ingredient_name, quantity, price, display) {
+  this.id = id;
   this.ingredient_id = ingredient_id | 0;
   this.ingredient_name = ingredient_name;
   if (quantity == undefined)

@@ -109,7 +109,10 @@ class Recipe(models.Model):
     
 class Ingredient(models.Model):
     name = models.CharField(max_length = 200)
-
+    def to_json(self):
+        return {"id": self.id,
+                "text": self.name}
+    
 class RecipeIngredient(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="ingredients")
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)

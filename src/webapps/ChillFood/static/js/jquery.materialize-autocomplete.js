@@ -192,7 +192,6 @@
             self.render();
 
             self.$el.on('input', function (e) {
-                console.log('asds')
                 var $t = $(this);
                 var value = $t.val();
 
@@ -222,7 +221,6 @@
             });
 
             self.$el.on('keydown', function (e) {
-                console.log('asds')
 
                 var $t = $(this);
                 var keyCode = e.keyCode;
@@ -311,7 +309,6 @@
 
         },
         render: function () {
-                console.log('asds')
             
             var self = this;
 
