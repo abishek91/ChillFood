@@ -9,9 +9,10 @@ import IngredientApi from '../api/ingredient.jsx'
 import Item from './item.jsx'
 import Tags from './tags.jsx'
 import RecipePictures from './recipePictures.jsx'
+import AutoComplete from '../home/autoComplete.jsx'
 
 
-export default class RecipeCreate extends React.Component{ 
+export default class RecipeCreate extends React.Component { 
   constructor(props) {
     super(props);
     this.state = {
@@ -21,15 +22,21 @@ export default class RecipeCreate extends React.Component{
       video_link: '',
       ingredients: [],
       steps: [],
+      category_set:[],
+      equipment_set: [],
+      cuisine_set: [],
     }
+    this.category_set = []
+    this.equipment_set = []
+    this.cuisine_set = []
     this.picture = ""
     this.appliances = [{id:1,name:'hey'},{id:2,name:'hey2'}]
     this.handleChange = this.handleChange.bind(this);
     this.updatePicture = this.updatePicture.bind(this);
+    this.onAppend = this.onAppend.bind(this);
   }
   
   handleSave() {
-
     if (!this.refs.titleInput.value) {
       Materialize.toast('Please, enter the title of the recipe.',4000);
       return; 
@@ -45,13 +52,14 @@ export default class RecipeCreate extends React.Component{
       return;
     }
 
-
     var recipe = this.state;
-
     recipe.title = this.refs.titleInput.value;
     recipe.time = this.refs.timeInput.value;
     recipe.calories = this.refs.caloriesInput.value;
     recipe.video_link = this.refs.video_linkInput.value;
+    recipe.category_set = this.category_set;
+    recipe.equipment_set = this.equipment_set;
+    recipe.cuisine_set = this.cuisine_set;
     if (this.remote_pic) {
       recipe.remote_pic = this.remote_pic
     }
@@ -119,11 +127,6 @@ export default class RecipeCreate extends React.Component{
     this.setState(new_state);
   }
   
-  toogleApplicances(index) {
-    this.appliances[index]
-    
-    this.setState({ingredients: remainder});
-  }
   // Handle remove
   handleRemoveIngredient(id){
     // Filter all todos except the one to be removed
@@ -133,6 +136,7 @@ export default class RecipeCreate extends React.Component{
     // Update state with filter
     this.setState({ingredients: remainder});
   }
+
   handleRemoveStep(id){
     // Filter all todos except the one to be removed
     const remainder = this.state.steps.filter((item) => {
@@ -161,6 +165,21 @@ export default class RecipeCreate extends React.Component{
       return ingredient_api.create(item.text.slice(3))      
     }
     return Promise.resolve({});
+  }
+
+  onAppend(data) {
+    return (item) => {
+      data.push(item.id);
+    }
+  }
+
+  onRemove(data) {
+    return (item) => {
+      var index = data.indexOf(item.id);
+      if(index!=-1){
+         data.splice(index, 1);
+      }
+    }
   }
 
   render () {
@@ -231,6 +250,36 @@ export default class RecipeCreate extends React.Component{
               remove={this.handleRemoveStep.bind(this)}
               />
           </Row>
+          <Row>
+            <h5>Tags</h5>
+          </Row>
+          <Row>
+            <AutoComplete 
+              name="category" 
+              placeholder="Pick a category? Ex. Non-vegan" 
+              data={this.props.categories}
+              onAppend={this.onAppend(this.category_set)}
+              onRemove={this.onRemove(this.category_set)}
+               />
+          </Row>
+          <Row>
+            <AutoComplete 
+              name="cuisine" 
+              placeholder="Pick a cuisines? Ex. Mexican" 
+              data={this.props.cuisines}
+              onAppend={this.onAppend(this.cuisine_set)}
+              onRemove={this.onRemove(this.cuisine_set)}
+               />
+          </Row>
+          <Row>
+            <AutoComplete 
+              name="equipment" 
+              placeholder="Which equipments are needed? Ex. Oven" 
+              data={this.props.equipments}
+              onAppend={this.onAppend(this.equipment_set)}
+              onRemove={this.onRemove(this.equipment_set)}
+               />
+          </Row>
           <button className="right btn waves-effect waves-light blue" type="button" onClick={() => this.handleSave() } >
               Save
           </button>
@@ -241,8 +290,6 @@ export default class RecipeCreate extends React.Component{
   
 }
 
-
-// ========================================
 function RecipeIngredient(id, ingredient_id, ingredient_name, quantity, price, display) {
   this.id = id;
   this.ingredient_id = ingredient_id | 0;

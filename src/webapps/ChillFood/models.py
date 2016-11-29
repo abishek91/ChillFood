@@ -58,7 +58,9 @@ class Recipe(models.Model):
           "date_time": self.date_time,
           "views": self.views,
           "calories": self.calories,
-          "remote_pic":self.remote_pic
+          "remote_pic":self.remote_pic,
+          "categories": list(map(lambda x: x.to_json(),self.category_set.all())),
+          
         }
 
         if (hasattr(self,"tastiness")):

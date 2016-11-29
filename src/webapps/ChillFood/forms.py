@@ -77,17 +77,14 @@ class RecipeIngredientForm(forms.Form):
 
     
 class RecipeForm(forms.ModelForm):
+    category_set=forms.ModelMultipleChoiceField(queryset=Category.objects.all(),required=False)
+    equipment_set=forms.ModelMultipleChoiceField(queryset=Equipment.objects.all(),required=False)
+    cuisine_set=forms.ModelMultipleChoiceField(queryset=Cuisine.objects.all(),required=False)
+    
     class Meta:
         model = Recipe
-        exclude = ['pic', 'cook','ingredients','category_set','equipment_set','cuisine_set']
+        exclude = ['pic', 'cook','ingredients']
     
-    def clean(self):
-        cleaned_data = super(RecipeForm, self).clean()
-
-        #TODO: Add cook
-        
-        return cleaned_data
-
 class PartyForm(forms.ModelForm):
     class Meta:
         model = Party

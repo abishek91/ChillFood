@@ -61,7 +61,7 @@ export default class AutoComplete extends React.Component {
   render() {
     const self = this;
 
-    if (!self.initData && self.props.initData.length) {
+    if (!self.initData && self.props.initData && self.props.initData.length) {
       self.props.initData.forEach(function(data){
         self.autocomplete.append(data);
       });
@@ -73,19 +73,17 @@ export default class AutoComplete extends React.Component {
     const dropdown = 'dropdown-'+name
     const appender = 'appender'+name
 
-    return(<div className="option col s5">
-                    <div className="autocomplete" id="single">
-                        <div className="ac-input-a">
-                            <input type="text" 
-                                   id={input_name}
-                                   placeholder="Ingredient name" 
-                                   data-activates={dropdown} 
-                                   data-beloworigin="true"
-                             />
-                        </div>
-                        <div className={appender}></div>
-                        <ul id={dropdown} className="dropdown-content ac-dropdown"></ul>
-                    </div>
-                </div>)
+    return(<div className="autocomplete" id="single">
+                <div className="ac-input-a">
+                    <input type="text" 
+                           id={input_name}
+                           placeholder={this.props.placeholder} 
+                           data-activates={dropdown} 
+                           data-beloworigin="true"
+                     />
+                </div>
+                <div className={appender}></div>
+                <ul id={dropdown} className="dropdown-content ac-dropdown"></ul>
+            </div>)
   }
 }

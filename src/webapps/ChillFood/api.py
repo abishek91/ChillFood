@@ -40,7 +40,7 @@ def recipes(request):
     v_next = None
 
     preferences = Preferences.objects.get(pk=request.user.id);
-    preferences.sort_by = form.cleaned_data['sort_by'];
+    preferences.sort_by = form.cleaned_data['sort_by'] if form.cleaned_data['sort_by'] else 1;
     preferences.has_video = form.cleaned_data['has_video'];
 
     preferences.category.clear();
@@ -48,6 +48,7 @@ def recipes(request):
     preferences.category.set(categories)
 
     preferences.cuisine.clear();
+    print('Cuisines', form.cleaned_data['cuisine'])
     cuisines = Cuisine.objects.filter(pk__in=form.cleaned_data['cuisine']);
     preferences.cuisine.set(cuisines)
 
@@ -160,6 +161,7 @@ def recipes(request):
 
     return JsonResponse(result,safe=False)
     
+@csrf_exempt
 @transaction.atomic
 @login_required
 def recipe_create(request, recipe_id = 0):
@@ -180,11 +182,12 @@ def recipe_create(request, recipe_id = 0):
     
     #Validations
     form = RecipeForm(body, instance=recipe)
-    print('ingre',body['ingredients'])
 
     if not form.is_valid():
         return JsonResponse(dict(form.errors.items()),status=406)        
     
+    print('Categories 2',form.cleaned_data['category_set'])
+
     if 'ingredients' not in body:
         return JsonResponse([{'ingredients': 'Ingredients are required.'}],status=406)        
     
@@ -193,20 +196,28 @@ def recipe_create(request, recipe_id = 0):
     
     recipe_ingredients = []
     for recipe_ingredient in body['ingredients']:
-        form = RecipeIngredientForm(recipe_ingredient)
-        if not form.is_valid():
-            return JsonResponse(dict(form.errors.items()),status=406)
-        recipe_ingredients.append(form);
+        rp_form = RecipeIngredientForm(recipe_ingredient)
+        if not rp_form.is_valid():
+            return JsonResponse(dict(rp_form.errors.items()),status=406)
+        recipe_ingredients.append(rp_form);
 
     steps = []
     for step in body['steps']:
-        form = StepForm(step)
-        if not form.is_valid():
-            return JsonResponse(dict(form.errors.items()),status=406)
-        steps.append(form);
+        st_form = StepForm(step)
+        if not st_form.is_valid():
+            return JsonResponse(dict(st_form.errors.items()),status=406)
+        steps.append(st_form);
 
+    #Recipe - Categories
+    
     #Save Parent
     recipe.save()
+    recipe.category_set.set(form.cleaned_data['category_set'])
+    recipe.equipment_set.set(form.cleaned_data['equipment_set'])
+    recipe.cuisine_set.set(form.cleaned_data['cuisine_set'])
+    recipe.save()
+    print('Categories',recipe.category_set)
+    print('Categories 2',form.cleaned_data['category_set'])
 
     #Saving nested elements 
     for rp in recipe_ingredients:
@@ -221,10 +232,10 @@ def recipe_create(request, recipe_id = 0):
             ingredient_id = rp.cleaned_data['ingredient_id']
 
         recipe_ingredient = RecipeIngredient(recipe_id = recipe.id,
-                             ingredient_id = ingredient_id,
-                             quantity = rp.cleaned_data['quantity'],
-                             price = rp.cleaned_data['price'],
-                             display = rp.cleaned_data['display']);
+                                             ingredient_id = ingredient_id,
+                                             quantity = rp.cleaned_data['quantity'],
+                                             price = rp.cleaned_data['price'],
+                                             display = rp.cleaned_data['display']);
 
         recipe_ingredient.save()
         # recipe.ingredients.add(recipe_ingredient)

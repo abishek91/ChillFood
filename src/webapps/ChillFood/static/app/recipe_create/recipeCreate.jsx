@@ -3,13 +3,17 @@ import {render} from 'react-dom';
 import { Button, Card, Row, Col } from 'react-materialize';
 import SearchBar from '../searchBar.jsx'
 import RecipeCreateForm from './recipeCreateForm.jsx';
+import List from '../api/list.jsx'
 
 export default class RecipeCreate extends React.Component{
   constructor(props){
     super(props);
     this.state = {
       recipe: {
-        title: ''
+        title: '',
+        categories: [],
+        equipments: [],
+        cuisines: [],
       }
     }
   }
@@ -55,10 +59,20 @@ export default class RecipeCreate extends React.Component{
     });
   }
 
-  
+  componentWillMount(){
+    const self = this;
+    new List().get()
+    .then(function (data) {
+      this.setState({
+        categories: data.categories,
+        equipments: data.equipments,
+        cuisines: data.cuisines,
+      })
+    }.bind(this))
+  }
+
   render(){
     var recipe = {}
-    // Render JSX
     return (
       <div>
         <SearchBar />              
@@ -67,6 +81,9 @@ export default class RecipeCreate extends React.Component{
               value = {this.state.recipe}
               handleChange = {(e) => this.handleUserInput(e)}
               handleSave = {this.handleSave.bind(this)}
+              categories = {this.state.categories}
+              equipments = {this.state.equipments}
+              cuisines = {this.state.cuisines}
           />       
         </div>
       </div>
