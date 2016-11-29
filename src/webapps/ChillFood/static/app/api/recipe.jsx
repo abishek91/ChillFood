@@ -30,7 +30,7 @@ function getLocation() {
 
 export default class Recipe {
 
-  get(query, userId, sort_id, categories, cuisines, equipments,hasVideo) {
+  get(query, userId, sort_id, categories, cuisines, equipments,hasVideo, ingredients) {
     const self = this;
     console.log('this.props.params.',userId)
     let lat = 0;
@@ -57,6 +57,7 @@ export default class Recipe {
                             category: categories,
                             cuisine: cuisines,
                             equipment: equipments,
+                            ingredient: ingredients,
                             has_video: hasVideo,
                             location_lat: lat,
                             location_lon: lon,

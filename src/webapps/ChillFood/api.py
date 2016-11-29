@@ -76,13 +76,17 @@ def recipes(request):
     if form.cleaned_data['has_video']:
         query &= ~Q(video_link="")
 
+    if form.cleaned_data['ingredient']:
+        lista = form.cleaned_data['ingredient']
+        query &= reduce(lambda x, y: x | y, [Q(ingredients__id=int(ingredient.id)) for ingredient in lista])
+
     if form.cleaned_data['category']:
         lista = form.cleaned_data['category']
         query &= reduce(lambda x, y: x | y, [Q(category_set__id=int(category.id)) for category in lista])
 
     if form.cleaned_data['equipment']:
         lista = form.cleaned_data['equipment']
-        query &= reduce(lambda x, y: x & y, [Q(equipment_set__id=int(equipment.id)) for equipment in lista])
+        query &= Q(equipment_set__id__in=lista)
 
     if form.cleaned_data['cuisine']:
         lista = form.cleaned_data['cuisine']

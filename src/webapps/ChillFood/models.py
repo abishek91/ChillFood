@@ -60,6 +60,7 @@ class Recipe(models.Model):
           "calories": self.calories,
           "remote_pic":self.remote_pic,
           "categories": list(map(lambda x: x.to_json(),self.category_set.all())),
+          "equipments": list(map(lambda x: x.to_json(),self.equipment_set.all())),
           
         }
 

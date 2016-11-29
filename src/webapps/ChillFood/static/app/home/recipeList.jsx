@@ -5,6 +5,7 @@ import SearchBar from '../searchBar.jsx'
 import Recipe from '../api/recipe.jsx'
 import querystring from 'querystring';
 import List from '../api/list.jsx'
+import IngredientApi from '../api/ingredient.jsx'
 import Preferences from '../api/preferences.jsx'
 import RecipeThumbnail from './recipeThumbnail.jsx'
 import SortBar from './sortBar.jsx'
@@ -35,6 +36,7 @@ export default class RecipeList extends React.Component {
     }
     this.hasVideo = false;
     this.selected_categories=[];
+    this.selected_ingredients=[];
     this.selected_cuisines=[];
     this.selected_equipments=[];
     this.recipe = new Recipe();
@@ -45,8 +47,8 @@ export default class RecipeList extends React.Component {
     this.handleCheck = this.handleCheck.bind(this);
     this.load_posts = this.load_posts.bind(this);
     this.initialize = this.initialize.bind(this);
-    this.onAppendCuisine = this.onAppendCuisine.bind(this);
-    this.onAppendEquipment = this.onAppendEquipment.bind(this);
+    this.onAppend = this.onAppend.bind(this);
+    this.onRemove = this.onRemove.bind(this);
   }
 
   handleSort(sortBy) {
@@ -116,6 +118,7 @@ export default class RecipeList extends React.Component {
       this.selected_cuisines,
       this.selected_equipments,
       this.hasVideo,
+      this.selected_ingredients
     ).then(function (data) {
       
       this.setState({
@@ -202,30 +205,36 @@ export default class RecipeList extends React.Component {
     })
   }
 
-  onAppendCuisine(item) {
-    this.selected_cuisines.push(item.id);
-    this.search();
-  }
-
-  onAppendEquipment(item) {
-    this.selected_equipments.push(item.id);
-    this.search();
-  }
-
-  onRemoveCuisine(item) {
-    var index = this.selected_cuisines.indexOf(item.id);
-    if(index!=-1){
-       this.selected_cuisines.splice(index, 1);
+  onAppend(data) {
+    const self = this
+    return (item) => {
+      data.push(item.id);
+      self.search();
     }
-    this.search();
   }
 
-  onRemoveEquipment(item) {
-    var index = this.selected_equipments.indexOf(item.id);
-    if(index!=-1){
-       this.selected_equipments.splice(index, 1);
+  
+  onRemove(data) {
+    const self = this
+    return (item) => {
+      var index = data.indexOf(item.id);
+      if(index!=-1){
+         data.splice(index, 1);
+      }
+      self.search();
     }
-    this.search();
+  }
+
+  getIngredients(value,callback){
+    let ingredient_api = new IngredientApi()
+    ingredient_api.get(value)
+    .then(function(data) {
+      console.log('ingredients',data);
+      if (data.data.length == 0) {
+        data.data = [{id:0, text: ' + '+value}]
+      }
+      callback(value,data.data);
+    })
   }
   
   render() {
@@ -242,16 +251,24 @@ export default class RecipeList extends React.Component {
                 sortBy={this.state.search.sortBy}
                 handleSort={this.handleSort} />
               <Sidebar 
-                hasVideo={this.hasVideo}
                 handleVideo={this.handleVideo}
+                handleCheck={this.handleCheck}
+                
+                hasVideo={this.hasVideo}
                 categories={this.state.categories}  
                 equipments={this.state.equipments}  
                 cuisines={this.state.cuisines}  
-                handleCheck={this.handleCheck}
-                onAppendCuisine={this.onAppendCuisine}
-                onAppendEquipment={this.onAppendEquipment}
-                onRemoveCuisine={this.onRemoveCuisine.bind(this)}
-                onRemoveEquipment={this.onRemoveEquipment.bind(this)}
+                
+                getIngredients={this.getIngredients}
+
+                onAppendIngredient={this.onAppend(this.selected_ingredients)}
+                onAppendCuisine={this.onAppend(this.selected_cuisines)}
+                onAppendEquipment={this.onAppend(this.selected_equipments)}
+                
+                onRemoveIngredients={this.onRemove(this.selected_ingredients)}
+                onRemoveCuisine={this.onRemove(this.selected_cuisines)}
+                onRemoveEquipment={this.onRemove(this.selected_equipments)}
+                
                 initDataCuisine={this.state.initDataCuisine}
                 initDataEquipment={this.state.initDataEquipment}
                 />

@@ -60,8 +60,18 @@ export default class Sidebar extends React.Component {
         <li>
           {categories}
         </li>
+        <li><a className="subheader">Ingredients</a></li>
+        <li className="option">
+          <AutoComplete 
+            name="ingredient" 
+            placeholder="What's in your fridge?"
+            getData={this.props.getIngredients}
+            onAppend={this.props.onAppendIngredient}
+            onRemove={this.props.onRemoveIngredient}
+             />             
+        </li>
         <li><a className="subheader">Cuisines</a></li>
-        <li>
+        <li className="option">
           <AutoComplete 
             name="cuisine" 
             placeholder="Which are your favorite cuisines?" 
@@ -72,7 +82,7 @@ export default class Sidebar extends React.Component {
              />
         </li>
         <li><a className="subheader">Equipments</a></li>
-        <li>
+        <li className="option">
           <AutoComplete 
             name="equipment" 
             placeholder="What do you have in your kitchen?"
@@ -81,7 +91,7 @@ export default class Sidebar extends React.Component {
             onRemove={this.props.onRemoveEquipment}
             initData={this.props.initDataEquipment}
              />             
-        </li>
+        </li>        
       </ul>
       <a href="#" id="menu" data-activates="slide-out" className="button-collapse show-on-large">
         <i className="material-icons">menu</i>

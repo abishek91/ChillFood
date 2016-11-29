@@ -21,6 +21,7 @@ class SearchForm(forms.ModelForm):
     category=forms.ModelMultipleChoiceField(queryset=Category.objects.all(),required=False)
     equipment=forms.ModelMultipleChoiceField(queryset=Equipment.objects.all(),required=False)
     cuisine=forms.ModelMultipleChoiceField(queryset=Cuisine.objects.all(),required=False)
+    ingredient=forms.ModelMultipleChoiceField(queryset=Ingredient.objects.all(),required=False)
     sort_by = forms.IntegerField(initial=Sort.views,required=False) 
 
     class Meta:

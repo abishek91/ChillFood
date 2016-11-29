@@ -27,6 +27,7 @@ export default class IngredientForm extends React.Component {
             self.props.addData(data)
             .then(function(data){
               if (data.id) {
+                self.ingredient_input.setValue(data);
                 self.ingredient_input_id = data.id;
               }
             })

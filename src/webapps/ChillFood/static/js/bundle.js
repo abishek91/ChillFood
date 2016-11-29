@@ -35598,6 +35598,10 @@
 	
 	var _list2 = _interopRequireDefault(_list);
 	
+	var _ingredient = __webpack_require__(/*! ../api/ingredient.jsx */ 429);
+	
+	var _ingredient2 = _interopRequireDefault(_ingredient);
+	
 	var _preferences = __webpack_require__(/*! ../api/preferences.jsx */ 357);
 	
 	var _preferences2 = _interopRequireDefault(_preferences);
@@ -35649,6 +35653,7 @@
 	    };
 	    _this.hasVideo = false;
 	    _this.selected_categories = [];
+	    _this.selected_ingredients = [];
 	    _this.selected_cuisines = [];
 	    _this.selected_equipments = [];
 	    _this.recipe = new _recipe2.default();
@@ -35659,8 +35664,8 @@
 	    _this.handleCheck = _this.handleCheck.bind(_this);
 	    _this.load_posts = _this.load_posts.bind(_this);
 	    _this.initialize = _this.initialize.bind(_this);
-	    _this.onAppendCuisine = _this.onAppendCuisine.bind(_this);
-	    _this.onAppendEquipment = _this.onAppendEquipment.bind(_this);
+	    _this.onAppend = _this.onAppend.bind(_this);
+	    _this.onRemove = _this.onRemove.bind(_this);
 	    return _this;
 	  }
 	
@@ -35731,7 +35736,7 @@
 	      var search = this.state.search;
 	      console.log(search);
 	      this.recipe.get(search.text, search.userId, search.sortBy ? search.sortBy.value : 0, //TODO: Remove condition
-	      this.selected_categories, this.selected_cuisines, this.selected_equipments, this.hasVideo).then(function (data) {
+	      this.selected_categories, this.selected_cuisines, this.selected_equipments, this.hasVideo, this.selected_ingredients).then(function (data) {
 	
 	        this.setState({
 	          search: search,
@@ -35822,34 +35827,37 @@
 	      });
 	    }
 	  }, {
-	    key: 'onAppendCuisine',
-	    value: function onAppendCuisine(item) {
-	      this.selected_cuisines.push(item.id);
-	      this.search();
+	    key: 'onAppend',
+	    value: function onAppend(data) {
+	      var self = this;
+	      return function (item) {
+	        data.push(item.id);
+	        self.search();
+	      };
 	    }
 	  }, {
-	    key: 'onAppendEquipment',
-	    value: function onAppendEquipment(item) {
-	      this.selected_equipments.push(item.id);
-	      this.search();
+	    key: 'onRemove',
+	    value: function onRemove(data) {
+	      var self = this;
+	      return function (item) {
+	        var index = data.indexOf(item.id);
+	        if (index != -1) {
+	          data.splice(index, 1);
+	        }
+	        self.search();
+	      };
 	    }
 	  }, {
-	    key: 'onRemoveCuisine',
-	    value: function onRemoveCuisine(item) {
-	      var index = this.selected_cuisines.indexOf(item.id);
-	      if (index != -1) {
-	        this.selected_cuisines.splice(index, 1);
-	      }
-	      this.search();
-	    }
-	  }, {
-	    key: 'onRemoveEquipment',
-	    value: function onRemoveEquipment(item) {
-	      var index = this.selected_equipments.indexOf(item.id);
-	      if (index != -1) {
-	        this.selected_equipments.splice(index, 1);
-	      }
-	      this.search();
+	    key: 'getIngredients',
+	    value: function getIngredients(value, callback) {
+	      var ingredient_api = new _ingredient2.default();
+	      ingredient_api.get(value).then(function (data) {
+	        console.log('ingredients', data);
+	        if (data.data.length == 0) {
+	          data.data = [{ id: 0, text: ' + ' + value }];
+	        }
+	        callback(value, data.data);
+	      });
 	    }
 	  }, {
 	    key: 'render',
@@ -35871,16 +35879,24 @@
 	          sortBy: this.state.search.sortBy,
 	          handleSort: this.handleSort }),
 	        _react2.default.createElement(_sidebar2.default, {
-	          hasVideo: this.hasVideo,
 	          handleVideo: this.handleVideo,
+	          handleCheck: this.handleCheck,
+	
+	          hasVideo: this.hasVideo,
 	          categories: this.state.categories,
 	          equipments: this.state.equipments,
 	          cuisines: this.state.cuisines,
-	          handleCheck: this.handleCheck,
-	          onAppendCuisine: this.onAppendCuisine,
-	          onAppendEquipment: this.onAppendEquipment,
-	          onRemoveCuisine: this.onRemoveCuisine.bind(this),
-	          onRemoveEquipment: this.onRemoveEquipment.bind(this),
+	
+	          getIngredients: this.getIngredients,
+	
+	          onAppendIngredient: this.onAppend(this.selected_ingredients),
+	          onAppendCuisine: this.onAppend(this.selected_cuisines),
+	          onAppendEquipment: this.onAppend(this.selected_equipments),
+	
+	          onRemoveIngredients: this.onRemove(this.selected_ingredients),
+	          onRemoveCuisine: this.onRemove(this.selected_cuisines),
+	          onRemoveEquipment: this.onRemove(this.selected_equipments),
+	
 	          initDataCuisine: this.state.initDataCuisine,
 	          initDataEquipment: this.state.initDataEquipment
 	        }),
@@ -35973,7 +35989,7 @@
 	
 	  _createClass(Recipe, [{
 	    key: 'get',
-	    value: function get(query, userId, sort_id, categories, cuisines, equipments, hasVideo) {
+	    value: function get(query, userId, sort_id, categories, cuisines, equipments, hasVideo, ingredients) {
 	      var self = this;
 	      console.log('this.props.params.', userId);
 	      var lat = 0;
@@ -35994,6 +36010,7 @@
 	          category: categories,
 	          cuisine: cuisines,
 	          equipment: equipments,
+	          ingredient: ingredients,
 	          has_video: hasVideo,
 	          location_lat: lat,
 	          location_lon: lon
@@ -36716,12 +36733,32 @@
 	            _react2.default.createElement(
 	              'a',
 	              { className: 'subheader' },
+	              'Ingredients'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'li',
+	            { className: 'option' },
+	            _react2.default.createElement(_autoComplete2.default, {
+	              name: 'ingredient',
+	              placeholder: 'What\'s in your fridge?',
+	              getData: this.props.getIngredients,
+	              onAppend: this.props.onAppendIngredient,
+	              onRemove: this.props.onRemoveIngredient
+	            })
+	          ),
+	          _react2.default.createElement(
+	            'li',
+	            null,
+	            _react2.default.createElement(
+	              'a',
+	              { className: 'subheader' },
 	              'Cuisines'
 	            )
 	          ),
 	          _react2.default.createElement(
 	            'li',
-	            null,
+	            { className: 'option' },
 	            _react2.default.createElement(_autoComplete2.default, {
 	              name: 'cuisine',
 	              placeholder: 'Which are your favorite cuisines?',
@@ -36742,7 +36779,7 @@
 	          ),
 	          _react2.default.createElement(
 	            'li',
-	            null,
+	            { className: 'option' },
 	            _react2.default.createElement(_autoComplete2.default, {
 	              name: 'equipment',
 	              placeholder: 'What do you have in your kitchen?',
@@ -43032,6 +43069,7 @@
 	
 	            self.props.addData(data).then(function (data) {
 	              if (data.id) {
+	                self.ingredient_input.setValue(data);
 	                self.ingredient_input_id = data.id;
 	              }
 	            }).catch(function (data) {
