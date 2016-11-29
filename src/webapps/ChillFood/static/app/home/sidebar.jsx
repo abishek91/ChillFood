@@ -17,6 +17,15 @@ export default class Sidebar extends React.Component {
   handleChange(params) {
     console.log(params)
   }
+
+  componentDidMount(){ 
+    const self = this;
+    $("#menu").sideNav({
+      closeOnClick: false, 
+      menuWidth: 370,
+    });
+  }
+
   render() {
     let hasVideo;
     const handleCheck = this.props.handleCheck;
@@ -53,29 +62,25 @@ export default class Sidebar extends React.Component {
         </li>
         <li><a className="subheader">Cuisines</a></li>
         <li>
-          <div className="option">
-              <div className="autocomplete" id="multiple">
-                  <div className="ac-inputCuisine">
-                      <input type="text" id="multipleCuisineInput" placeholder="Which are your favorite cuisines?" data-activates="multipleCuisineDropdown" data-beloworigin="true" />
-                  </div>
-                  <div className="ac-cuisines"></div>
-                  <ul id="multipleCuisineDropdown" className="dropdown-content ac-dropdown"></ul>
-                  <input type="hidden" name="multipleHidden" />
-              </div>
-          </div>
+          <AutoComplete 
+            name="cuisine" 
+            placeholder="Which are your favorite cuisines?" 
+            data={this.props.cuisines}
+            onAppend={this.props.onAppendCuisine}
+            onRemove={this.props.onRemoveCuisine}
+            initData={this.props.initDataCuisine}
+             />
         </li>
         <li><a className="subheader">Equipments</a></li>
         <li>
-          <div className="option">
-              <div className="autocomplete" id="multiple">
-                  <div className="ac-inputEquipment">
-                      <input type="text" id="multipleEquipmentInput" placeholder="What do you have in your kitchen?" data-activates="multipleEquipmentDropdown" data-beloworigin="true" />
-                  </div>
-                  <div className="ac-Equipments"></div>
-                  <ul id="multipleEquipmentDropdown" className="dropdown-content ac-dropdown"></ul>
-                  <input type="hidden" name="multipleHidden" />
-              </div>
-          </div>
+          <AutoComplete 
+            name="equipment" 
+            placeholder="What do you have in your kitchen?"
+            data={this.props.equipments}
+            onAppend={this.props.onAppendEquipment}
+            onRemove={this.props.onRemoveEquipment}
+            initData={this.props.initDataEquipment}
+             />             
         </li>
       </ul>
       <a href="#" id="menu" data-activates="slide-out" className="button-collapse show-on-large">

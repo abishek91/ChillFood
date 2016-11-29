@@ -22,7 +22,10 @@ export default class ListApp extends React.Component{
           items={this.props.data} 
           remove={this.props.remove}
         />
-        <this.props.form addItem={this.props.addItem} />
+        <this.props.form 
+          addItem={this.props.addItem} 
+          getData={this.props.getData} 
+          addData={this.props.addData} />
       </div>
     );
   }

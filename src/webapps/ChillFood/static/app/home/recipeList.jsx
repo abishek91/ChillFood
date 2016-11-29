@@ -7,7 +7,6 @@ import querystring from 'querystring';
 import List from '../api/list.jsx'
 import Preferences from '../api/preferences.jsx'
 import RecipeThumbnail from './recipeThumbnail.jsx'
-import AutoComplete from './autoComplete.jsx'
 import SortBar from './sortBar.jsx'
 import Sidebar from './sidebar.jsx'
 
@@ -30,7 +29,9 @@ export default class RecipeList extends React.Component {
       next: false,
       categories: [],
       equipments: [],
-      cuisines: [],      
+      cuisines: [],   
+      initDataCuisine: [],
+      initDataEquipment: [],   
     }
     this.hasVideo = false;
     this.selected_categories=[];
@@ -44,6 +45,8 @@ export default class RecipeList extends React.Component {
     this.handleCheck = this.handleCheck.bind(this);
     this.load_posts = this.load_posts.bind(this);
     this.initialize = this.initialize.bind(this);
+    this.onAppendCuisine = this.onAppendCuisine.bind(this);
+    this.onAppendEquipment = this.onAppendEquipment.bind(this);
   }
 
   handleSort(sortBy) {
@@ -174,102 +177,57 @@ export default class RecipeList extends React.Component {
     const self = this;
     
     //Initialize Tags
+    console.log(selected_cuisines)
+    let initDataCuisine = []
     selected_cuisines.forEach(function (item) {
       const cuisine = cuisines.filter(function (e) {
         return e.id == item;
       })
       console.log(cuisine,cuisines)
-      self.cuisine_input.append({id:item,text:cuisine[0].text});
+      initDataCuisine.push({id:item,text:cuisine[0].text});
     });
 
-    
+    console.log('initData 2',this.initDataCuisine)
+    let initDataEquipment = []
     selected_equipments.forEach(function (item) {
       const equipment = equipments.filter(function (e) {
         return e.id == item;
       })
-      self.equipment_input.append({id:item,text:equipment[0].text});
+      initDataEquipment.push({id:item,text:equipment[0].text});
     });
+
+    this.setState({
+      initDataCuisine: initDataCuisine,
+      initDataEquipment: initDataEquipment,
+    })
   }
 
-  //TODO: Move to she sidebar Component
-  componentDidMount(){ 
-    const self = this;
-    // $(".button-collapse").sideNav();
-    $("#menu").sideNav({
-      closeOnClick: false, // Closes side-nav on <a> clicks, useful for Angular/Meteor
-      menuWidth: 370,
-    });
-
-    $(function() {
-      self.cuisine_input = $('#multipleCuisineInput').materialize_autocomplete({
-          multiple: {
-              enable: true,
-              onExist: function (item) {
-                  Materialize.toast('Tag: ' + item.text + ' is already added!', 2000);
-              },
-              onAppend: function (cuisine) {
-                self.selected_cuisines.push(cuisine.id);
-                self.search();
-              },
-              onRemove: function (item) {
-                var index = self.selected_cuisines.indexOf(item.id);
-                if(index!=-1){
-                   self.selected_cuisines.splice(index, 1);
-                }
-                self.search();
-              }
-          },
-          appender: {
-              el: '.ac-cuisines',
-              tagTemplate: '<div class="chip" data-id="<%= item.id %>" data-text="<%= item.text %>"><%= item.text %><i class="material-icons close">close</i></div>'
-          },
-          dropdown: {
-              el: '#multipleCuisineDropdown'
-          },
-          getData:(value, callback) => {
-            var data = self.state.cuisines.filter((c)=> c.text.toUpperCase().indexOf(value) >= 0)      
-            callback(value,data)
-          }
-          
-      });
-      
-      // '<div class="chip" data-id="1" data-text="mexican">mexican<i class="material-icons close">close</i></div>'
-
-      self.equipment_input = $('#multipleEquipmentInput').materialize_autocomplete({
-          multiple: {
-              enable: true,
-              onExist: function (item) {
-                  Materialize.toast('Tag: ' + item.text + ' is already added!', 2000);
-              },
-              onAppend: function (equipment) {
-                self.selected_equipments.push(equipment.id);
-                self.search();
-              },
-              onRemove: function (item) {
-                var index = self.selected_equipments.indexOf(item.id);
-                if(index!=-1){
-                   self.selected_equipments.splice(index, 1);
-                }
-                self.search();
-              }
-          },
-          appender: {
-              el: '.ac-Equipments',
-              tagTemplate: '<div class="chip" data-id="<%= item.id %>" data-text="<%= item.text %>"><%= item.text %><i class="material-icons close">close</i></div>'
-          },
-          dropdown: {
-              el: '#multipleEquipmentDropdown'
-          },
-          getData:(value, callback) => {
-            var data = self.state.equipments.filter((c)=> c.text.toUpperCase().indexOf(value) >= 0)      
-            console.log(data);
-            callback(value,data)
-          }
-          
-      });
-    });
+  onAppendCuisine(item) {
+    this.selected_cuisines.push(item.id);
+    this.search();
   }
 
+  onAppendEquipment(item) {
+    this.selected_equipments.push(item.id);
+    this.search();
+  }
+
+  onRemoveCuisine(item) {
+    var index = this.selected_cuisines.indexOf(item.id);
+    if(index!=-1){
+       this.selected_cuisines.splice(index, 1);
+    }
+    this.search();
+  }
+
+  onRemoveEquipment(item) {
+    var index = this.selected_equipments.indexOf(item.id);
+    if(index!=-1){
+       this.selected_equipments.splice(index, 1);
+    }
+    this.search();
+  }
+  
   render() {
     console.log(this.state.search.sortBy)
     // Map through the items
@@ -289,7 +247,14 @@ export default class RecipeList extends React.Component {
                 categories={this.state.categories}  
                 equipments={this.state.equipments}  
                 cuisines={this.state.cuisines}  
-                handleCheck={this.handleCheck}/>
+                handleCheck={this.handleCheck}
+                onAppendCuisine={this.onAppendCuisine}
+                onAppendEquipment={this.onAppendEquipment}
+                onRemoveCuisine={this.onRemoveCuisine.bind(this)}
+                onRemoveEquipment={this.onRemoveEquipment.bind(this)}
+                initDataCuisine={this.state.initDataCuisine}
+                initDataEquipment={this.state.initDataEquipment}
+                />
               <div className="container recipes">            
                   <div className="progress">
                         <div className="indeterminate"></div>
