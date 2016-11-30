@@ -1,7 +1,7 @@
 /*
  * party.jsx - Handle requests to the /api/part[y|ies]
  */
-import get from './api.jsx'
+import {get} from './api.jsx'
 
 var querystring = require('querystring')
 

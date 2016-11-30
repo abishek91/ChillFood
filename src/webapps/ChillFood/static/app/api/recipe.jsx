@@ -1,10 +1,8 @@
 /*
  * recipe.js - Handle requests to the /api/recipe
  */
-var querystring = require('querystring')
-
-const url = '/api/recipes'
-
+import querystring from 'querystring'
+import {get, post} from './api.jsx'
 
 //LOCATION TEMPORARILY HERE
 function getLocation() {
@@ -38,6 +36,8 @@ export default class Recipe {
         cuisines = []
     if (!equipments)
         equipments = []
+    if (!ingredients)
+        ingredients = []
     if (!sort_id)
         sort_id = 0
 
@@ -47,7 +47,7 @@ export default class Recipe {
         lat = coords.latitude;
         lon = coords.longitude;
       }
-      return self.connect(url + '?' +
+      return self.connect('/api/recipes?' +
      querystring.stringify({search: query, 
                             user_id: userId,
                             sort_by: sort_id,
@@ -67,38 +67,15 @@ export default class Recipe {
   connect(url){
     let self = this;
 
-    var promise = new Promise(function (resolve,reject) {
-      fetch(url, {  
-        credentials: 'include',
-        method: 'GET',  
-        headers: {  
-            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-            "X-CSRFToken": getCookie('csrftoken')
-        }
-      })
-      .then(function(response) {
-        if (!response.ok) {
-            throw Error(response.statusText);
-        }
-        
-        return response.text();
-      })
-      .then(function(text) { 
-        var data = JSON.parse(text);
-        self.next = data.next;
-      // 
-        resolve(data.data);
-      })
-      .catch(function(error) {
-        Materialize.toast('There has been a problem, please contact your administrator.');        
-        reject(error);
-      });
+    return get(url)
+    .then(function(data) { 
+      self.next = data.next;
+      return data.data;
     })
-
-    return promise;
+    
   }
 
   getMore() {
-    return this.connect(this.next);
+    return get(this.next);
   }
 }

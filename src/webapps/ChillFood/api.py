@@ -180,12 +180,15 @@ def recipe_create(request, recipe_id = 0):
     if request.method == "GET":
         return JsonResponse(recipe.to_json(), safe=False);
 
-    body_unicode = request.body.decode('utf-8')
-    body = json.loads(body_unicode)
-    print(body)
+    try:
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+    except Exception:
+        return JsonResponse({'error':'Body malformed'},status=406)        
+    
     
     #Validations
-    form = RecipeForm(body, instance=recipe)
+    form = RecipeForm(request.POST, instance=recipe)
 
     if not form.is_valid():
         return JsonResponse(dict(form.errors.items()),status=406)        
@@ -312,8 +315,11 @@ def ingredient_create(request):
     if request.method == "GET":
         raise Http404("Url does not exist")
 
-    body_unicode = request.body.decode('utf-8')
-    body = json.loads(body_unicode)
+    try:
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+    except Exception:
+        return JsonResponse({'error':'Body malformed'},status=406)        
 
     #Validations
     form = IngredientForm(body, instance=ingredient)
@@ -345,9 +351,12 @@ def party_create(request):
     if request.method == "GET":
         raise Http404("Url does not exist")
 
-    body_unicode = request.body.decode('utf-8')
-    body = json.loads(body_unicode)
-
+    try:
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+    except Exception:
+        return JsonResponse({'error':'Body malformed'},status=406)        
+    
     #Validations
     form = PartyForm(body, instance=party)
     print(request.user)
@@ -484,3 +493,30 @@ def user(request):
         lista = [{'id':c.id, 'text':c.name, 'distance':None}for c in users]
         
     return JsonResponse(lista, safe=False);
+
+
+#Profile
+@csrf_exempt
+@login_required
+def edit_profile(request):
+    context = {}
+
+    user = get_object_or_404(User, pk=request.user.id)
+
+    if request.method == "GET":
+        return JsonResponse(user.to_json(), safe=False);
+
+    try:
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+    except Exception:
+        return JsonResponse({'error':'Body malformed'},status=406)        
+    
+    form = EditProfileForm(body, instance=user)
+    
+    if not form.is_valid():
+        return JsonResponse(dict(form.errors.items()),status=406)        
+
+    form.save()
+
+    return JsonResponse(user.to_json(), safe=False);

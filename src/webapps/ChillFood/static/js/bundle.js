@@ -79,6 +79,10 @@
 	
 	var _profile2 = _interopRequireDefault(_profile);
 	
+	var _editProfile = __webpack_require__(/*! ./profile/editProfile.jsx */ 435);
+	
+	var _editProfile2 = _interopRequireDefault(_editProfile);
+	
 	var _partyList = __webpack_require__(/*! ./party/partyList.jsx */ 368);
 	
 	var _partyList2 = _interopRequireDefault(_partyList);
@@ -95,6 +99,7 @@
 	  _react2.default.createElement(_reactRouter.Route, { path: '/profile/:userId/followers', component: _followers2.default }),
 	  _react2.default.createElement(_reactRouter.Route, { path: '/profile/:userId/following', component: _following2.default }),
 	  _react2.default.createElement(_reactRouter.Redirect, { from: 'x/:userId', to: 'profile/:userId' }),
+	  _react2.default.createElement(_reactRouter.Route, { path: '/edit_profile', component: _editProfile2.default }),
 	  _react2.default.createElement(_reactRouter.Route, { path: '/recipe/create', component: _recipeCreate2.default }),
 	  _react2.default.createElement(_reactRouter.Route, { path: '/recipe/:recipeId', component: _recipeDetails2.default }),
 	  _react2.default.createElement(_reactRouter.Route, { path: '/party/list', component: _partyList2.default }),
@@ -22322,6 +22327,9 @@
 	      var static_files = '/static/';
 	      var user = {};
 	
+	      var username = userName;
+	      if (this.props.username) username = this.props.username;
+	
 	      return _react2.default.createElement(
 	        'div',
 	        null,
@@ -22339,7 +22347,7 @@
 	                { className: 'brand-logo', href: '/' },
 	                _react2.default.createElement('img', { alt: 'ChillFood', src: static_files + 'images/ChillFood-white.png', className: 'logo' })
 	              ),
-	              _react2.default.createElement(Buttons, null),
+	              _react2.default.createElement(Buttons, { username: username }),
 	              _react2.default.createElement(_notifications2.default, null),
 	              _react2.default.createElement(SearchForm, { text: this.state.text, handleSearch: this.handleSearch })
 	            )
@@ -22356,7 +22364,7 @@
 	
 	
 	var Buttons = function Buttons(_ref) {
-	  var user = _ref.user;
+	  var username = _ref.username;
 	
 	  var profileLink = '/#/profile/' + userId;
 	
@@ -22384,7 +22392,7 @@
 	        { trigger: _react2.default.createElement(
 	            'a',
 	            { className: 'name dropdown-button', 'data-activates': 'dropdown1' },
-	            userName,
+	            username,
 	            _react2.default.createElement(
 	              'i',
 	              { className: 'material-icons right' },
@@ -22400,6 +22408,16 @@
 	            'people'
 	          ),
 	          'Party'
+	        ),
+	        _react2.default.createElement(
+	          _reactMaterialize.NavItem,
+	          { href: '#/edit_profile' },
+	          _react2.default.createElement(
+	            'i',
+	            { className: 'material-icons left' },
+	            'mode_edit'
+	          ),
+	          'Edit Profile'
 	        ),
 	        _react2.default.createElement(
 	          _reactMaterialize.NavItem,
@@ -27620,59 +27638,48 @@
 	  value: true
 	});
 	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /*
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * lists.jsx - Handle requests to the /api/lists
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+	
+	
+	var _querystring = __webpack_require__(/*! querystring */ 216);
+	
+	var _querystring2 = _interopRequireDefault(_querystring);
+	
+	var _api = __webpack_require__(/*! ./api.jsx */ 229);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	/*
-	 * lists.jsx - Handle requests to the /api/lists
-	 */
-	var querystring = __webpack_require__(/*! querystring */ 216);
-	
-	var url = '/api/user';
-	
-	var List = function () {
-	  function List() {
-	    _classCallCheck(this, List);
+	var User = function () {
+	  function User() {
+	    _classCallCheck(this, User);
 	  }
 	
-	  _createClass(List, [{
+	  _createClass(User, [{
 	    key: 'get',
 	    value: function get(name) {
 	      var self = this;
-	
-	      var promise = new Promise(function (resolve, reject) {
-	        fetch(url + '?' + querystring.stringify({ name: name }), {
-	          credentials: 'include',
-	          method: 'GET',
-	          headers: {
-	            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-	            "X-CSRFToken": getCookie('csrftoken')
-	          }
-	        }).then(function (response) {
-	          if (!response.ok) {
-	            throw Error(response.statusText);
-	          }
-	
-	          return response.text();
-	        }).then(function (text) {
-	          var data = JSON.parse(text);
-	          resolve(data);
-	        }).catch(function (error) {
-	          Materialize.toast('There has been a problem, please contact your administrator.');
-	          console.log('There has been a problem with your fetch operation: ' + error.message, 400);
-	          reject(error);
-	        });
-	      });
-	
-	      return promise;
+	      return (0, _api.get)('/api/user?' + _querystring2.default.stringify({ name: name }));
+	    }
+	  }, {
+	    key: 'me',
+	    value: function me() {
+	      return (0, _api.get)('/api/edit_profile');
+	    }
+	  }, {
+	    key: 'save',
+	    value: function save(body) {
+	      return (0, _api.post)('/api/edit_profile', body);
 	    }
 	  }]);
 	
-	  return List;
+	  return User;
 	}();
 	
-	exports.default = List;
+	exports.default = User;
 
 /***/ },
 /* 228 */
@@ -27694,10 +27701,6 @@
 	
 	var _api = __webpack_require__(/*! ./api.jsx */ 229);
 	
-	var _api2 = _interopRequireDefault(_api);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var querystring = __webpack_require__(/*! querystring */ 216);
@@ -27713,7 +27716,7 @@
 	  _createClass(Party, [{
 	    key: 'get',
 	    value: function get() {
-	      return (0, _api2.default)(url_get).then(function (data) {
+	      return (0, _api.get)(url_get).then(function (data) {
 	        this.next = data.next;
 	        return data;
 	      }.bind(this));
@@ -27722,7 +27725,7 @@
 	    key: 'load_more',
 	    value: function load_more() {
 	      if (this.next) {
-	        return (0, _api2.default)(this.next).then(function (data) {
+	        return (0, _api.get)(this.next).then(function (data) {
 	          this.next = data.next;
 	          return data;
 	        }.bind(this));
@@ -35964,16 +35967,20 @@
 	  value: true
 	});
 	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /*
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * recipe.js - Handle requests to the /api/recipe
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+	
+	
+	var _querystring = __webpack_require__(/*! querystring */ 216);
+	
+	var _querystring2 = _interopRequireDefault(_querystring);
+	
+	var _api = __webpack_require__(/*! ./api.jsx */ 229);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	/*
-	 * recipe.js - Handle requests to the /api/recipe
-	 */
-	var querystring = __webpack_require__(/*! querystring */ 216);
-	
-	var url = '/api/recipes';
 	
 	//LOCATION TEMPORARILY HERE
 	function getLocation() {
@@ -36008,6 +36015,7 @@
 	      if (!categories) categories = [];
 	      if (!cuisines) cuisines = [];
 	      if (!equipments) equipments = [];
+	      if (!ingredients) ingredients = [];
 	      if (!sort_id) sort_id = 0;
 	
 	      var promise = getLocation().then(function (coords) {
@@ -36015,7 +36023,7 @@
 	          lat = coords.latitude;
 	          lon = coords.longitude;
 	        }
-	        return self.connect(url + '?' + querystring.stringify({ search: query,
+	        return self.connect('/api/recipes?' + _querystring2.default.stringify({ search: query,
 	          user_id: userId,
 	          sort_by: sort_id,
 	          category: categories,
@@ -36035,37 +36043,15 @@
 	    value: function connect(url) {
 	      var self = this;
 	
-	      var promise = new Promise(function (resolve, reject) {
-	        fetch(url, {
-	          credentials: 'include',
-	          method: 'GET',
-	          headers: {
-	            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-	            "X-CSRFToken": getCookie('csrftoken')
-	          }
-	        }).then(function (response) {
-	          if (!response.ok) {
-	            throw Error(response.statusText);
-	          }
-	
-	          return response.text();
-	        }).then(function (text) {
-	          var data = JSON.parse(text);
-	          self.next = data.next;
-	          // 
-	          resolve(data.data);
-	        }).catch(function (error) {
-	          Materialize.toast('There has been a problem, please contact your administrator.');
-	          reject(error);
-	        });
+	      return (0, _api.get)(url).then(function (data) {
+	        self.next = data.next;
+	        return data.data;
 	      });
-	
-	      return promise;
 	    }
 	  }, {
 	    key: 'getMore',
 	    value: function getMore() {
-	      return this.connect(this.next);
+	      return (0, _api.get)(this.next);
 	    }
 	  }]);
 	
@@ -37651,11 +37637,6 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'container' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'progress' },
-	            _react2.default.createElement('div', { className: 'indeterminate' })
-	          ),
 	          _react2.default.createElement(
 	            _reactMaterialize.Collapsible,
 	            { popout: true, accordion: true },
@@ -44097,6 +44078,182 @@
 	});
 	;
 	//# sourceMappingURL=index.js.map
+
+/***/ },
+/* 435 */
+/*!********************************************!*\
+  !*** ./static/app/profile/editProfile.jsx ***!
+  \********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactMaterialize = __webpack_require__(/*! react-materialize */ 174);
+	
+	var _user = __webpack_require__(/*! ../api/user.jsx */ 227);
+	
+	var _user2 = _interopRequireDefault(_user);
+	
+	var _searchBar = __webpack_require__(/*! ../searchBar.jsx */ 173);
+	
+	var _searchBar2 = _interopRequireDefault(_searchBar);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var EditProfile = function (_React$Component) {
+	  _inherits(EditProfile, _React$Component);
+	
+	  function EditProfile(props) {
+	    _classCallCheck(this, EditProfile);
+	
+	    var _this = _possibleConstructorReturn(this, (EditProfile.__proto__ || Object.getPrototypeOf(EditProfile)).call(this, props));
+	
+	    _this.state = {
+	      name: userName
+	    };
+	    _this.handleNameChange = _this.handleNameChange.bind(_this);
+	    _this.handleBirthdateChange = _this.handleBirthdateChange.bind(_this);
+	    _this.handleBioChange = _this.handleBioChange.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(EditProfile, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      var self = this;
+	      new _user2.default().me().then(function (data) {
+	        self.setState(data);
+	      });
+	    }
+	  }, {
+	    key: 'handleNameChange',
+	    value: function handleNameChange(event) {
+	      this.setState({ name: event.target.value });
+	    }
+	  }, {
+	    key: 'handleBirthdateChange',
+	    value: function handleBirthdateChange(event) {
+	      this.setState({ birthdate: event.target.value });
+	    }
+	  }, {
+	    key: 'handleBioChange',
+	    value: function handleBioChange(event) {
+	      this.setState({ bio: event.target.value });
+	    }
+	  }, {
+	    key: 'handleSave',
+	    value: function handleSave() {
+	      var self = this;
+	      new _user2.default().save(this.state).then(function (data) {
+	        self.setState(data);
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+	
+	      var user = this.state;
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(_searchBar2.default, { username: user.name }),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'form-signin' },
+	          _react2.default.createElement(
+	            'h2',
+	            null,
+	            'Edit Profile'
+	          ),
+	          _react2.default.createElement(
+	            _reactMaterialize.Row,
+	            null,
+	            _react2.default.createElement(
+	              'label',
+	              { htmlFor: 'name' },
+	              'name'
+	            ),
+	            _react2.default.createElement('input', { type: 'text',
+	              name: 'name',
+	              placeholder: 'name',
+	              value: user.name,
+	              onChange: this.handleNameChange
+	            })
+	          ),
+	          _react2.default.createElement(
+	            _reactMaterialize.Row,
+	            null,
+	            _react2.default.createElement(
+	              'label',
+	              { htmlFor: 'birthdate' },
+	              'birthdate'
+	            ),
+	            _react2.default.createElement('input', { type: 'date',
+	              name: 'birthdate',
+	              placeholder: 'birthdate',
+	              value: user.birthdate,
+	              onChange: this.handleBirthdateChange
+	            })
+	          ),
+	          _react2.default.createElement(
+	            _reactMaterialize.Row,
+	            null,
+	            _react2.default.createElement(
+	              'label',
+	              { htmlFor: 'bio' },
+	              'bio'
+	            ),
+	            _react2.default.createElement('textarea', { type: 'text',
+	              className: 'materialize-textarea',
+	              name: 'bio',
+	              placeholder: 'bio',
+	              value: user.bio,
+	              onChange: this.handleBioChange
+	            })
+	          ),
+	          _react2.default.createElement(
+	            _reactMaterialize.Row,
+	            null,
+	            _react2.default.createElement('input', { type: 'hidden',
+	              name: 'photo',
+	              placeholder: 'photo',
+	              defaultValue: user.photo,
+	              ref: 'photo'
+	            })
+	          ),
+	          _react2.default.createElement(
+	            'button',
+	            { className: 'right btn waves-effect waves-light blue', type: 'button', onClick: function onClick() {
+	                return _this2.handleSave();
+	              } },
+	            'Save'
+	          )
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return EditProfile;
+	}(_react2.default.Component);
+	
+	exports.default = EditProfile;
 
 /***/ }
 /******/ ]);

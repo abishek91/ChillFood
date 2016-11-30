@@ -6,6 +6,7 @@ import RecipeList from './home/recipeList.jsx'
 import Followers from './followers.jsx'
 import Following from './following.jsx'
 import Profile from './profile.jsx'
+import EditProfile from './profile/editProfile.jsx'
 import PartyList from './party/partyList.jsx'
 
 // import App from './app.jsx'
@@ -18,6 +19,7 @@ render((
     <Route path="/profile/:userId/followers" component={Followers} />
     <Route path="/profile/:userId/following" component={Following} />
     <Redirect from="x/:userId" to="profile/:userId" />
+    <Route path="/edit_profile" component={EditProfile} />
     <Route path="/recipe/create" component={RecipeCreate} />
     <Route path="/recipe/:recipeId" component={RecipeDetails} />
     <Route path="/party/list" component={PartyList} />

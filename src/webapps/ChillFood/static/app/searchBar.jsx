@@ -40,6 +40,10 @@ export default class SearchBar extends React.Component {
     const static_files = '/static/';
     const user ={};
 
+    let username = userName;
+    if (this.props.username)
+      username = this.props.username;
+    
     return (
       <div>
         <div className="navbar-fixed">
@@ -51,7 +55,7 @@ export default class SearchBar extends React.Component {
                 <img alt="ChillFood" src={static_files + 'images/ChillFood-white.png'} className="logo"/>
               </a>
 
-              <Buttons />
+              <Buttons username={username} />
               <Notifications />
 
               <SearchForm text={this.state.text} handleSearch={this.handleSearch} /> 
@@ -65,7 +69,7 @@ export default class SearchBar extends React.Component {
 }
 
 
-const Buttons = ({user}) => {
+const Buttons = ({username}) => {
     var profileLink = '/#/profile/' + userId;
 
   return (<ul className="right hide-on-med-and-down">
@@ -76,9 +80,10 @@ const Buttons = ({user}) => {
             </li>
             <li>
              <Dropdown trigger={
-             <a className="name dropdown-button" data-activates="dropdown1">{userName}<i className="material-icons right">arrow_drop_down</i></a>
+             <a className="name dropdown-button" data-activates="dropdown1">{username}<i className="material-icons right">arrow_drop_down</i></a>
           }>
            <NavItem href='#/party/list'><i className="material-icons left">people</i>Party</NavItem>
+           <NavItem href='#/edit_profile'><i className="material-icons left">mode_edit</i>Edit Profile</NavItem>
            <NavItem href={profileLink}><i className="material-icons left">perm_identity</i>Profile</NavItem>
            <NavItem href="/logout"><i className="material-icons left">power_settings_new</i>Sign Out</NavItem>
         </Dropdown>     

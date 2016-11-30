@@ -18,7 +18,7 @@ class User(AbstractUser):
   name = models.TextField(max_length=100)
   bio = models.TextField(max_length=420, blank=True)
   birthdate = models.DateField(null=True, blank=True, validators=[no_future_dates])
-  photo = models.ImageField(upload_to="user_photo", blank=True)
+  photo = models.CharField(max_length = 2000, blank=True)
   following = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='followers', symmetrical=False)
   is_confirmed = models.BooleanField(default=False)
   location_lat = models.DecimalField(max_digits=9, decimal_places=6, default=0)
@@ -26,13 +26,21 @@ class User(AbstractUser):
   
   def __unicode__(self):
     return self.name
-  
+
+  def get_full_name(self):
+    print('here',self.name)
+    if len(self.name):
+      return self.name
+    print('here',self.first_name,'%s %s' % (self.first_name, self.last_name))
+    return '%s %s' % (self.first_name, self.last_name)
+
   def to_json(self):
     return {
       "id": self.id,
-      "name": self.name,
+      "name": self.get_full_name(),
       "photo": str(self.photo),
       "bio": self.bio,
+      "birthdate": self.birthdate,
       "following": serializers.serialize('json',self.following.all()),
       "followers": serializers.serialize('json',self.followers.all())
     }

@@ -84,9 +84,6 @@ export default class PartyList extends React.Component {
     return (<div>
               <SearchBar handleSearch={this.handleSearch} />
               <div className="container">            
-                  <div className="progress">
-                        <div className="indeterminate"></div>
-                  </div>  
                   <Collapsible popout accordion={true}>
                     {items}
                   </Collapsible>
