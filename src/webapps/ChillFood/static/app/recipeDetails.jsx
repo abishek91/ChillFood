@@ -113,6 +113,15 @@ constructor() {
               alt="recipe pic" 
               className="big left z-depth-1 frame" />
             </Col>
+            <Col s={6} className="recipe-pic">
+              <iframe 
+                width="560" 
+                height="315" 
+                src={this.state.recipe.video_link}
+                frameBorder="0" 
+                allowFullScreen>
+              </iframe>
+            </Col>
             <Col s={5}>
               <RecipeTitle 
                 difficulty={this.state.recipe.difficulty.difficulty__avg} 

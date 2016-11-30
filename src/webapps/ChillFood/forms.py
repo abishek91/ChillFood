@@ -3,6 +3,8 @@ from django import forms
 from .models import *
 
 from enum import IntEnum
+from django.core.validators import RegexValidator
+
 
 class Sort(IntEnum):
     views = 1
@@ -81,11 +83,22 @@ class RecipeForm(forms.ModelForm):
     category_set=forms.ModelMultipleChoiceField(queryset=Category.objects.all(),required=False)
     equipment_set=forms.ModelMultipleChoiceField(queryset=Equipment.objects.all(),required=False)
     cuisine_set=forms.ModelMultipleChoiceField(queryset=Cuisine.objects.all(),required=False)
-    
+    video_link = forms.CharField(required=False, 
+                                 validators=[RegexValidator(regex=r"^https?\:\/\/www\.youtube\.com\/watch\?v=\w*$",
+                                                            message='Invalid youtube link.',
+                                                            code='invalid_username')])
     class Meta:
         model = Recipe
         exclude = ['pic', 'cook','ingredients']
     
+    def clean_video_link(self):
+        video_link = self.cleaned_data.get('video_link')
+
+        if video_link:
+            video_link = video_link.replace('watch?v=','embed/')
+        
+        return video_link
+
 class PartyForm(forms.ModelForm):
     class Meta:
         model = Party

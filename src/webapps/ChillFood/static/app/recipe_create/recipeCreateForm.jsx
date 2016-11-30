@@ -223,6 +223,7 @@ export default class RecipeCreate extends React.Component {
               <input type="text" 
                      name="video_link" 
                      placeholder="YouTube link"
+                     pattern="^https?\:\/\/www\.youtube\.com\/watch\?v=\w*$"
                      value={this.props.value.video_link}
                      ref="video_linkInput"
                      onChange={this.handleChange}

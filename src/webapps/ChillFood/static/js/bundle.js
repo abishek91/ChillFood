@@ -22178,6 +22178,16 @@
 	            ),
 	            _react2.default.createElement(
 	              _reactMaterialize.Col,
+	              { s: 6, className: 'recipe-pic' },
+	              _react2.default.createElement('iframe', {
+	                width: '560',
+	                height: '315',
+	                src: this.state.recipe.video_link,
+	                frameBorder: '0',
+	                allowFullScreen: true })
+	            ),
+	            _react2.default.createElement(
+	              _reactMaterialize.Col,
 	              { s: 5 },
 	              _react2.default.createElement(_recipeTitle2.default, {
 	                difficulty: this.state.recipe.difficulty.difficulty__avg,
@@ -35386,6 +35396,7 @@
 	              _react2.default.createElement('input', { type: 'text',
 	                name: 'video_link',
 	                placeholder: 'YouTube link',
+	                pattern: '^https?\\:\\/\\/www\\.youtube\\.com\\/watch\\?v=\\w*$',
 	                value: this.props.value.video_link,
 	                ref: 'video_linkInput',
 	                onChange: this.handleChange

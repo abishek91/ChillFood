@@ -100,7 +100,7 @@ def recipes(request):
     #     query &= Q(price__lte=form.cleaned_data['price_max'])
 
     if form.cleaned_data['has_video']:
-        query &= Q(video_link="")
+        query &= ~Q(video_link="")
 
 
     #Order
@@ -190,7 +190,6 @@ def recipe_create(request, recipe_id = 0):
     if not form.is_valid():
         return JsonResponse(dict(form.errors.items()),status=406)        
     
-    print('Categories 2',form.cleaned_data['category_set'])
 
     if 'ingredients' not in body:
         return JsonResponse([{'ingredients': 'Ingredients are required.'}],status=406)        
