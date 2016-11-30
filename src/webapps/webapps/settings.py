@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ChillFood',
-    'storages'
+    'storages',
+    'social.apps.django_app.default',
 ]
 
 MIDDLEWARE = [
@@ -69,10 +70,20 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social.apps.django_app.context_processors.backends',
+                'social.apps.django_app.context_processors.login_redirect',
             ],
         },
     },
 ]
+
+
+AUTHENTICATION_BACKENDS = (
+   'social.backends.facebook.FacebookOAuth2',
+   'social.backends.google.GoogleOAuth2',
+   'social.backends.twitter.TwitterOAuth',
+   'django.contrib.auth.backends.ModelBackend',
+)
 
 WSGI_APPLICATION = 'webapps.wsgi.application'
 
@@ -150,6 +161,12 @@ USE_TZ = True
 AUTH_USER_MODEL = 'ChillFood.User'
 LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = '/'
+SOCIAL_AUTH_FACEBOOK_KEY = '1221503734555521' 
+SOCIAL_AUTH_FACEBOOK_SECRET = 'd9bc978c8a7d5c1a7ba3a7605cc76e32'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '285121225157-krvai843hflq522fga6e4j76qi6iojn2.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'NIzzqljibrXSKtSP3fobtDlD'
+SOCIAL_AUTH_TWITTER_KEY = 'ymnJRobiUITl0kUDogUsdZLVz'
+SOCIAL_AUTH_TWITTER_SECRET = 'JV90sbTazy23RtL4fpdPeNrr1KSUL1PACRqdto80TzaWPSnluz'
 
 # Email
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

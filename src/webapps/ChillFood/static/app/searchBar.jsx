@@ -11,13 +11,13 @@ export default class SearchBar extends React.Component {
     this.state = {
       text: props.text
     };
-    console.log('a',this.state)
+    
     this.handleSearch = this.handleSearch.bind(this);
 
   }
 
   handleSearch(text) {
-    // console.log(location);
+    // 
     this.setState({
       text: text
     });

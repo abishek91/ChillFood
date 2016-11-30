@@ -16,8 +16,10 @@
       </div>
       
       {% include "form.html" %}
-
-      <div>
+      <div class="forgot-passord right-align">
+        <a href="/forgot_password">Forgot Password?</a>    
+      </div>
+      <div class="row">
         <a class="left btn btn-flat waves-effect waves-blue" href="{% url 'register' %}">
           Register
         </a>
@@ -25,9 +27,22 @@
           Sign in
         </button>       
       </div>  
-      <div>
-      <a href="/forgot_password">Forgot Password?</a>
+      <div class="row center"> 
+        <h6>Sign in using:</h6>
+        <a  class="btn btn-flat waves-effect waves-blue" 
+            href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">
+            <img class="right social-icon" src="{% static 'images/facebook.svg' %}" />
+        </a>
+        <a class="btn btn-flat waves-effect waves-blue" 
+            href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">
+          <img class="right social-icon" src="{% static 'images/google-plus.svg' %}" />
+        </a>
+        <a class="btn btn-flat waves-effect waves-blue" 
+           href="{% url 'social:begin' 'twitter' %}?next={{ request.path }}">
+          <img class="right social-icon" src="{% static 'images/twitter.svg' %}" />
+        </a>
       </div>
-    </form>
 
+    </form>
+    
 {% endblock %}

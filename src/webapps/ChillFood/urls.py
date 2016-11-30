@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 
 from . import data, views, api
 from .login import views as login
@@ -38,6 +38,8 @@ urlpatterns = [
     url(r'^register$', login.register, name='register'), 
     url(r'^change_password/(?P<user_id>\d+)/(?P<token>[\w\-]+)$', views.change_password, name='change_password'),
     url(r'^forgot_password$', views.forgot_password, name='forgot_password'),
+    url('', include('social.apps.django_app.urls', namespace='social')),
+    url('', include('django.contrib.auth.urls', namespace='auth')),
     #API
     #List of Recipes 
     url(r'^api/recipes$', api.recipes, name='recipes'),

@@ -12,7 +12,7 @@ var interval;   //Store the number of the inteval
 function load_posts(query,userId) {
     if (wait) return;
     wait = true;
-    console.log(query,userId)
+    
     
     if (query)
         URL = '/api/recipes';
@@ -33,7 +33,7 @@ function load_posts(query,userId) {
 function append_posts(response) {
     new_posts = response.data
     
-    console.log(URL)
+    
 
     if (response.next) {
         URL = response.next;
@@ -45,7 +45,7 @@ function append_posts(response) {
     }
 
     var stream = $("#post_container");
-    console.log(new_posts,stream)
+    
     if (new_posts && new_posts.length) {
         for (var i in new_posts) {
             var new_post = post_to_html(new_posts[i]);
@@ -67,7 +67,7 @@ function post_to_html(post) {
     node.find("#post_pic").attr('src', '/recipe/' + post.id + '/pic');
     node.find(".post_detail").attr('href', '/recipe/' + post.id );
     node.find("#post_title").html(post.title);
-    console.log(post.tastiness)
+    
     // if (for )
     stars = ''
     for (var i = 1; i < post.tastiness; i++) {
@@ -105,11 +105,11 @@ function setUrl(url) {
     URL = '/api/'+url+'?id=';
 
     var stream = $("#post_container")[0];
-    console.log(stream,stream.firstChild)
+    
     while (stream.firstChild) {
         stream.removeChild(stream.firstChild);
     }
-    console.log('hjere',url)
+    
     load_posts();
     interval = setInterval(load_posts, 5000);
 }

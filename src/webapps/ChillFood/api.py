@@ -327,7 +327,14 @@ def ingredient_create(request):
 
 @login_required
 def preferences(request):
-    return JsonResponse(request.user.preferences.to_json(), safe=False);
+    preference = Preferences.objects.filter(user=request.user)
+    if not len(preference):
+        preferences = Preferences(user=request.user)
+        preferences.save()
+    else:
+        preferences = preference[0]
+        
+    return JsonResponse(preferences.to_json(), safe=False);
 
 @transaction.atomic
 @login_required

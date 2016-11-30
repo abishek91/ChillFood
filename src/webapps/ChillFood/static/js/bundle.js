@@ -97,7 +97,8 @@
 	  _react2.default.createElement(_reactRouter.Redirect, { from: 'x/:userId', to: 'profile/:userId' }),
 	  _react2.default.createElement(_reactRouter.Route, { path: '/recipe/create', component: _recipeCreate2.default }),
 	  _react2.default.createElement(_reactRouter.Route, { path: '/recipe/:recipeId', component: _recipeDetails2.default }),
-	  _react2.default.createElement(_reactRouter.Route, { path: '/party/list', component: _partyList2.default })
+	  _react2.default.createElement(_reactRouter.Route, { path: '/party/list', component: _partyList2.default }),
+	  _react2.default.createElement(_reactRouter.Redirect, { from: '*', to: '/' })
 	), document.getElementById('root'));
 	
 	// import App from './app.jsx'
@@ -22288,7 +22289,7 @@
 	    _this.state = {
 	      text: props.text
 	    };
-	    console.log('a', _this.state);
+	
 	    _this.handleSearch = _this.handleSearch.bind(_this);
 	
 	    return _this;
@@ -22297,7 +22298,7 @@
 	  _createClass(SearchBar, [{
 	    key: 'handleSearch',
 	    value: function handleSearch(text) {
-	      // console.log(location);
+	      // 
 	      this.setState({
 	        text: text
 	      });
@@ -35649,10 +35650,9 @@
 	
 	    var _this = _possibleConstructorReturn(this, (RecipeList.__proto__ || Object.getPrototypeOf(RecipeList)).call(this, props));
 	
-	    console.log('how often?');
 	    _this.state = {
 	      search: {
-	        sortBy: _this.userDefault()
+	        sortBy: sortOptions[0]
 	      },
 	      data: [],
 	      next: false,
@@ -35686,7 +35686,7 @@
 	      var self = this;
 	      // let search = this.state.search;
 	      this.state.search.sortBy = sortBy;
-	      console.log(this.state.search);
+	
 	      // this.setState({
 	      //   search:search
 	      // });
@@ -35695,10 +35695,10 @@
 	    }
 	  }, {
 	    key: 'userDefault',
-	    value: function userDefault() {
+	    value: function userDefault(sortBy) {
 	      var sort = sortOptions[0];
 	      for (var i in sortOptions) {
-	        if (sortOptions[i].value == g_sort_by) {
+	        if (sortOptions[i].value == sortBy) {
 	          sort = sortOptions[i];
 	          break;
 	        }
@@ -35745,8 +35745,8 @@
 	    value: function search() {
 	      var self = this;
 	      var search = this.state.search;
-	      console.log(search);
-	      this.recipe.get(search.text, search.userId, search.sortBy ? search.sortBy.value : 0, //TODO: Remove condition
+	
+	      this.recipe.get(search.text, search.userId, search.sortBy ? search.sortBy.value : 1, //TODO: Remove condition
 	      this.selected_categories, this.selected_cuisines, this.selected_equipments, this.hasVideo, this.selected_ingredients).then(function (data) {
 	
 	        this.setState({
@@ -35780,10 +35780,12 @@
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
 	      var self = this;
+	      var sortBy = void 0;
 	      var selected_cuisines = void 0,
 	          selected_equipments = void 0;
 	      new _preferences2.default().get().then(function (preferences) {
 	        this.hasVideo = false; //Check how to update the fucking check
+	        sortBy = preferences.sort_by;
 	        this.selected_categories = preferences.categories;
 	        selected_cuisines = preferences.cuisines;
 	        selected_equipments = preferences.equipments;
@@ -35796,6 +35798,9 @@
 	        });
 	
 	        this.setState({
+	          search: {
+	            sortBy: self.userDefault(sortBy)
+	          },
 	          categories: data.categories,
 	          equipments: data.equipments,
 	          cuisines: data.cuisines
@@ -35813,17 +35818,16 @@
 	      var self = this;
 	
 	      //Initialize Tags
-	      console.log(selected_cuisines);
+	
 	      var initDataCuisine = [];
 	      selected_cuisines.forEach(function (item) {
 	        var cuisine = cuisines.filter(function (e) {
 	          return e.id == item;
 	        });
-	        console.log(cuisine, cuisines);
+	
 	        initDataCuisine.push({ id: item, text: cuisine[0].text });
 	      });
 	
-	      console.log('initData 2', this.initDataCuisine);
 	      var initDataEquipment = [];
 	      selected_equipments.forEach(function (item) {
 	        var equipment = equipments.filter(function (e) {
@@ -35863,7 +35867,7 @@
 	    value: function getIngredients(value, callback) {
 	      var ingredient_api = new _ingredient2.default();
 	      ingredient_api.get(value).then(function (data) {
-	        console.log('ingredients', data);
+	
 	        if (data.data.length == 0) {
 	          data.data = [{ id: 0, text: ' + ' + value }];
 	        }
@@ -35875,7 +35879,6 @@
 	    value: function render() {
 	      var _this2 = this;
 	
-	      console.log(this.state.search.sortBy);
 	      // Map through the items
 	      var recipeNode = this.state.data.map(function (recipe, index) {
 	        return _react2.default.createElement(_recipeThumbnail2.default, { recipe: recipe, key: index });
@@ -35979,10 +35982,8 @@
 	  if (navigator.geolocation) {
 	    p = new Promise(function (resolve, reject) {
 	      navigator.geolocation.getCurrentPosition(function (position) {
-	        console.log('inside', position);
 	        resolve(position.coords);
 	      }, function (error) {
-	        console.log(error);
 	        resolve(null);
 	      });
 	    });
@@ -36002,7 +36003,6 @@
 	    key: 'get',
 	    value: function get(query, userId, sort_id, categories, cuisines, equipments, hasVideo, ingredients) {
 	      var self = this;
-	      console.log('this.props.params.', userId);
 	      var lat = 0;
 	      var lon = 0;
 	      if (!categories) categories = [];
@@ -36052,11 +36052,10 @@
 	        }).then(function (text) {
 	          var data = JSON.parse(text);
 	          self.next = data.next;
-	          // console.log('data Obtained',data);
+	          // 
 	          resolve(data.data);
 	        }).catch(function (error) {
 	          Materialize.toast('There has been a problem, please contact your administrator.');
-	          console.log('There has been a problem with your fetch operation: ' + error.message, 400);
 	          reject(error);
 	        });
 	      });
@@ -36501,7 +36500,7 @@
 	    _createClass(AutoComplete, [{
 	        key: 'getData',
 	        value: function getData(value, callback) {
-	            console.log(this.props.data);
+	
 	            var filter_data = this.props.data.filter(function (c) {
 	                return c.text.toUpperCase().indexOf(value) >= 0;
 	            });
@@ -36510,13 +36509,13 @@
 	    }, {
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
-	            // console.log('prueba',this.refs.test)
+	            // 
 	            // input = this.refs.test.findById("multipleInput")
 	            var self = this;
-	            console.log('initData', this.props.initData);
+	
 	            var name = this.props.name;
 	            // const data = this.props.data;
-	            console.log("multipleInput-" + name, $("multipleInput-" + name));
+	
 	
 	            $(function () {
 	
@@ -36548,7 +36547,7 @@
 	        }
 	
 	        // componentWillReceiveProps(nextProps) {
-	        //   console.log(nextProps)
+	        //   
 	        // }
 	
 	    }, {

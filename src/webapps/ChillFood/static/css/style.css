@@ -284,3 +284,13 @@ span.badge.new:after {
 .dropzone:dragged {  
   background-color:#bbdefb;
 }
+
+img.social-icon {
+  padding-top: 5px;
+  width: 25px;
+}
+
+.forgot-passord > a {
+  color: gray;
+}
+

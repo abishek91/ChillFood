@@ -21,10 +21,10 @@ const sortOptions = [ {label:'time',value: 5},
 export default class RecipeList extends React.Component {
   constructor(props) {
     super(props);   
-    console.log('how often?') 
+    
     this.state = {
       search: {
-        sortBy: this.userDefault(),        
+        sortBy: sortOptions[0],        
       },
       data: [],
       next: false,
@@ -55,7 +55,7 @@ export default class RecipeList extends React.Component {
     let self = this;
     // let search = this.state.search;
     this.state.search.sortBy = sortBy;
-    console.log(this.state.search);
+    
     // this.setState({
     //   search:search
     // });
@@ -63,10 +63,10 @@ export default class RecipeList extends React.Component {
     this.search()
   }
 
-  userDefault() {    
+  userDefault(sortBy) {    
     let sort = sortOptions[0];
     for (var i in sortOptions) {
-      if (sortOptions[i].value == g_sort_by) {
+      if (sortOptions[i].value == sortBy) {
         sort = sortOptions[i];
         break
       }
@@ -110,10 +110,10 @@ export default class RecipeList extends React.Component {
   search() {
     let self = this;
     const search = this.state.search;
-    console.log(search)
+    
     this.recipe.get(search.text,
       search.userId,
-      search.sortBy ? search.sortBy.value : 0, //TODO: Remove condition
+      search.sortBy ? search.sortBy.value : 1, //TODO: Remove condition
       this.selected_categories,
       this.selected_cuisines,
       this.selected_equipments,
@@ -149,10 +149,12 @@ export default class RecipeList extends React.Component {
 
   componentWillMount(){
     const self = this;
+    let sortBy;
     let selected_cuisines,selected_equipments;
     new Preferences().get()
     .then(function (preferences) {
       this.hasVideo = false; //Check how to update the fucking check
+      sortBy = preferences.sort_by;
       this.selected_categories=preferences.categories;
       selected_cuisines=preferences.cuisines;
       selected_equipments=preferences.equipments; 
@@ -164,8 +166,11 @@ export default class RecipeList extends React.Component {
         c.selected = self.selected_categories.indexOf(c.id) >= 0;
         return c;
       })
-
+      
       this.setState({
+        search:{
+          sortBy: self.userDefault(sortBy)
+        },
         categories: data.categories,
         equipments: data.equipments,
         cuisines: data.cuisines,
@@ -180,17 +185,17 @@ export default class RecipeList extends React.Component {
     const self = this;
     
     //Initialize Tags
-    console.log(selected_cuisines)
+    
     let initDataCuisine = []
     selected_cuisines.forEach(function (item) {
       const cuisine = cuisines.filter(function (e) {
         return e.id == item;
       })
-      console.log(cuisine,cuisines)
+      
       initDataCuisine.push({id:item,text:cuisine[0].text});
     });
 
-    console.log('initData 2',this.initDataCuisine)
+    
     let initDataEquipment = []
     selected_equipments.forEach(function (item) {
       const equipment = equipments.filter(function (e) {
@@ -229,7 +234,7 @@ export default class RecipeList extends React.Component {
     let ingredient_api = new IngredientApi()
     ingredient_api.get(value)
     .then(function(data) {
-      console.log('ingredients',data);
+      
       if (data.data.length == 0) {
         data.data = [{id:0, text: ' + '+value}]
       }
@@ -238,7 +243,7 @@ export default class RecipeList extends React.Component {
   }
   
   render() {
-    console.log(this.state.search.sortBy)
+    
     // Map through the items
     const recipeNode = this.state.data.map((recipe, index) => {
       return (<RecipeThumbnail recipe={recipe} key={index}/>)

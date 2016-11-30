@@ -21,12 +21,12 @@ class User(AbstractUser):
   photo = models.ImageField(upload_to="user_photo", blank=True)
   following = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='followers', symmetrical=False)
   is_confirmed = models.BooleanField(default=False)
-  location_lat = models.DecimalField(max_digits=9, decimal_places=6)
-  location_lon = models.DecimalField(max_digits=9, decimal_places=6)
+  location_lat = models.DecimalField(max_digits=9, decimal_places=6, default=0)
+  location_lon = models.DecimalField(max_digits=9, decimal_places=6, default=0)
   
   def __unicode__(self):
     return self.name
-
+  
   def to_json(self):
     return {
       "id": self.id,

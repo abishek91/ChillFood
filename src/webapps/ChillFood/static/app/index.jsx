@@ -9,7 +9,7 @@ import Profile from './profile.jsx'
 import PartyList from './party/partyList.jsx'
 
 // import App from './app.jsx'
-import { Router, Route, hashHistory, Redirect } from 'react-router'
+import { Router, Route, Redirect, hashHistory } from 'react-router'
 
 render((
   <Router history={hashHistory}>
@@ -21,5 +21,6 @@ render((
     <Route path="/recipe/create" component={RecipeCreate} />
     <Route path="/recipe/:recipeId" component={RecipeDetails} />
     <Route path="/party/list" component={PartyList} />
+    <Redirect from="*" to="/" />
   </Router>
 ), document.getElementById('root'));

@@ -12,11 +12,9 @@ function getLocation() {
   
   if (navigator.geolocation) {
     p = new Promise(function (resolve, reject) {
-      navigator.geolocation.getCurrentPosition(function (position){
-        console.log('inside',position)
+      navigator.geolocation.getCurrentPosition(function (position){        
         resolve(position.coords);
-      },function (error) {
-        console.log(error);
+      },function (error) {        
         resolve(null);
       });
     });  
@@ -31,8 +29,7 @@ function getLocation() {
 export default class Recipe {
 
   get(query, userId, sort_id, categories, cuisines, equipments,hasVideo, ingredients) {
-    const self = this;
-    console.log('this.props.params.',userId)
+    const self = this;    
     let lat = 0;
     let lon = 0;
     if (!categories)
@@ -89,12 +86,11 @@ export default class Recipe {
       .then(function(text) { 
         var data = JSON.parse(text);
         self.next = data.next;
-        // console.log('data Obtained',data);
+      // 
         resolve(data.data);
       })
       .catch(function(error) {
-        Materialize.toast('There has been a problem, please contact your administrator.');
-        console.log('There has been a problem with your fetch operation: ' + error.message,400);
+        Materialize.toast('There has been a problem, please contact your administrator.');        
         reject(error);
       });
     })

@@ -7,19 +7,19 @@ export default class AutoComplete extends React.Component {
     this.initData = false;
   }
   getData(value, callback) {
-    console.log(this.props.data)
+    
     var filter_data = this.props.data.filter((c)=> c.text.toUpperCase().indexOf(value) >= 0)      
     callback(value,filter_data)
   }
 
   componentDidMount(){ 
-    // console.log('prueba',this.refs.test)
+    // 
     // input = this.refs.test.findById("multipleInput")
     const self = this;
-    console.log('initData',  this.props.initData)
+    
     const name = this.props.name;
     // const data = this.props.data;
-    console.log("multipleInput-"+name, $("multipleInput-"+name));
+    
 
     $(function() {
         
@@ -55,7 +55,7 @@ export default class AutoComplete extends React.Component {
   }
 
   // componentWillReceiveProps(nextProps) {
-  //   console.log(nextProps)
+  //   
   // }
 
   render() {
