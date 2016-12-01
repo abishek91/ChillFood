@@ -42,9 +42,7 @@ def profile_image(request, user_id):
     user = get_object_or_404(User, id=user_id)
 
     if user.photo:
-        image = user.photo
-        content_type = guess_type(image.name)
-
+        return redirect(user.photo);
     else:
         url = settings.BASE_DIR2 + '/ChillFood' + static('images/empty_profile.png')
         with open(url, "rb") as empty_profie:

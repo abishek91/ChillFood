@@ -31,6 +31,7 @@ export default class RecipeCreate extends React.Component{
 
   postData(url, body) {
     self = this;
+    let response;
     fetch(url, {  
       credentials: 'include',
       method: 'POST',  
@@ -40,18 +41,26 @@ export default class RecipeCreate extends React.Component{
       },  
       body: JSON.stringify(body)   
     })
-    .then(function(response) {
-      if (!response.ok) {
-          throw Error(response.statusText);
-      }
+    .then(function(p_response) {
+      response = p_response;
 
       return response.text();
     })
     .then(function(text) { 
-      var recipe = JSON.parse(text);
-      console.log('Recipe Saved',recipe)
-      parent.location.hash = '/recipe/'+recipe.id;
-      // location.pathname = '/recipe/'+recipe.id
+      if (response.status == 406) {
+        var errors = JSON.parse(text);
+        for (var key in errors) {
+          Materialize.toast(key+": "+errors[key],2000,'orange')
+        }
+        console.warn(text);
+        return;
+      } else if (!response.ok) {
+          throw Error(response.statusText);
+      } else {
+        var recipe = JSON.parse(text);
+        console.log('Recipe Saved',recipe)
+        parent.location.hash = '/recipe/'+recipe.id;
+      }
     })
     .catch(function(error) {
       Materialize.toast('There has been a problem, please contact your administrator.');

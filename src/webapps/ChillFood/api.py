@@ -187,8 +187,14 @@ def recipe_create(request, recipe_id = 0):
         return JsonResponse({'error':'Body malformed'},status=406)        
     
     
+    try:
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+    except Exception:
+        return JsonResponse({'error':'Body malformed'},status=406)        
+    
     #Validations
-    form = RecipeForm(request.POST, instance=recipe)
+    form = RecipeForm(body, instance=recipe)
 
     if not form.is_valid():
         return JsonResponse(dict(form.errors.items()),status=406)        

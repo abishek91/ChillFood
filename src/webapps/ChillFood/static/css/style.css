@@ -273,12 +273,12 @@ span.badge.new:after {
 }
 
 .dropzone > div {
-  width: 100%!important;
+  width: 200px!important;
   height: 200px;
-  padding-top: 60px;
   background-color: #eeeeee;
   color:grey;
   border:none!important;
+  background-size: cover;
 }
 
 .dropzone:dragged {  

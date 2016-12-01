@@ -2,6 +2,7 @@ import React from 'react';
 import {Row, Col, Input, Icon, Button, NavItem, Dropdown, Badge} from 'react-materialize';
 import querystring from 'querystring'
 import Notifications from './notifications.jsx'
+import {Img} from './common.jsx'
 
 export default class SearchBar extends React.Component {
 
@@ -44,6 +45,9 @@ export default class SearchBar extends React.Component {
     if (this.props.username)
       username = this.props.username;
     
+    let user_photo = userPhoto;
+    if (this.props.user_photo)
+      user_photo = this.props.user_photo;
     return (
       <div>
         <div className="navbar-fixed">
@@ -51,11 +55,11 @@ export default class SearchBar extends React.Component {
 
           <nav>
             <div className="nav-wrapper blue">
-              <a className="brand-logo" href="/">
-                <img alt="ChillFood" src={static_files + 'images/ChillFood-white.png'} className="logo"/>
+              <a className="brand-logo" href="/#/">
+                <Img alt="ChillFood" src={static_files + 'images/ChillFood-white.png'} className="logo"/>
               </a>
 
-              <Buttons username={username} />
+              <Buttons username={username} user_photo={user_photo} />
               <Notifications />
 
               <SearchForm text={this.state.text} handleSearch={this.handleSearch} /> 
@@ -69,9 +73,12 @@ export default class SearchBar extends React.Component {
 }
 
 
-const Buttons = ({username}) => {
+const Buttons = ({username, user_photo}) => {
     var profileLink = '/#/profile/' + userId;
-
+    let user_photo_class = "";
+    if (!user_photo) {
+      user_photo_class = 'hidden';
+    }
   return (<ul className="right hide-on-med-and-down">
             <li>
               <a href="/#/recipe/create">                
@@ -80,7 +87,11 @@ const Buttons = ({username}) => {
             </li>
             <li>
              <Dropdown trigger={
-             <a className="name dropdown-button" data-activates="dropdown1">{username}<i className="material-icons right">arrow_drop_down</i></a>
+              <a className="name dropdown-button" data-activates="dropdown1">
+                <Img className={"left user_photo z-depth-1 "+user_photo_class} src={user_photo}/>
+                {username}
+                <i className="material-icons right">arrow_drop_down</i>
+              </a>
           }>
            <NavItem href='#/party/list'><i className="material-icons left">people</i>Party</NavItem>
            <NavItem href='#/edit_profile'><i className="material-icons left">mode_edit</i>Edit Profile</NavItem>

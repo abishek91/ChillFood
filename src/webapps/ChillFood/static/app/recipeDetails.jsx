@@ -13,11 +13,11 @@ import ShareBar from './shareBar.jsx'
 import ReactStars from 'react-stars'
 import Views from './views.jsx'
 import { Button, Card, Row, Col } from 'react-materialize';
+import {Img} from './common.jsx'
 
 export default class RecipeDetails extends React.Component {
 
-
-constructor() {
+  constructor() {
     super();
     this.state = {
       recipe: undefined
@@ -26,6 +26,7 @@ constructor() {
     this.addDifficulty = this.addDifficulty.bind(this);
     this.addTastiness = this.addTastiness.bind(this);
     this.postData = this.postData.bind(this);
+    this.handleError = this.handleError.bind(this);
   }
 
  componentDidMount() {
@@ -98,10 +99,15 @@ constructor() {
     })
   }
 
+  handleError(event) {
+    this.setState({errored: true});
+  }
+
   render() {
     
     if(!this.state.recipe)
       return null;
+    
     var recipe_image_url = "/recipe_image/" + this.state.recipe.id;
     return (
       <div>
@@ -109,7 +115,7 @@ constructor() {
         <div className="container">
           <Row>
             <Col s={6} className="recipe-pic">
-              <img src={recipe_image_url} 
+              <Img src={recipe_image_url} 
               alt="recipe pic" 
               className="big left z-depth-1 frame" />
             </Col>
@@ -139,8 +145,6 @@ constructor() {
           </Row>
           <Row>
             <Col s={6}>
-                
-                
                 <div className="row-padding">
                   <Ingredients ingredients={this.state.recipe.ingredients} />
                   <PartyCreate recipe_id={this.state.recipe.id} recipe_title={this.state.recipe.title}/>

@@ -127,6 +127,11 @@ class ChangePasswordForm(forms.Form):
 
 
 class EditProfileForm(forms.ModelForm):
+    photo = forms.CharField(required=False, 
+                            validators=[RegexValidator(regex=r"^(https?:\/\/.*\.(?:png|jpg|gif))$",
+                                                            message='Invalid image link.',
+                                                            code='invalid_photo')])
+    
     class Meta:
         model = User
         fields = ['name', 'birthdate', 'bio', 'photo']

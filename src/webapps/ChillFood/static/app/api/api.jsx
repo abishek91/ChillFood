@@ -31,6 +31,30 @@ const get = (url) => {
   return promise;
 }
 
+const get2 = (url) => {
+  let self = this;
+
+  var promise = new Promise(function (resolve,reject) {
+    fetch(url, {  
+      credentials: 'include',
+      method: 'GET',  
+      headers: {  
+          "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+          "X-CSRFToken": getCookie('csrftoken')
+      }
+    })
+    .then(function(response) {
+      resolve(response);
+      // resolve(data);
+    })
+    .catch(function(error) {
+      reject(error);
+    });
+  })
+
+  return promise;
+}
+
 const post = (url, body) =>{
   var promise = new Promise(function (resolve,reject) {
     fetch(url, {  
@@ -62,4 +86,4 @@ const post = (url, body) =>{
 
   return promise;
 }
-export {get, post};
+export {get, get2, post};

@@ -2,6 +2,7 @@ import React from 'react';
 import {Row, Icon, Modal, Button} from 'react-materialize';
 import User from '../api/user.jsx'
 import SearchBar from '../searchBar.jsx'
+import RecipePictures from '../recipe_create/recipePictures.jsx'
 
 export default class EditProfile extends React.Component {
 
@@ -13,6 +14,7 @@ export default class EditProfile extends React.Component {
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleBirthdateChange = this.handleBirthdateChange.bind(this);
     this.handleBioChange = this.handleBioChange.bind(this);
+    this.handlePicChange = this.handlePicChange.bind(this);
   }
 
   componentWillMount(){ 
@@ -20,6 +22,12 @@ export default class EditProfile extends React.Component {
     new User().me()
     .then(function (data) {
       self.setState(data)
+    })
+  }
+
+  handlePicChange(url) {
+    this.setState({
+      photo: url
     })
   }
 
@@ -40,15 +48,21 @@ export default class EditProfile extends React.Component {
     new User().save(this.state)
     .then(function (data) {
       self.setState(data)
+      Materialize.toast('Profile has been updated.',2000,'blue');
+
     })    
   }
   render() {
     const user = this.state;
+    console.log(user.photo)
     return (
         <div>
-          <SearchBar username={user.name} />
+          <SearchBar username={user.name} user_photo={user.photo} />
           <div className="form-signin">
             <h2>Edit Profile</h2>
+            <Row>
+              <RecipePictures src={user.photo} updatePicture={this.handlePicChange} />
+            </Row>
             <Row>
               <label htmlFor="name">name</label>
               <input type="text" 

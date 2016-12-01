@@ -2,7 +2,7 @@ import React from 'react';
 import {Row, Col, Input, Icon, Button} from 'react-materialize';
 import ReactStars from 'react-stars'
 import Rating from 'react-rating'
-
+import {Img} from './common.jsx'
 export default class Comments extends React.Component {
   constructor(props) {
     super(props);
@@ -38,7 +38,9 @@ export default class Comments extends React.Component {
   		var profileLink = '/profile/' + comment.user.id;
 	  	commentRows.push(
 	  			<Row key={++id}>
-	        		<div className="profile-pic	left"><img className="profile-pic left" src={commenterProfileImageUrl} alt="recipe pic" /></div>
+	        		<div className="profile-pic	left">
+                        <Img className="profile-pic left" src={commenterProfileImageUrl} alt="recipe pic" />
+                    </div>
 	        		<div>
 	        			<p>
 	        				<a href={profileLink} className="profile-name">{comment.user.name}</a>
@@ -71,7 +73,7 @@ export default class Comments extends React.Component {
 
 		        <Row>
 		    		<Input type="text" s={9} placeholder="Did you try it?" onChange={this.handleChange}>
-		        		<img className="profile-pic" src={userProfileImageUrl} alt="recipe pic" />
+		        		<Img className="profile-pic" src={userProfileImageUrl} alt="recipe pic" />
 		    		</Input>
 		    		<Button waves='light' className="blue-text btn btn-flat" onClick={this.handleSubmit}><Icon>add</Icon></Button>
 		    	</Row>

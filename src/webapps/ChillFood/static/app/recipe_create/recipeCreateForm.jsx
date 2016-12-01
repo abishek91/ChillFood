@@ -60,10 +60,9 @@ export default class RecipeCreate extends React.Component {
     recipe.category_set = this.category_set;
     recipe.equipment_set = this.equipment_set;
     recipe.cuisine_set = this.cuisine_set;
-    if (this.remote_pic) {
-      recipe.remote_pic = this.remote_pic
+    if (this.state.remote_pic) {
+      recipe.remote_pic = this.state.remote_pic
     }
-
     this.props.handleSave(recipe)
   }
 
@@ -74,8 +73,8 @@ export default class RecipeCreate extends React.Component {
     recipe.time = this.refs.timeInput.value
     recipe.calories = this.refs.caloriesInput.value
     recipe.video_link = this.refs.video_linkInput.value
-    if (this.remote_pic) {
-      recipe.remote_pic = this.remote_pic
+    if (this.state.remote_pic) {
+      recipe.remote_pic = this.state.remote_pic
     }
     
     this.props.handleChange(recipe)
@@ -83,6 +82,9 @@ export default class RecipeCreate extends React.Component {
   }
 
   updatePicture(url) {
+    this.setState({
+      remote_pic: url
+    })
     this.remote_pic = url;
   }
 
@@ -186,7 +188,7 @@ export default class RecipeCreate extends React.Component {
     return (
       <Row>
         <Col s={12}>
-            <RecipePictures updatePicture={this.updatePicture} />
+            <RecipePictures src={this.state.remote_pic} updatePicture={this.updatePicture} />
         </Col>
         <Col s={6}>
           <Row>
