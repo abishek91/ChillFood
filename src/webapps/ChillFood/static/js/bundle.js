@@ -42288,9 +42288,7 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var sortOptions = [{ label: 'time', value: 5 }, { label: 'tastiness', value: 4 },
-	// {label:'views',value: 1},
-	{ label: 'difficulty', value: 2 }, { label: 'calories', value: 3 }];
+	var sortOptions = [{ label: 'time', value: 5 }, { label: 'tastiness', value: 4 }, { label: 'views', value: 1 }, { label: 'difficulty', value: 2 }, { label: 'calories', value: 3 }];
 	
 	var RecipeList = function (_React$Component) {
 	  _inherits(RecipeList, _React$Component);
@@ -42366,7 +42364,7 @@
 	      this.recipe.getMore().then(function (data) {
 	        this.setState(function (prevState, props) {
 	          return {
-	            data: prevState.data.concat(data),
+	            data: prevState.data.concat(data.data),
 	            next: !!self.recipe.next
 	          };
 	        });
@@ -42807,7 +42805,6 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	// const RecipeThumbnail = ({recipe}) => {
 	var RecipeThumbnail = function (_React$Component) {
 	  _inherits(RecipeThumbnail, _React$Component);
 	
@@ -42865,7 +42862,7 @@
 	
 	      var difficulty_icon = [];
 	      if (recipe.difficulty != 10) {
-	        for (var i = 1; i <= recipe.difficulty; i++) {
+	        for (var i = 1; i <= Math.ceil(recipe.difficulty); i++) {
 	          difficulty_icon.push(difficulty(i));
 	        }
 	      }
@@ -42947,12 +42944,28 @@
 	                ),
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'grey-text col s6 right-align hidden' },
+	                  { className: 'grey-text col s6 right-align' },
 	                  _react2.default.createElement(
 	                    'span',
 	                    { id: 'post_time' },
 	                    recipe.views,
 	                    '\xA0\xA0Views '
+	                  )
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: "row " + (recipe.missing_ingredients == undefined ? 'hidden' : '') },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'grey-text text-lighten-1 col s12 right-align' },
+	                  _react2.default.createElement(
+	                    'div',
+	                    { id: 'post_rating', title: 'difficulty' },
+	                    'Missing ',
+	                    recipe.missing_ingredients,
+	                    ' ingredient',
+	                    recipe.missing_ingredients > 1 ? 's' : ''
 	                  )
 	                )
 	              )

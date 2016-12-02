@@ -47,7 +47,6 @@ class Recipe(models.Model):
     category_set = models.ManyToManyField(Category,related_name='recipes')
     equipment_set = models.ManyToManyField(Equipment,related_name='recipes')
     cuisine_set = models.ManyToManyField(Cuisine,related_name='recipes')
-
     def to_json(self):
         result = {
           "id": self.id,
@@ -69,6 +68,18 @@ class Recipe(models.Model):
 
         if (hasattr(self,"difficulty")):
           result['difficulty'] = self.difficulty
+        
+        if (hasattr(self,"found_ingredients")): 
+          result['found_ingredients'] = self.found_ingredients
+        
+        if (hasattr(self,"missing_ingredients")): 
+          result['missing_ingredients'] = self.missing_ingredients
+        
+        if (hasattr(self,"missing_ingredients") and hasattr(self,"found_ingredients")): 
+          if (self.missing_ingredients + self.found_ingredients) != 0:
+            result['completeness'] = self.found_ingredients/(self.missing_ingredients + self.found_ingredients)
+          else:
+            result['completeness'] = 0
           
         return result
 

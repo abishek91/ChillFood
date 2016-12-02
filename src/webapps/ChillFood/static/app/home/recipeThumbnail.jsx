@@ -2,7 +2,6 @@ import React from 'react';
 import {render} from 'react-dom';
 import { Card, Row, Col } from 'react-materialize';
 
-// const RecipeThumbnail = ({recipe}) => {
 export default class RecipeThumbnail extends React.Component {
 
   render() {
@@ -31,7 +30,7 @@ export default class RecipeThumbnail extends React.Component {
 
     let difficulty_icon = []
     if (recipe.difficulty != 10) {
-      for (var i = 1; i <= recipe.difficulty; i++) {
+      for (var i = 1; i <= Math.ceil(recipe.difficulty); i++) {
           difficulty_icon.push(difficulty(i));
       }
     }
@@ -70,9 +69,14 @@ export default class RecipeThumbnail extends React.Component {
                 <div className="grey-text col s6">
                   <div id="post_rating" title="difficulty">{difficulty_icon}</div>              
                 </div>
-                <div className="grey-text col s6 right-align hidden">
+                <div className="grey-text col s6 right-align">
                   <span id="post_time">{recipe.views}&nbsp;&nbsp;Views </span>
                 </div>    
+              </div>
+              <div className={"row "+ (recipe.missing_ingredients == undefined ? 'hidden' : '' )}>
+                <div className="grey-text text-lighten-1 col s12 right-align">
+                  <div id="post_rating" title="difficulty">Missing {recipe.missing_ingredients} ingredient{(recipe.missing_ingredients > 1 ? 's' : '' )}</div>              
+                </div>
               </div>
             </div>      
           </div>      

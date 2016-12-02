@@ -13,7 +13,7 @@ from django.db import transaction
 from django.db.models import Q
 from django.http import Http404
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
-from django.contrib.gis.geos import GEOSGeometry
+from django.db.models import Count, Sum, Case, When, IntegerField, F
 
 import hashlib  
 import random 
@@ -127,7 +127,7 @@ def recipes(request):
     if form.cleaned_data['ingredient']:
 
         lista = form.cleaned_data['ingredient']
-        
+
         #Get the names of the selected ingredients
         temp_names = Ingredient.objects.filter(id__in=lista).values_list('name')
         ingredient_names = []
@@ -136,22 +136,37 @@ def recipes(request):
         
         #Include to the list other ingredients with similar names
         ingredient_query = reduce(lambda x, y: x | y, [Q(name__icontains=name) for name in ingredient_names])
-        ingredients_id = Ingredient.objects.filter(ingredient_query).values_list('id').distinct()
+        temp_ids = Ingredient.objects.filter(ingredient_query).values_list('id')
+        ingredients_id = []
+        for i in temp_ids:
+            ingredients_id.append(str(i[0]))
 
-        #Finally look for all the recipe that do not meet the criteria
-        recipe_ids = map(lambda x: x.id, recipes)
-        bad_recipe_ids = RecipeIngredient.objects\
-                        .filter(recipe_id__in = recipe_ids)\
-                        .exclude(ingredient_id__in =  ingredients_id)\
-                        .values_list('recipe_id')
+        print('Original', lista, 'New Ingredient',ingredients_id)
         
-        #Exclude those recipes
-        recipes = recipes.exclude(id__in = bad_recipe_ids)
+        recipes = recipes.annotate(
+                found_ingredients = Count(
+                                        Case(
+                                            When(ingredients__ingredient_id__in = ingredients_id, then=1), 
+                                            output_field=IntegerField()
+                                            )
+                                        ),
+                missing_ingredients = Count(
+                                        Case(
+                                            When(~Q(ingredients__ingredient_id__in = ingredients_id), then=1), 
+                                            output_field=IntegerField()
+                                            )
+                                        )
+                        )\
+                .exclude(found_ingredients = 0)
+                
+        sort ="missing_ingredients"
 
     new_recipes = recipes \
                  .annotate(difficulty=Coalesce(Avg('rating__difficulty'),10), \
-                           tastiness=Coalesce(Avg('rating__tastiness'),-1),) \
+                          tastiness=Coalesce(Avg('rating__tastiness'),-1),) \
                  .order_by(sort)    
+    print("----->" , recipes.query)
+        
     print(new_recipes)
     
     #TODO: More elaborate query for homepage
