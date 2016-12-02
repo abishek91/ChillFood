@@ -27293,46 +27293,46 @@
 	            ),
 	            _react2.default.createElement(_reactRating2.default, { readonly: true, initialRate: parseFloat(this.props.tastiness), fractions: 2,
 	              full: 'glyphicon glyphicon-star big-star', empty: 'glyphicon glyphicon-star-empty big-star' })
-	          ),
-	          _react2.default.createElement(
-	            _reactMaterialize.Col,
-	            { s: 12, className: 'cook' },
-	            _react2.default.createElement(
-	              _reactMaterialize.Icon,
-	              null,
-	              'person'
-	            ),
-	            ' ',
-	            _react2.default.createElement(
-	              'a',
-	              { href: profileLink },
-	              this.props.cook.name
-	            )
-	          ),
-	          _react2.default.createElement(
-	            _reactMaterialize.Col,
-	            { s: 12, className: 'cook' },
-	            _react2.default.createElement(
-	              _reactMaterialize.Icon,
-	              null,
-	              'query_builder'
-	            ),
-	            ' ',
-	            this.props.time,
-	            ' min'
-	          ),
-	          _react2.default.createElement(
-	            _reactMaterialize.Col,
-	            { s: 12, className: 'cook' },
-	            _react2.default.createElement(
-	              _reactMaterialize.Icon,
-	              null,
-	              'local_dining'
-	            ),
-	            ' ',
-	            this.props.calories,
-	            ' cal'
 	          )
+	        ),
+	        _react2.default.createElement(
+	          _reactMaterialize.Row,
+	          { className: 'cook' },
+	          _react2.default.createElement(
+	            _reactMaterialize.Icon,
+	            null,
+	            'person'
+	          ),
+	          ' ',
+	          _react2.default.createElement(
+	            'a',
+	            { href: profileLink },
+	            this.props.cook.name
+	          )
+	        ),
+	        _react2.default.createElement(
+	          _reactMaterialize.Row,
+	          { className: 'cook' },
+	          _react2.default.createElement(
+	            _reactMaterialize.Icon,
+	            null,
+	            'query_builder'
+	          ),
+	          ' ',
+	          this.props.time,
+	          ' min'
+	        ),
+	        _react2.default.createElement(
+	          _reactMaterialize.Row,
+	          { className: 'cook' },
+	          _react2.default.createElement(
+	            _reactMaterialize.Icon,
+	            null,
+	            'local_dining'
+	          ),
+	          ' ',
+	          this.props.calories,
+	          ' cal'
 	        )
 	      );
 	    }
