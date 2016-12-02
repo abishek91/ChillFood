@@ -61,7 +61,6 @@ export default class AutoComplete extends React.Component {
 
   render() {
     const self = this;
-
     if (!self.initData && self.props.initData && self.props.initData.length) {
       self.props.initData.forEach(function(data){
         self.autocomplete.append(data);

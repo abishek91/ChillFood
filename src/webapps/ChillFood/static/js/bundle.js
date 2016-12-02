@@ -27095,7 +27095,7 @@
 	      self.setState({ src: this.props.src });
 	      this.img = new Image();
 	      this.img.onerror = function () {
-	        console.log('on error');
+	
 	        self.setState({ src: '/static/images/empty_profile.gif' });
 	      };
 	      this.img.src = this.props.src;
@@ -27103,7 +27103,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      console.log('here');
+	
 	      return _react2.default.createElement('img', { className: this.props.className,
 	        alt: this.props.alt,
 	        src: this.state.src });
@@ -42195,7 +42195,6 @@
 	        key: 'render',
 	        value: function render() {
 	            var self = this;
-	
 	            if (!self.initData && self.props.initData && self.props.initData.length) {
 	                self.props.initData.forEach(function (data) {
 	                    self.autocomplete.append(data);
@@ -42342,9 +42341,9 @@
 	
 	var _ingredient2 = _interopRequireDefault(_ingredient);
 	
-	var _preferences = __webpack_require__(/*! ../api/preferences.jsx */ 425);
+	var _preferences2 = __webpack_require__(/*! ../api/preferences.jsx */ 425);
 	
-	var _preferences2 = _interopRequireDefault(_preferences);
+	var _preferences3 = _interopRequireDefault(_preferences2);
 	
 	var _recipeThumbnail = __webpack_require__(/*! ./recipeThumbnail.jsx */ 426);
 	
@@ -42386,6 +42385,7 @@
 	      categories: [],
 	      equipments: [],
 	      cuisines: [],
+	      initDataIngredient: [],
 	      initDataCuisine: [],
 	      initDataEquipment: []
 	    };
@@ -42477,8 +42477,7 @@
 	      var self = this;
 	      var search = this.state.search;
 	
-	      this.recipe.get(search.text, search.userId, search.sortBy ? search.sortBy.value : 1, //TODO: Remove condition
-	      this.selected_categories, this.selected_cuisines, this.selected_equipments, search.hasVideo, this.selected_ingredients).then(function (data) {
+	      this.recipe.get(search.text, search.userId, search.sortBy, this.selected_categories, this.selected_cuisines, this.selected_equipments, search.hasVideo, this.selected_ingredients).then(function (data) {
 	
 	        this.setState({
 	          search: search,
@@ -42515,14 +42514,14 @@
 	          hasVideo = void 0;
 	      var selected_cuisines = void 0,
 	          selected_equipments = void 0;
+	      var preferences = void 0;
 	
-	      new _preferences2.default().get().then(function (preferences) {
+	      new _preferences3.default().get().then(function (_preferences) {
 	        // this.hasVideo = true; //Check how to update the fucking check
-	        hasVideo = preferences.has_video;
-	        sortBy = preferences.sort_by;
+	        preferences = _preferences;
 	
-	        this.state.search.hasVideo = hasVideo;
-	        this.state.search.sortBy = this.userDefault(sortBy);
+	        this.state.search.hasVideo = preferences.hasVideo;
+	        this.state.search.sortBy = this.userDefault(preferences.sort_by);
 	        this.selected_categories = preferences.categories;
 	
 	        selected_cuisines = preferences.cuisines;
@@ -42537,19 +42536,17 @@
 	          return c;
 	        });
 	
-	        console.log('hasVideo', hasVideo);
-	
 	        this.setState({
 	          search: {
-	            hasVideo: hasVideo,
-	            sortBy: self.userDefault(sortBy)
+	            hasVideo: preferences.hasVideo,
+	            sortBy: self.userDefault(preferences.sort_by)
 	          },
 	          categories: data.categories,
 	          equipments: data.equipments,
 	          cuisines: data.cuisines
 	        });
 	
-	        self.initialize(selected_cuisines, selected_equipments, data.cuisines, data.equipments);
+	        self.initialize(preferences.cuisines, preferences.equipments, preferences.ingredients);
 	      }.bind(this));
 	    }
 	
@@ -42557,31 +42554,30 @@
 	
 	  }, {
 	    key: 'initialize',
-	    value: function initialize(selected_cuisines, selected_equipments, cuisines, equipments) {
+	    value: function initialize(selected_cuisines, selected_equipments, selected_ingredients) {
 	      var self = this;
 	
 	      //Initialize Tags
 	
 	      var initDataCuisine = [];
 	      selected_cuisines.forEach(function (item) {
-	        var cuisine = cuisines.filter(function (e) {
-	          return e.id == item;
-	        });
-	
-	        initDataCuisine.push({ id: item, text: cuisine[0].text });
+	        initDataCuisine.push({ id: item.id, text: item.text });
 	      });
 	
 	      var initDataEquipment = [];
 	      selected_equipments.forEach(function (item) {
-	        var equipment = equipments.filter(function (e) {
-	          return e.id == item;
-	        });
-	        initDataEquipment.push({ id: item, text: equipment[0].text });
+	        initDataEquipment.push({ id: item.id, text: item.text });
+	      });
+	
+	      var initDataIngredient = [];
+	      selected_ingredients.forEach(function (item) {
+	        initDataIngredient.push({ id: item.id, text: item.text });
 	      });
 	
 	      this.setState({
 	        initDataCuisine: initDataCuisine,
-	        initDataEquipment: initDataEquipment
+	        initDataEquipment: initDataEquipment,
+	        initDataIngredient: initDataIngredient
 	      });
 	    }
 	  }, {
@@ -42596,10 +42592,10 @@
 	  }, {
 	    key: 'onRemove',
 	    value: function onRemove(data) {
-	      console.log(1, data);
+	
 	      var self = this;
 	      return function (item) {
-	        console.log('ingedient removed');
+	
 	        var index = data.indexOf(item.id);
 	        if (index != -1) {
 	          data.splice(index, 1);
@@ -42624,7 +42620,7 @@
 	    value: function render() {
 	      var _this2 = this;
 	
-	      // console.log('sent', this.state)
+	      // 
 	      // Map through the items
 	      var recipeNode = this.state.data.map(function (recipe, index) {
 	        return _react2.default.createElement(_recipeThumbnail2.default, { recipe: recipe, key: index });
@@ -42657,6 +42653,7 @@
 	          onRemoveCuisine: this.onRemove(this.selected_cuisines),
 	          onRemoveEquipment: this.onRemove(this.selected_equipments),
 	
+	          initDataIngredient: this.state.initDataIngredient,
 	          initDataCuisine: this.state.initDataCuisine,
 	          initDataEquipment: this.state.initDataEquipment
 	        }),
@@ -43285,9 +43282,7 @@
 	    }
 	  }, {
 	    key: 'handleChange',
-	    value: function handleChange(params) {
-	      console.log(params);
-	    }
+	    value: function handleChange(params) {}
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
@@ -43302,7 +43297,6 @@
 	    value: function render() {
 	      var _this2 = this;
 	
-	      console.log(this.props.hasVideo, 'hasVideo');
 	      var my_switch = function my_switch() {
 	        return _react2.default.createElement('div', null);
 	      };
@@ -43333,7 +43327,7 @@
 	        };
 	      }
 	
-	      // console.log(this.state)
+	      // 
 	      // let hasVideo = this.state.hasVideo;
 	      var handleCheck = this.props.handleCheck;
 	
@@ -43395,7 +43389,8 @@
 	              placeholder: 'What\'s in your fridge?',
 	              getData: this.props.getIngredients,
 	              onAppend: this.props.onAppendIngredient,
-	              onRemove: this.props.onRemoveIngredient
+	              onRemove: this.props.onRemoveIngredient,
+	              initData: this.props.initDataIngredient
 	            })
 	          ),
 	          _react2.default.createElement(

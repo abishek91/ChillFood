@@ -190,14 +190,16 @@ class Preferences(models.Model):
     category = models.ManyToManyField(Category)
     equipment = models.ManyToManyField(Equipment)
     cuisine = models.ManyToManyField(Cuisine)
+    ingredient = models.ManyToManyField(Ingredient)
     
     def to_json(self):
       return {
         "sort_by": self.sort_by,
         "has_video": int(self.has_video),
         "categories": list(map(lambda x: x.id, self.category.all())),
-        "equipments": list(map(lambda x: x.id, self.equipment.all())),
-        "cuisines": list(map(lambda x: x.id, self.cuisine.all()))
+        "equipments": list(map(lambda x: x.to_json(), self.equipment.all())),
+        "cuisines": list(map(lambda x: x.to_json(), self.cuisine.all())),
+        "ingredients": list(map(lambda x: x.to_json(), self.ingredient.all())),
       }
 
 LIST_TYPE = (

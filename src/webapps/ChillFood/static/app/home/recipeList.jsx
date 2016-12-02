@@ -32,6 +32,7 @@ export default class RecipeList extends React.Component {
       categories: [],
       equipments: [],
       cuisines: [],   
+      initDataIngredient: [],
       initDataCuisine: [],
       initDataEquipment: [],   
     }
@@ -118,7 +119,7 @@ export default class RecipeList extends React.Component {
     
     this.recipe.get(search.text,
       search.userId,
-      search.sortBy ? search.sortBy.value : 1, //TODO: Remove condition
+      search.sortBy,
       this.selected_categories,
       this.selected_cuisines,
       this.selected_equipments,
@@ -156,15 +157,15 @@ export default class RecipeList extends React.Component {
     const self = this;
     let sortBy, hasVideo;
     let selected_cuisines,selected_equipments;
-    
+    let preferences;
+
     new Preferences().get()
-    .then(function (preferences) {
+    .then(function (_preferences) {
       // this.hasVideo = true; //Check how to update the fucking check
-      hasVideo = preferences.has_video;
-      sortBy = preferences.sort_by;
-      
-      this.state.search.hasVideo = hasVideo;
-      this.state.search.sortBy = this.userDefault(sortBy);
+      preferences = _preferences;
+
+      this.state.search.hasVideo = preferences.hasVideo;
+      this.state.search.sortBy = this.userDefault(preferences.sort_by);
       this.selected_categories=preferences.categories;
       
       selected_cuisines=preferences.cuisines;
@@ -180,49 +181,46 @@ export default class RecipeList extends React.Component {
         return c;
       })
       
-      console.log('hasVideo',hasVideo);
-
       this.setState({
         search: {
-          hasVideo: hasVideo,
-          sortBy: self.userDefault(sortBy)
+          hasVideo: preferences.hasVideo,
+          sortBy: self.userDefault(preferences.sort_by)
         },
         categories: data.categories,
         equipments: data.equipments,
         cuisines: data.cuisines,
       })
 
-      self.initialize(selected_cuisines,selected_equipments, data.cuisines,data.equipments)
+      self.initialize(preferences.cuisines, preferences.equipments, preferences.ingredients)
     }.bind(this))
   }
 
   // #TODO: Look for a better way
-  initialize(selected_cuisines, selected_equipments, cuisines,equipments) {
+  initialize(selected_cuisines, selected_equipments, selected_ingredients) {
     const self = this;
     
     //Initialize Tags
     
     let initDataCuisine = []
-    selected_cuisines.forEach(function (item) {
-      const cuisine = cuisines.filter(function (e) {
-        return e.id == item;
-      })
-      
-      initDataCuisine.push({id:item,text:cuisine[0].text});
+    selected_cuisines.forEach(function (item) {      
+      initDataCuisine.push({id:item.id,text:item.text});
     });
 
     
     let initDataEquipment = []
     selected_equipments.forEach(function (item) {
-      const equipment = equipments.filter(function (e) {
-        return e.id == item;
-      })
-      initDataEquipment.push({id:item,text:equipment[0].text});
+      initDataEquipment.push({id:item.id,text:item.text});
     });
 
+    let initDataIngredient = []
+    selected_ingredients.forEach(function (item) {
+      initDataIngredient.push({id:item.id,text:item.text});
+    });
+    
     this.setState({
       initDataCuisine: initDataCuisine,
       initDataEquipment: initDataEquipment,
+      initDataIngredient: initDataIngredient,
     })
   }
 
@@ -236,10 +234,10 @@ export default class RecipeList extends React.Component {
 
   
   onRemove(data) {
-    console.log(1,data)
+    
     const self = this
     return (item) => {
-      console.log('ingedient removed')
+      
       var index = data.indexOf(item.id);
       if(index!=-1){
          data.splice(index, 1);
@@ -261,7 +259,7 @@ export default class RecipeList extends React.Component {
   }
   
   render() {
-    // console.log('sent', this.state)
+    // 
     // Map through the items
     const recipeNode = this.state.data.map((recipe, index) => {
       return (<RecipeThumbnail recipe={recipe} key={index}/>)
@@ -292,6 +290,7 @@ export default class RecipeList extends React.Component {
                 onRemoveCuisine={this.onRemove(this.selected_cuisines)}
                 onRemoveEquipment={this.onRemove(this.selected_equipments)}
                 
+                initDataIngredient={this.state.initDataIngredient}
                 initDataCuisine={this.state.initDataCuisine}
                 initDataEquipment={this.state.initDataEquipment}
                 />

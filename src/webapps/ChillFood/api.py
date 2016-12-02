@@ -44,17 +44,22 @@ def recipes(request):
     preferences.has_video = form.cleaned_data['has_video'];
 
     preferences.category.clear();
+    preferences.cuisine.clear();
+    preferences.equipment.clear();
+    preferences.ingredient.clear();
+    preferences.save();
+    
     categories = Category.objects.filter(pk__in=form.cleaned_data['category']);
     preferences.category.set(categories)
 
-    preferences.cuisine.clear();
-    print('Cuisines', form.cleaned_data['cuisine'])
     cuisines = Cuisine.objects.filter(pk__in=form.cleaned_data['cuisine']);
     preferences.cuisine.set(cuisines)
 
-    preferences.equipment.clear();
     equipments = Equipment.objects.filter(pk__in=form.cleaned_data['equipment']);
     preferences.equipment.set(equipments)
+
+    ingredients = Ingredient.objects.filter(pk__in=form.cleaned_data['ingredient']);
+    preferences.ingredient.set(ingredients)
 
     preferences.save();
 
@@ -158,7 +163,7 @@ def recipes(request):
                                         )
                         )\
                 .exclude(found_ingredients = 0)
-                
+
         sort ="missing_ingredients"
 
     new_recipes = recipes \

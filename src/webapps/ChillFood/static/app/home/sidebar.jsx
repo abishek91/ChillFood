@@ -28,7 +28,7 @@ export default class Sidebar extends React.Component {
   }
   
   handleChange(params) {
-    console.log(params)
+    
   }
 
   componentDidMount(){ 
@@ -40,7 +40,7 @@ export default class Sidebar extends React.Component {
   }
 
   render() {
-    console.log(this.props.hasVideo, 'hasVideo')
+    
     let my_switch = () => (<div></div>)
     if (this.props.hasVideo) {
       my_switch = () => (<Input name='hasVideo' 
@@ -61,7 +61,7 @@ export default class Sidebar extends React.Component {
                             />)
     }
       
-    // console.log(this.state)
+    // 
     // let hasVideo = this.state.hasVideo;
     const handleCheck = this.props.handleCheck;
 
@@ -95,6 +95,7 @@ export default class Sidebar extends React.Component {
             getData={this.props.getIngredients}
             onAppend={this.props.onAppendIngredient}
             onRemove={this.props.onRemoveIngredient}
+            initData={this.props.initDataIngredient}
              />             
         </li>
         <li><a className="subheader">Cuisines</a></li>

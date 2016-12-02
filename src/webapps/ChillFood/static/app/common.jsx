@@ -16,7 +16,7 @@ export class Img extends React.Component {
         self.setState({ src: this.props.src });
         this.img = new Image();
         this.img.onerror = function () {
-          console.log('on error')
+          
           self.setState({ src: '/static/images/empty_profile.gif' });
         };
         this.img.src = this.props.src;
@@ -25,7 +25,7 @@ export class Img extends React.Component {
     
 
     render() {
-        console.log('here')
+        
         return (<img className={this.props.className}
                      alt={this.props.alt} 
                      src={this.state.src} />);
