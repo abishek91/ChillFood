@@ -35550,8 +35550,8 @@
 	  this.id = id;
 	  this.ingredient_id = ingredient_id | 0;
 	  this.ingredient_name = ingredient_name;
-	  if (quantity == undefined) this.quantity = '1';else this.quantity = quantity;
-	  this.price = price | 0;
+	  this.quantity = quantity || '1';
+	  this.price = price || 0;
 	  this.display = this.quantity + ' ' + ingredient_name;
 	}
 	

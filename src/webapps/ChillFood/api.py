@@ -123,45 +123,35 @@ def recipes(request):
     else:
         recipes = Recipe.objects.filter() 
 
-    exclusion = Q()
-
+    #Remove recipes that have ingredients which are not included in the list
     if form.cleaned_data['ingredient']:
 
         lista = form.cleaned_data['ingredient']
-
-        ingredients_names = Ingredient.objects.filter(id__in=lista).values_list('name')
-        print(ingredients_names)
-        lista2 = []
-        for i in ingredients_names:
-            print(str(i[0]))
-            lista2.append(str(i[0]))
-        print('lista2',lista2)
-        ingredient_query = reduce(lambda x, y: x | y, [Q(name__icontains=name) for name in lista2])
-        print(ingredient_query)
-
-        ingredients_id = Ingredient.objects.filter(ingredient_query).values_list('id').distinct()
-        print('----->',ingredients_id.query)
-
-        print("Original: ", lista, "New", ingredients_id)
-        # exclusion &= ~Q(ingredients__id__in=lista)
-        # exclusion &= ~Q(ingredients__id__in=lista)
-
-        recipe_ids = map(lambda x: x.id, recipes)
         
+        #Get the names of the selected ingredients
+        temp_names = Ingredient.objects.filter(id__in=lista).values_list('name')
+        ingredient_names = []
+        for i in temp_names:
+            ingredient_names.append(str(i[0]))
+        
+        #Include to the list other ingredients with similar names
+        ingredient_query = reduce(lambda x, y: x | y, [Q(name__icontains=name) for name in ingredient_names])
+        ingredients_id = Ingredient.objects.filter(ingredient_query).values_list('id').distinct()
+
+        #Finally look for all the recipe that do not meet the criteria
+        recipe_ids = map(lambda x: x.id, recipes)
         bad_recipe_ids = RecipeIngredient.objects\
                         .filter(recipe_id__in = recipe_ids)\
                         .exclude(ingredient_id__in =  ingredients_id)\
                         .values_list('recipe_id')
-        print(bad_recipe_ids)
+        
+        #Exclude those recipes
         recipes = recipes.exclude(id__in = bad_recipe_ids)
 
-
-    print('time',sort)
-    print(sort);
     new_recipes = recipes \
-             .annotate(difficulty=Coalesce(Avg('rating__difficulty'),10), \
-                       tastiness=Coalesce(Avg('rating__tastiness'),-1),) \
-             .order_by(sort)    
+                 .annotate(difficulty=Coalesce(Avg('rating__difficulty'),10), \
+                           tastiness=Coalesce(Avg('rating__tastiness'),-1),) \
+                 .order_by(sort)    
     print(new_recipes)
     
     #TODO: More elaborate query for homepage
