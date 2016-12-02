@@ -42063,6 +42063,7 @@
 	                self.autocomplete = $(input_name).materialize_autocomplete({
 	                    multiple: {
 	                        enable: true,
+	                        maxSize: 1000,
 	                        onExist: function onExist(item) {
 	                            Materialize.toast('' + item.text + ' is already added!', 2000);
 	                        },
@@ -42477,8 +42478,10 @@
 	  }, {
 	    key: 'onRemove',
 	    value: function onRemove(data) {
+	      console.log(1, data);
 	      var self = this;
 	      return function (item) {
+	        console.log('ingedient removed');
 	        var index = data.indexOf(item.id);
 	        if (index != -1) {
 	          data.splice(index, 1);
@@ -42531,7 +42534,7 @@
 	          onAppendCuisine: this.onAppend(this.selected_cuisines),
 	          onAppendEquipment: this.onAppend(this.selected_equipments),
 	
-	          onRemoveIngredients: this.onRemove(this.selected_ingredients),
+	          onRemoveIngredient: this.onRemove(this.selected_ingredients),
 	          onRemoveCuisine: this.onRemove(this.selected_cuisines),
 	          onRemoveEquipment: this.onRemove(this.selected_equipments),
 	

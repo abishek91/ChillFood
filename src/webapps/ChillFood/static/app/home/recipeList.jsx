@@ -220,8 +220,10 @@ export default class RecipeList extends React.Component {
 
   
   onRemove(data) {
+    console.log(1,data)
     const self = this
     return (item) => {
+      console.log('ingedient removed')
       var index = data.indexOf(item.id);
       if(index!=-1){
          data.splice(index, 1);
@@ -270,7 +272,7 @@ export default class RecipeList extends React.Component {
                 onAppendCuisine={this.onAppend(this.selected_cuisines)}
                 onAppendEquipment={this.onAppend(this.selected_equipments)}
                 
-                onRemoveIngredients={this.onRemove(this.selected_ingredients)}
+                onRemoveIngredient={this.onRemove(this.selected_ingredients)}
                 onRemoveCuisine={this.onRemove(this.selected_cuisines)}
                 onRemoveEquipment={this.onRemove(this.selected_equipments)}
                 

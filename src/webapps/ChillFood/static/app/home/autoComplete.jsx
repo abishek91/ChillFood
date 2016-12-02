@@ -30,6 +30,7 @@ export default class AutoComplete extends React.Component {
         self.autocomplete = $(input_name).materialize_autocomplete({
             multiple: {
                 enable: true,
+                maxSize: 1000,
                 onExist: function (item) {
                     Materialize.toast('' + item.text + ' is already added!', 2000);
                 },

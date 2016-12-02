@@ -76,10 +76,7 @@ def recipes(request):
     if form.cleaned_data['has_video']:
         query &= ~Q(video_link="")
 
-    if form.cleaned_data['ingredient']:
-        lista = form.cleaned_data['ingredient']
-        query &= reduce(lambda x, y: x | y, [Q(ingredients__id=int(ingredient.id)) for ingredient in lista])
-
+    
     if form.cleaned_data['category']:
         lista = form.cleaned_data['category']
         query &= reduce(lambda x, y: x | y, [Q(category_set__id=int(category.id)) for category in lista])
@@ -125,6 +122,39 @@ def recipes(request):
         recipes = Recipe.objects.filter(query) 
     else:
         recipes = Recipe.objects.filter() 
+
+    exclusion = Q()
+
+    if form.cleaned_data['ingredient']:
+
+        lista = form.cleaned_data['ingredient']
+
+        ingredients_names = Ingredient.objects.filter(id__in=lista).values_list('name')
+        print(ingredients_names)
+        lista2 = []
+        for i in ingredients_names:
+            print(str(i[0]))
+            lista2.append(str(i[0]))
+        print('lista2',lista2)
+        ingredient_query = reduce(lambda x, y: x | y, [Q(name__icontains=name) for name in lista2])
+        print(ingredient_query)
+
+        ingredients_id = Ingredient.objects.filter(ingredient_query).values_list('id').distinct()
+        print('----->',ingredients_id.query)
+
+        print("Original: ", lista, "New", ingredients_id)
+        # exclusion &= ~Q(ingredients__id__in=lista)
+        # exclusion &= ~Q(ingredients__id__in=lista)
+
+        recipe_ids = map(lambda x: x.id, recipes)
+        
+        bad_recipe_ids = RecipeIngredient.objects\
+                        .filter(recipe_id__in = recipe_ids)\
+                        .exclude(ingredient_id__in =  ingredients_id)\
+                        .values_list('recipe_id')
+        print(bad_recipe_ids)
+        recipes = recipes.exclude(id__in = bad_recipe_ids)
+
 
     print('time',sort)
     print(sort);
