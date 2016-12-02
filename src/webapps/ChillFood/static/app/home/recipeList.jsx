@@ -24,6 +24,7 @@ export default class RecipeList extends React.Component {
     
     this.state = {
       search: {
+        hasVideo: false,
         sortBy: sortOptions[0],        
       },
       data: [],
@@ -34,7 +35,7 @@ export default class RecipeList extends React.Component {
       initDataCuisine: [],
       initDataEquipment: [],   
     }
-    this.hasVideo = false;
+    this.hasVideo = true;
     this.selected_categories=[];
     this.selected_ingredients=[];
     this.selected_cuisines=[];
@@ -92,12 +93,16 @@ export default class RecipeList extends React.Component {
   }
 
   handleVideo(item) {
-    this.hasVideo = !this.hasVideo;
+    let search = this.state.search;
+    search.hasVideo = !search.hasVideo;
+    this.setState({
+      search:search
+    });
+
     this.search();
   }
 
   handleSearch(text, userId) {
-    let self = this;
     let search = this.state.search;
     search.text = text;
     this.setState({
@@ -117,7 +122,7 @@ export default class RecipeList extends React.Component {
       this.selected_categories,
       this.selected_cuisines,
       this.selected_equipments,
-      this.hasVideo,
+      search.hasVideo,
       this.selected_ingredients
     ).then(function (data) {
       
@@ -149,16 +154,24 @@ export default class RecipeList extends React.Component {
 
   componentWillMount(){
     const self = this;
-    let sortBy;
+    let sortBy, hasVideo;
     let selected_cuisines,selected_equipments;
+    
     new Preferences().get()
     .then(function (preferences) {
-      this.hasVideo = false; //Check how to update the fucking check
+      // this.hasVideo = true; //Check how to update the fucking check
+      hasVideo = preferences.has_video;
       sortBy = preferences.sort_by;
+      
+      this.state.search.hasVideo = hasVideo;
+      this.state.search.sortBy = this.userDefault(sortBy);
       this.selected_categories=preferences.categories;
+      
       selected_cuisines=preferences.cuisines;
       selected_equipments=preferences.equipments; 
+      
       this.search(); 
+      
       return new List().get();
     }.bind(this))
     .then(function (data) {
@@ -167,8 +180,11 @@ export default class RecipeList extends React.Component {
         return c;
       })
       
+      console.log('hasVideo',hasVideo);
+
       this.setState({
-        search:{
+        search: {
+          hasVideo: hasVideo,
           sortBy: self.userDefault(sortBy)
         },
         categories: data.categories,
@@ -245,7 +261,7 @@ export default class RecipeList extends React.Component {
   }
   
   render() {
-    
+    // console.log('sent', this.state)
     // Map through the items
     const recipeNode = this.state.data.map((recipe, index) => {
       return (<RecipeThumbnail recipe={recipe} key={index}/>)
@@ -261,7 +277,7 @@ export default class RecipeList extends React.Component {
                 handleVideo={this.handleVideo}
                 handleCheck={this.handleCheck}
                 
-                hasVideo={this.hasVideo}
+                hasVideo={this.state.search.hasVideo}
                 categories={this.state.categories}  
                 equipments={this.state.equipments}  
                 cuisines={this.state.cuisines}  

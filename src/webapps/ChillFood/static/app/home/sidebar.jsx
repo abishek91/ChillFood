@@ -13,6 +13,19 @@ import SortBar from './sortBar.jsx'
 
 export default class Sidebar extends React.Component { 
 // const Sidebar = (props) => {
+  constructor(props) {
+    super(props);
+    this.state = {
+      hasVideo: props.hasVideo
+    }
+  }
+
+  setDefaultHasVideo() {
+    if (this.props.hasVideo)
+      $("#hasVideo").attr('checked','');
+    else
+      $("#hasVideo").attr('checked');
+  }
   
   handleChange(params) {
     console.log(params)
@@ -27,7 +40,29 @@ export default class Sidebar extends React.Component {
   }
 
   render() {
-    let hasVideo;
+    console.log(this.props.hasVideo, 'hasVideo')
+    let my_switch = () => (<div></div>)
+    if (this.props.hasVideo) {
+      my_switch = () => (<Input name='hasVideo' 
+                            id="hasVideo"
+                            type='switch' 
+                            checked
+                            onLabel=' ' 
+                            offLabel='Only recipes with video'
+                            onChange={(e)=>this.props.handleVideo(e)}
+                            />)
+    } else {
+      my_switch = () => (<Input name='hasVideo' 
+                            id="hasVideo"
+                            type='switch' 
+                            onLabel=' ' 
+                            offLabel='Only recipes with video'
+                            onChange={(e)=>this.props.handleVideo(e)}
+                            />)
+    }
+      
+    // console.log(this.state)
+    // let hasVideo = this.state.hasVideo;
     const handleCheck = this.props.handleCheck;
 
     const categories = this.props.categories.map(function(option, index) {
@@ -46,15 +81,7 @@ export default class Sidebar extends React.Component {
     return  (<div>
       <ul id="slide-out" className="side-nav fixed">
         <li className="option">
-
-          <Input name='on' 
-            type='switch' 
-            defaultValue={this.props.hasVideo}
-            onLabel=' ' 
-            offLabel='Only recipes with video'
-            onChange={(e)=>this.props.handleVideo(e)}
-            />
-          
+          {my_switch()}
         </li>
         <li><a className="subheader">Categories</a></li>
         <li>
