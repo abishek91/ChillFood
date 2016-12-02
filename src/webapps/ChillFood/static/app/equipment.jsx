@@ -4,7 +4,7 @@ export default class Equipment extends React.Component {
   render() {
      var recipeEquipment = JSON.parse(this.props.equipment)
 
-    if(this.props.equipment.length)
+    if(!this.props.equipment.length)
       return null;
      var equipmentRows = [];
      var id = 0;
