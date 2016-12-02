@@ -311,9 +311,13 @@ def ingredients(request):
     #Set page number
     page = request.GET.get('page','1')
     name = request.GET.get('name','')
+    exact = request.GET.get('exact','N')
 
     #Get Data
-    lista = [c.to_json() for c in Ingredient.objects.filter(name__icontains = name).order_by('name')]
+    if exact == 'Y':
+        lista = [c.to_json() for c in Ingredient.objects.filter(name__iexact = name).order_by('name')]
+    else:
+        lista = [c.to_json() for c in Ingredient.objects.filter(name__icontains = name).order_by('name')]
     
     #Paginate the result
     paginated_list = Paginator(lista, PAGE_SIZE)

@@ -10,8 +10,8 @@ const url_get = '/api/ingredients'
 
 export default class ApiIngredient {
   
-  get(name) {
-    return get(url_get + '?' + querystring.stringify({name:name}))
+  get(name, exact) {
+    return get(url_get + '?' + querystring.stringify({name:name, exact: exact ? 'Y' : 'N'}))
     .then(function (data) {
       this.next = data.next;
       return data

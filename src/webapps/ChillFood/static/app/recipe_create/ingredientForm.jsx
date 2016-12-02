@@ -5,7 +5,9 @@ import { Button, Card, Row, Col } from 'react-materialize';
 
 export default class IngredientForm extends React.Component {
   constructor(props){
-    super(props);   
+    super(props); 
+    this.input = {} 
+    this.addItem = this.addItem.bind(this);
   }
 
   componentDidMount(){ 
@@ -49,10 +51,27 @@ export default class IngredientForm extends React.Component {
     });
   }
 
+  addItem(input) {
+    self = this;
+    console.log('addItem - input', input)
+    this.props.addItem(self.ingredient_input_id, 
+                      input.name.value, 
+                      input.quantity.value, 
+                      input.price.value,
+                      function(result) {
+                        if (result) {
+                          console.log('addItem - ingredient_input', self, self.ingredient_input)
+                          self.ingredient_input.setValue({})
+                          input.quantity.value = ''; 
+                          input.price.value = '';
+                        }
+                      });                  
+  }
+
   render() {  
     // Input tracker
     let addItem = this.props.addItem;
-    let input = {};
+    let input = this.input;
     const self = this;
     return (<Row>
                 
@@ -62,6 +81,7 @@ export default class IngredientForm extends React.Component {
                             <input type="text" 
                                    id="multipleIngredientInput" 
                                    placeholder="Ingredient name" 
+                                   ref={node => { input.name = node; }}
                                    data-activates="multipleIngredientDropdown" 
                                    data-beloworigin="true"
                              />
@@ -81,16 +101,7 @@ export default class IngredientForm extends React.Component {
                   ref={node => { input.price = node; }} />
                 <button className="col s1 waves-effect waves-blue btn btn-flat" 
                 type="button" 
-                onClick={() => {
-                  // console.log('selection', self.ingredient_input_id)
-                  // console.log('selection', this.ingredient_input_id)
-                  addItem(this.ingredient_input_id, this.ingredient_input.value, input.quantity.value, input.price.value);
-                  // input.name.value = ''; 
-                  this.ingredient_input.setValue({})
-                  input.quantity.value = ''; 
-                  input.price.value = '';
-                  // input.value = '';
-                }}>
+                onClick={(e)=>this.addItem(input)}>
                 <i className="material-icons blue-text">add</i>
               </button>
             </Row>)

@@ -89,28 +89,43 @@ export default class RecipeCreate extends React.Component {
   }
 
   // Add todo handler
-  addIngredient(ingredient_id, ingredient_name, quantity, price, display){
-    console.log('val',ingredient_name)
-    if (ingredient_id ==  null) {
-      Materialize.toast('Please, select one ingredient.',4000);
-      return;
-    } else if (ingredient_id == 0) {
-      Materialize.toast('An error has occured, could you please select your ingredient one more time.',4000);
-      return;
-    }
-    
+  addIngredient(ingredient_id, ingredient_name, quantity, price, finishSuccesfully){
+    let error = true;
+    const self = this;
     if (!/[\w\d]+/.test(ingredient_name)) {
       Materialize.toast('Please, include the name of the ingredient.',4000);
-      return;
-    }
+      finishSuccesfully(false);
+    } else {
 
-    // Assemble data
-    const item = new RecipeIngredient(this.state.ingredients.length, ingredient_id, ingredient_name, quantity, price, display);
-    // Update data
-    this.state.ingredients.push(item);
-    // Update state
-    let new_state = {'ingredients': this.state.ingredients}
-    this.setState(new_state);
+      let ingredient_api = new IngredientApi()
+      ingredient_api.get(ingredient_name, true)
+      .then(function(data) {
+
+        if (data.data.length == 0) {
+          Materialize.toast('Please, select or add one ingredient to the list.',4000);
+          finishSuccesfully(false);
+        } else {
+
+          ingredient_id = data.data[0].id;
+          ingredient_name = data.data[0].text;
+          // Assemble data
+          const item = new RecipeIngredient(self.state.ingredients.length, ingredient_id, ingredient_name, quantity, price);
+          // Update data
+          self.state.ingredients.push(item);
+          // Update state
+          let new_state = {'ingredients': self.state.ingredients}
+          self.setState(new_state);
+
+          finishSuccesfully(true);
+        }
+
+      })
+      .catch(function (error) {
+        console.error('addIngredient', error)
+        finishSuccesfully(false);
+      })
+
+    }
   }
 
   addStep(val){

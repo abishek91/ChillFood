@@ -35280,28 +35280,39 @@
 	
 	  }, {
 	    key: 'addIngredient',
-	    value: function addIngredient(ingredient_id, ingredient_name, quantity, price, display) {
-	      console.log('val', ingredient_name);
-	      if (ingredient_id == null) {
-	        Materialize.toast('Please, select one ingredient.', 4000);
-	        return;
-	      } else if (ingredient_id == 0) {
-	        Materialize.toast('An error has occured, could you please select your ingredient one more time.', 4000);
-	        return;
-	      }
-	
+	    value: function addIngredient(ingredient_id, ingredient_name, quantity, price, finishSuccesfully) {
+	      var error = true;
+	      var self = this;
 	      if (!/[\w\d]+/.test(ingredient_name)) {
 	        Materialize.toast('Please, include the name of the ingredient.', 4000);
-	        return;
-	      }
+	        finishSuccesfully(false);
+	      } else {
 	
-	      // Assemble data
-	      var item = new RecipeIngredient(this.state.ingredients.length, ingredient_id, ingredient_name, quantity, price, display);
-	      // Update data
-	      this.state.ingredients.push(item);
-	      // Update state
-	      var new_state = { 'ingredients': this.state.ingredients };
-	      this.setState(new_state);
+	        var ingredient_api = new _ingredient4.default();
+	        ingredient_api.get(ingredient_name, true).then(function (data) {
+	
+	          if (data.data.length == 0) {
+	            Materialize.toast('Please, select or add one ingredient to the list.', 4000);
+	            finishSuccesfully(false);
+	          } else {
+	
+	            ingredient_id = data.data[0].id;
+	            ingredient_name = data.data[0].text;
+	            // Assemble data
+	            var item = new RecipeIngredient(self.state.ingredients.length, ingredient_id, ingredient_name, quantity, price);
+	            // Update data
+	            self.state.ingredients.push(item);
+	            // Update state
+	            var new_state = { 'ingredients': self.state.ingredients };
+	            self.setState(new_state);
+	
+	            finishSuccesfully(true);
+	          }
+	        }).catch(function (error) {
+	          console.error('addIngredient', error);
+	          finishSuccesfully(false);
+	        });
+	      }
 	    }
 	  }, {
 	    key: 'addStep',
@@ -40932,7 +40943,11 @@
 	  function IngredientForm(props) {
 	    _classCallCheck(this, IngredientForm);
 	
-	    return _possibleConstructorReturn(this, (IngredientForm.__proto__ || Object.getPrototypeOf(IngredientForm)).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (IngredientForm.__proto__ || Object.getPrototypeOf(IngredientForm)).call(this, props));
+	
+	    _this.input = {};
+	    _this.addItem = _this.addItem.bind(_this);
+	    return _this;
 	  }
 	
 	  _createClass(IngredientForm, [{
@@ -40976,13 +40991,27 @@
 	      });
 	    }
 	  }, {
+	    key: 'addItem',
+	    value: function addItem(input) {
+	      self = this;
+	      console.log('addItem - input', input);
+	      this.props.addItem(self.ingredient_input_id, input.name.value, input.quantity.value, input.price.value, function (result) {
+	        if (result) {
+	          console.log('addItem - ingredient_input', self, self.ingredient_input);
+	          self.ingredient_input.setValue({});
+	          input.quantity.value = '';
+	          input.price.value = '';
+	        }
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
 	
 	      // Input tracker
 	      var addItem = this.props.addItem;
-	      var input = {};
+	      var input = this.input;
 	      var self = this;
 	      return _react2.default.createElement(
 	        _reactMaterialize.Row,
@@ -40999,6 +41028,9 @@
 	              _react2.default.createElement('input', { type: 'text',
 	                id: 'multipleIngredientInput',
 	                placeholder: 'Ingredient name',
+	                ref: function ref(node) {
+	                  input.name = node;
+	                },
 	                'data-activates': 'multipleIngredientDropdown',
 	                'data-beloworigin': 'true'
 	              })
@@ -41024,15 +41056,8 @@
 	          'button',
 	          { className: 'col s1 waves-effect waves-blue btn btn-flat',
 	            type: 'button',
-	            onClick: function onClick() {
-	              // console.log('selection', self.ingredient_input_id)
-	              // console.log('selection', this.ingredient_input_id)
-	              addItem(_this2.ingredient_input_id, _this2.ingredient_input.value, input.quantity.value, input.price.value);
-	              // input.name.value = ''; 
-	              _this2.ingredient_input.setValue({});
-	              input.quantity.value = '';
-	              input.price.value = '';
-	              // input.value = '';
+	            onClick: function onClick(e) {
+	              return _this2.addItem(input);
 	            } },
 	          _react2.default.createElement(
 	            'i',
@@ -41160,8 +41185,8 @@
 	
 	  _createClass(ApiIngredient, [{
 	    key: 'get',
-	    value: function get(name) {
-	      return (0, _api.get)(url_get + '?' + querystring.stringify({ name: name })).then(function (data) {
+	    value: function get(name, exact) {
+	      return (0, _api.get)(url_get + '?' + querystring.stringify({ name: name, exact: exact ? 'Y' : 'N' })).then(function (data) {
 	        this.next = data.next;
 	        return data;
 	      }.bind(this));
