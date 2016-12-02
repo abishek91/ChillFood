@@ -26799,6 +26799,7 @@
 	          { className: 'heading' },
 	          'Ingredients'
 	        ),
+	        _react2.default.createElement('hr', null),
 	        _react2.default.createElement(
 	          _reactMaterialize.Collection,
 	          null,
@@ -27817,6 +27818,7 @@
 	          { className: 'heading recipe-details-text row-padding' },
 	          'Steps'
 	        ),
+	        _react2.default.createElement('hr', null),
 	        _react2.default.createElement(
 	          _reactMaterialize.Collection,
 	          null,

@@ -13,6 +13,7 @@ export default class Ingredients extends React.Component {
     return (
       <span>
         <div className="heading">Ingredients</div>
+        <hr/>
         <Collection>
           {ingredientsRows}
         </Collection>

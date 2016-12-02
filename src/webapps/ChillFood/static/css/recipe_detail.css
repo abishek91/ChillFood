@@ -121,8 +121,22 @@ div.recipe-pic  img {
 
 .collection {
 	width: 90%;
+	border: white !important;
+}
+
+.collection-item {
+	border-bottom: white !important;
 }
 
 .tastiness {
     padding-left: 30px;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #dacece;
+    margin: 1em 0;
+    padding: 0; 
 }
