@@ -4,7 +4,7 @@ export default class Equipment extends React.Component {
   render() {
      var recipeEquipment = JSON.parse(this.props.equipment)
 
-    if(this.props.equipment.length)
+    if(this.props.equipment.length < 3)
       return null;
      var equipmentRows = [];
      var id = 0;
@@ -13,7 +13,7 @@ export default class Equipment extends React.Component {
      });
     return (
       <span>
-        <span className="appliances-padding-left">Appliances:</span>
+        <span>Appliances:</span>
           <span className="row-padding">
               {equipmentRows}
           </span>

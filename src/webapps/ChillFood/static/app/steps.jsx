@@ -25,6 +25,7 @@ export default class Steps extends React.Component {
     return (
       <span>
         <div className="heading recipe-details-text row-padding">Steps</div>
+        <hr/>
         <Collection>
 
               {stepRows}

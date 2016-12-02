@@ -139,6 +139,8 @@ export default class RecipeDetails extends React.Component {
                 />
                 <div className="row-padding">
                   <Category categories={this.state.recipe.categories} />
+                </div>
+                <div>
                   <Equipment equipment={this.state.recipe.equipment} />
                 </div>
             </Col>
