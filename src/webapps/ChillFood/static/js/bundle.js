@@ -27274,7 +27274,7 @@
 	          ),
 	          _react2.default.createElement(
 	            _reactMaterialize.Col,
-	            { s: 4, className: 'left' },
+	            { s: 5, className: 'left' },
 	            _react2.default.createElement(
 	              'span',
 	              { className: 'left cook' },
@@ -27285,7 +27285,7 @@
 	          ),
 	          _react2.default.createElement(
 	            _reactMaterialize.Col,
-	            { s: 8 },
+	            { s: 5 },
 	            _react2.default.createElement(
 	              'span',
 	              { className: 'left tasty cook' },
