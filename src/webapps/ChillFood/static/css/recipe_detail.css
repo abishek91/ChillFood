@@ -9,6 +9,7 @@
 .blue-box {
 	background-color: #b6ecfe;;
 	padding: 1px 5px;
+	border: solid 1px white;
 }
 
 .row-padding {
