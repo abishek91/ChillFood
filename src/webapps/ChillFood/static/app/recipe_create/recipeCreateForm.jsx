@@ -57,6 +57,8 @@ export default class RecipeCreate extends React.Component {
     recipe.time = this.refs.timeInput.value;
     recipe.calories = this.refs.caloriesInput.value;
     recipe.video_link = this.refs.video_linkInput.value;
+    if (recipe.video_link)
+      recipe.video_link = recipe.video_link.trim()
     recipe.category_set = this.category_set;
     recipe.equipment_set = this.equipment_set;
     recipe.cuisine_set = this.cuisine_set;

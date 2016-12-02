@@ -18,8 +18,8 @@ export default class RecipePictures extends React.Component {
 
     onDrop(acceptedFiles, rejectedFiles) {
       const self = this;
-      console.log('Accepted files: ', acceptedFiles);
-      console.log('Rejected files: ', rejectedFiles);
+      
+      
       getSignedRequest(acceptedFiles[0],function (url) {
         self.setState((prevState) => {
           self.props.updatePicture(url);
@@ -32,7 +32,7 @@ export default class RecipePictures extends React.Component {
     }
 
     componentWillReceiveProps() {
-      console.log(this.props)
+      
       this.setState((prevState) => {
           return {
             files:[{preview:this.props.src}]
@@ -44,14 +44,14 @@ export default class RecipePictures extends React.Component {
       this.setState({
         current: value
       })
-      console.log(value)
+      
     }
 
     render() {
       let main_image = () => (<span></span>)
       let steps = []
       const src = this.props.src || default_pic;
-      console.log(src)
+      
       if (this.props.multi) {
         const item = this.state.files[this.state.current]
         main_image = () => (<img
@@ -68,7 +68,7 @@ export default class RecipePictures extends React.Component {
         }.bind(this))
       }
       
-      console.log(this.props)
+      
 
       return (
         <Row>

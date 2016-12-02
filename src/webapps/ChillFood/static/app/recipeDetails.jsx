@@ -121,8 +121,8 @@ export default class RecipeDetails extends React.Component {
             </Col>
             <Col s={6} className="recipe-pic">
               <iframe 
-                width="560" 
-                height="315" 
+                width="520" 
+                height="300" 
                 src={this.state.recipe.video_link}
                 frameBorder="0" 
                 allowFullScreen>

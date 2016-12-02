@@ -25,7 +25,7 @@ export default class RecipeCreate extends React.Component{
   }
 
   handleSave(recipe) {
-    console.log('Recipe TBS', recipe)
+    
     this.postData('/api/recipe/create',recipe);
   }
 
@@ -52,13 +52,13 @@ export default class RecipeCreate extends React.Component{
         for (var key in errors) {
           Materialize.toast(key+": "+errors[key],2000,'orange')
         }
-        console.warn(text);
+        
         return;
       } else if (!response.ok) {
           throw Error(response.statusText);
       } else {
         var recipe = JSON.parse(text);
-        console.log('Recipe Saved',recipe)
+        
         parent.location.hash = '/recipe/'+recipe.id;
       }
     })

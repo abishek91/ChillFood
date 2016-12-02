@@ -22195,8 +22195,8 @@
 	              _reactMaterialize.Col,
 	              { s: 6, className: 'recipe-pic' },
 	              _react2.default.createElement('iframe', {
-	                width: '560',
-	                height: '315',
+	                width: '520',
+	                height: '300',
 	                src: this.state.recipe.video_link,
 	                frameBorder: '0',
 	                allowFullScreen: true })
@@ -35116,7 +35116,7 @@
 	  }, {
 	    key: 'handleSave',
 	    value: function handleSave(recipe) {
-	      console.log('Recipe TBS', recipe);
+	
 	      this.postData('/api/recipe/create', recipe);
 	    }
 	  }, {
@@ -35142,13 +35142,13 @@
 	          for (var key in errors) {
 	            Materialize.toast(key + ": " + errors[key], 2000, 'orange');
 	          }
-	          console.warn(text);
+	
 	          return;
 	        } else if (!response.ok) {
 	          throw Error(response.statusText);
 	        } else {
 	          var recipe = JSON.parse(text);
-	          console.log('Recipe Saved', recipe);
+	
 	          parent.location.hash = '/recipe/' + recipe.id;
 	        }
 	      }).catch(function (error) {
@@ -35321,6 +35321,7 @@
 	      recipe.time = this.refs.timeInput.value;
 	      recipe.calories = this.refs.caloriesInput.value;
 	      recipe.video_link = this.refs.video_linkInput.value;
+	      if (recipe.video_link) recipe.video_link = recipe.video_link.trim();
 	      recipe.category_set = this.category_set;
 	      recipe.equipment_set = this.equipment_set;
 	      recipe.cuisine_set = this.cuisine_set;
@@ -41537,8 +41538,7 @@
 	    key: 'onDrop',
 	    value: function onDrop(acceptedFiles, rejectedFiles) {
 	      var self = this;
-	      console.log('Accepted files: ', acceptedFiles);
-	      console.log('Rejected files: ', rejectedFiles);
+	
 	      getSignedRequest(acceptedFiles[0], function (url) {
 	        self.setState(function (prevState) {
 	          self.props.updatePicture(url);
@@ -41553,7 +41553,6 @@
 	    value: function componentWillReceiveProps() {
 	      var _this2 = this;
 	
-	      console.log(this.props);
 	      this.setState(function (prevState) {
 	        return {
 	          files: [{ preview: _this2.props.src }]
@@ -41566,7 +41565,6 @@
 	      this.setState({
 	        current: value
 	      });
-	      console.log(value);
 	    }
 	  }, {
 	    key: 'render',
@@ -41578,7 +41576,7 @@
 	      };
 	      var steps = [];
 	      var src = this.props.src || default_pic;
-	      console.log(src);
+	
 	      if (this.props.multi) {
 	        (function () {
 	          var item = _this3.state.files[_this3.state.current];
@@ -41603,8 +41601,6 @@
 	          }.bind(_this3));
 	        })();
 	      }
-	
-	      console.log(this.props);
 	
 	      return _react2.default.createElement(
 	        _reactMaterialize.Row,
