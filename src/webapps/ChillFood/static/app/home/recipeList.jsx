@@ -55,12 +55,12 @@ export default class RecipeList extends React.Component {
 
   handleSort(sortBy) {
     let self = this;
-    // let search = this.state.search;
-    this.state.search.sortBy = sortBy;
+    let search = this.state.search;
+    search.sortBy = sortBy;
     
-    // this.setState({
-    //   search:search
-    // });
+    this.setState({
+      search:search
+    });
 
     this.search()
   }
@@ -119,7 +119,7 @@ export default class RecipeList extends React.Component {
     
     this.recipe.get(search.text,
       search.userId,
-      search.sortBy,
+      search.sortBy.value,
       this.selected_categories,
       this.selected_cuisines,
       this.selected_equipments,

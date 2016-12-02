@@ -86,19 +86,19 @@ const Buttons = ({username, user_photo}) => {
               </a>
             </li>
             <li>
-             <Dropdown trigger={
-              <a className="name dropdown-button" data-activates="dropdown1">
-                <Img className={"left user_photo z-depth-1 "+user_photo_class} src={user_photo}/>
-                {username}
-                <i className="material-icons right">arrow_drop_down</i>
-              </a>
-          }>
-           <NavItem href='#/party/list'><i className="material-icons left">people</i>Party</NavItem>
-           <NavItem href='#/edit_profile'><i className="material-icons left">mode_edit</i>Edit Profile</NavItem>
-           <NavItem href={profileLink}><i className="material-icons left">perm_identity</i>Profile</NavItem>
-           <NavItem href="/logout"><i className="material-icons left">power_settings_new</i>Sign Out</NavItem>
-        </Dropdown>     
-        </li>
+              <Dropdown trigger={
+                <a className="name dropdown-button" data-activates="dropdown1">
+                  <Img className={"left user_photo z-depth-1 "+user_photo_class} src={user_photo}/>
+                  {username}
+                  <i className="material-icons right">arrow_drop_down</i>
+                </a>
+              }>
+                <NavItem href='#/party/list'><i className="material-icons left">people</i>Party</NavItem>
+                <NavItem href='#/edit_profile'><i className="material-icons left">mode_edit</i>Edit Profile</NavItem>
+                <NavItem href={profileLink}><i className="material-icons left">perm_identity</i>Profile</NavItem>
+                <NavItem href="/logout"><i className="material-icons left">power_settings_new</i>Sign Out</NavItem>
+              </Dropdown>     
+            </li>
           </ul>);  
 }
 

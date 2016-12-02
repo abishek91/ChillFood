@@ -12,25 +12,28 @@ import AutoComplete from './autoComplete.jsx'
 export default class SortBar extends React.Component { 
   render() {
     let sortBy = this.props.sortBy;
-    const sortOptionsNode = this.props.sortOptions.map((option, index) => {
-      return (<li className="options" onClick={() => this.props.handleSort(option)} key={index}>
+    const sortOptionsNode = () => {
+      return this.props.sortOptions.map((option, index) => {
+        return (<NavItem className="options" onClick={() => this.props.handleSort(option)} key={index}>
                 {option.label}
-              </li>)
-    });
-
+              </NavItem>)
+      });
+    }
     return (<div>
-              <ul id="dropdown2" className="dropdown-content">
-                {sortOptionsNode}
-              </ul>
               <Row className="slim white blue-text below z-depth-1">
                 <Col s={9}className="">
                   
                 </Col>
                 <Col s={3} className="">
-                  <a className="dropdown-button" data-activates="dropdown2">
-                    Sort by: {sortBy.label}
-                    <span className="material-icons">arrow_drop_down</span>
-                  </a>
+
+                  <Dropdown trigger={
+                    <a className="name dropdown-button" data-activates="dropdown2">
+                      Sort by: {sortBy.label}
+                      <i className="material-icons">arrow_drop_down</i>
+                    </a>
+                  }>
+                    {sortOptionsNode()}
+                  </Dropdown> 
                 </Col>
               </Row>
             </div>);

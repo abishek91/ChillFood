@@ -326,7 +326,7 @@ def lists(request):
 def ingredients(request): 
     #Variables
     result = {}  
-    PAGE_SIZE = 10
+    PAGE_SIZE = 9
         
     #Set page number
     page = request.GET.get('page','1')

@@ -42407,12 +42407,12 @@
 	    key: 'handleSort',
 	    value: function handleSort(sortBy) {
 	      var self = this;
-	      // let search = this.state.search;
-	      this.state.search.sortBy = sortBy;
+	      var search = this.state.search;
+	      search.sortBy = sortBy;
 	
-	      // this.setState({
-	      //   search:search
-	      // });
+	      this.setState({
+	        search: search
+	      });
 	
 	      this.search();
 	    }
@@ -42473,7 +42473,7 @@
 	      var self = this;
 	      var search = this.state.search;
 	
-	      this.recipe.get(search.text, search.userId, search.sortBy, this.selected_categories, this.selected_cuisines, this.selected_equipments, search.hasVideo, this.selected_ingredients).then(function (data) {
+	      this.recipe.get(search.text, search.userId, search.sortBy.value, this.selected_categories, this.selected_cuisines, this.selected_equipments, search.hasVideo, this.selected_ingredients).then(function (data) {
 	
 	        this.setState({
 	          search: search,
@@ -43146,24 +43146,20 @@
 	      var _this2 = this;
 	
 	      var sortBy = this.props.sortBy;
-	      var sortOptionsNode = this.props.sortOptions.map(function (option, index) {
-	        return _react2.default.createElement(
-	          'li',
-	          { className: 'options', onClick: function onClick() {
-	              return _this2.props.handleSort(option);
-	            }, key: index },
-	          option.label
-	        );
-	      });
-	
+	      var sortOptionsNode = function sortOptionsNode() {
+	        return _this2.props.sortOptions.map(function (option, index) {
+	          return _react2.default.createElement(
+	            _reactMaterialize.NavItem,
+	            { className: 'options', onClick: function onClick() {
+	                return _this2.props.handleSort(option);
+	              }, key: index },
+	            option.label
+	          );
+	        });
+	      };
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2.default.createElement(
-	          'ul',
-	          { id: 'dropdown2', className: 'dropdown-content' },
-	          sortOptionsNode
-	        ),
 	        _react2.default.createElement(
 	          _reactMaterialize.Row,
 	          { className: 'slim white blue-text below z-depth-1' },
@@ -43172,15 +43168,19 @@
 	            _reactMaterialize.Col,
 	            { s: 3, className: '' },
 	            _react2.default.createElement(
-	              'a',
-	              { className: 'dropdown-button', 'data-activates': 'dropdown2' },
-	              'Sort by: ',
-	              sortBy.label,
-	              _react2.default.createElement(
-	                'span',
-	                { className: 'material-icons' },
-	                'arrow_drop_down'
-	              )
+	              _reactMaterialize.Dropdown,
+	              { trigger: _react2.default.createElement(
+	                  'a',
+	                  { className: 'name dropdown-button', 'data-activates': 'dropdown2' },
+	                  'Sort by: ',
+	                  sortBy.label,
+	                  _react2.default.createElement(
+	                    'i',
+	                    { className: 'material-icons' },
+	                    'arrow_drop_down'
+	                  )
+	                ) },
+	              sortOptionsNode()
 	            )
 	          )
 	        )
