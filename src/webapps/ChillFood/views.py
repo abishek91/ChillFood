@@ -89,7 +89,7 @@ def add_rating(request, recipe_id):
 
     tastiness = rating.tastiness
     difficulty = rating.difficulty
-    notification_text = request.user.name + " has added a";
+    notification_text = request.user.get_full_name() + " has added a";
     appender = ""
 
     if 'tastiness' in request.POST and request.POST['tastiness']:
@@ -122,7 +122,7 @@ def add_comment(request, recipe_id):
         text = request.POST['text']
         new_comment = Comment( recipe=recipe, user=request.user, text=text)
         new_comment.save()
-        notification_text = request.user.name + " has added a comment to your recipe " + recipe.title;
+        notification_text = request.user.get_full_name() + " has added a comment to your recipe " + recipe.title;
 
         notification = Notification(user=recipe.cook, text=notification_text,read=False,
                                     link=reverse('recipe_detail', kwargs={'recipe_id':recipe.id}) + '#/recipe/' + str(recipe.id))
@@ -146,7 +146,7 @@ def follow(request, user_id):
     followee = User.objects.get(id=user_id)
     follower = User.objects.get(id=request.user.id)
     follower.following.add(followee)
-    notification_text = request.user.name + " has followed you ";
+    notification_text = request.user.get_full_name() + " has followed you ";
     notification = Notification(user=followee, text=notification_text,read=False,
                                     link='#/profile/' + str(follower.id))
     notification.save()
