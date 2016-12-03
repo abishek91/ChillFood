@@ -28,15 +28,13 @@ class SearchForm(forms.ModelForm):
 
     class Meta:
         model = Preferences
-        exclude = ['user','price_min','price_max']    
+        exclude = ['user']    
         
         
     search = forms.CharField(required=False)
     skip = forms.IntegerField(initial=0,required=False)
     user_id = forms.IntegerField(initial=0,required=False)
     # sort_id = forms.IntegerField(initial=Sort.views,required=False)
-    # price_min = models.IntegerField(blank = True, default = 0)
-    # price_max = models.IntegerField(blank = True, default = ~0)
     has_video = forms.BooleanField(required = False)
     
     # category_choices = [(c.id, c.name) for c in Category.objects.all()]
@@ -72,7 +70,6 @@ class RecipeIngredientForm(forms.Form):
     ingredient_id = forms.ModelChoiceField(queryset=Ingredient.objects.all())
     ingredient_name = forms.CharField(max_length=150)
     quantity = forms.CharField(max_length = 200)
-    price = forms.IntegerField()
     display = forms.CharField(max_length = 200)
 
 class RecipeForm(forms.ModelForm):

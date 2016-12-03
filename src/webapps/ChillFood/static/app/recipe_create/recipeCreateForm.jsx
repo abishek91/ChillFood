@@ -96,7 +96,7 @@ export default class RecipeCreate extends React.Component {
   }
 
   // Add todo handler
-  addIngredient(ingredient_id, ingredient_name, quantity, price, finishSuccesfully){
+  addIngredient(ingredient_id, ingredient_name, quantity, finishSuccesfully){
     let error = true;
     const self = this;
     if (!/[\w\d]+/.test(ingredient_name)) {
@@ -126,7 +126,7 @@ export default class RecipeCreate extends React.Component {
           }
 
           // Assemble data
-          const item = new RecipeIngredient(self.state.ingredients.length, ingredient_id, ingredient_name, quantity, price);
+          const item = new RecipeIngredient(self.state.ingredients.length, ingredient_id, ingredient_name, quantity);
           // Update data
           self.state.ingredients.push(item);
           // Update state
@@ -325,12 +325,11 @@ export default class RecipeCreate extends React.Component {
   
 }
 
-function RecipeIngredient(id, ingredient_id, ingredient_name, quantity, price, display) {
+function RecipeIngredient(id, ingredient_id, ingredient_name, quantity, display) {
   this.id = id;
   this.ingredient_id = ingredient_id | 0;
   this.ingredient_name = ingredient_name;
   this.quantity = quantity || '1';
-  this.price = price || 0;
   this.display = this.quantity + ' ' + ingredient_name;
 }
 

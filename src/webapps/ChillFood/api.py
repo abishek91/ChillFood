@@ -85,7 +85,7 @@ def recipes(request):
     if form.cleaned_data['category']:
         lista = form.cleaned_data['category']
         query &= Q(category_set__id__in=lista)
-        
+
     if form.cleaned_data['equipment']:
         lista = form.cleaned_data['equipment']
         query &= Q(equipment_set__id__in=lista)
@@ -93,16 +93,9 @@ def recipes(request):
     if form.cleaned_data['cuisine']:
         lista = form.cleaned_data['cuisine']
         query &= Q(cuisine_set__id__in=lista)
-        
-    # if form.cleaned_data['price_min']:
-    #     query &= Q(price__gte=form.cleaned_data['price_min'])
-        
-    # if form.cleaned_data['price_max']:
-    #     query &= Q(price__lte=form.cleaned_data['price_max'])
 
     if form.cleaned_data['has_video']:
         query &= ~Q(video_link="")
-
 
     #Order
     
@@ -280,7 +273,6 @@ def recipe_create(request):
         recipe_ingredient = RecipeIngredient(recipe_id = recipe.id,
                                              ingredient_id = my_ingredient.id,
                                              quantity = rp.cleaned_data['quantity'],
-                                             price = rp.cleaned_data['price'],
                                              display = rp.cleaned_data['display']);
 
         recipe_ingredient.save()

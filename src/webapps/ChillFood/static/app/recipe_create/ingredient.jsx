@@ -9,7 +9,6 @@ const Item = ({index, item, remove}) => {
               <div className="col s1">{index}</div>
               <div className="col s4">{item.ingredient_name}</div>
               <div className="col s3">{item.quantity}</div>
-              <div className="col s3">{item.price}</div>
               <button className="col s1 waves-effect waves-blue btn btn-flat" 
                   type="button" 
                   onClick={() => { remove(item.id); }}>

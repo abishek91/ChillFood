@@ -57,13 +57,11 @@ export default class IngredientForm extends React.Component {
     this.props.addItem(self.ingredient_input_id, 
                       input.name.value, 
                       input.quantity.value, 
-                      input.price.value,
                       function(result) {
                         if (result) {
                           console.log('addItem - ingredient_input', self, self.ingredient_input)
                           self.ingredient_input.setValue({})
                           input.quantity.value = ''; 
-                          input.price.value = '';
                         }
                       });                  
   }
@@ -94,11 +92,6 @@ export default class IngredientForm extends React.Component {
                   className="col s3" 
                   placeholder="Quantity" 
                   ref={node => { input.quantity = node; }} />
-                <input 
-                  type="number"
-                  className="col s3" 
-                  placeholder="Price" 
-                  ref={node => { input.price = node; }} />
                 <button className="col s1 waves-effect waves-blue btn btn-flat" 
                 type="button" 
                 onClick={(e)=>this.addItem(input)}>

@@ -61,7 +61,6 @@ class Recipe(models.Model):
           "remote_pic":self.remote_pic,
           "categories": list(map(lambda x: x.to_json(),self.category_set.all())),
           "equipments": list(map(lambda x: x.to_json(),self.equipment_set.all())),
-          
         }
 
         if (hasattr(self,"tastiness")):
@@ -130,7 +129,6 @@ class RecipeIngredient(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="ingredients")
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     quantity = models.CharField(max_length = 200, blank = True)
-    price = models.IntegerField(blank = True, null = True)
     display = models.CharField(max_length = 200, blank = True)
 
     class Meta:
@@ -186,8 +184,6 @@ PREFERENCE_SORT_TYPE = (
 class Preferences(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     sort_by = models.IntegerField(choices=PREFERENCE_SORT_TYPE, default = 1) 
-    price_min = models.IntegerField(blank = True, default = 0)
-    price_max = models.IntegerField(blank = True, default = ~0)
     has_video = models.BooleanField(default = False)
     category = models.ManyToManyField(Category)
     equipment = models.ManyToManyField(Equipment)

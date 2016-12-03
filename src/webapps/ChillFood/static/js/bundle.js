@@ -35402,7 +35402,7 @@
 	
 	  }, {
 	    key: 'addIngredient',
-	    value: function addIngredient(ingredient_id, ingredient_name, quantity, price, finishSuccesfully) {
+	    value: function addIngredient(ingredient_id, ingredient_name, quantity, finishSuccesfully) {
 	      var error = true;
 	      var self = this;
 	      if (!/[\w\d]+/.test(ingredient_name)) {
@@ -35431,7 +35431,7 @@
 	            }
 	
 	            // Assemble data
-	            var item = new RecipeIngredient(self.state.ingredients.length, ingredient_id, ingredient_name, quantity, price);
+	            var item = new RecipeIngredient(self.state.ingredients.length, ingredient_id, ingredient_name, quantity);
 	            // Update data
 	            self.state.ingredients.push(item);
 	            // Update state
@@ -35689,12 +35689,11 @@
 	exports.default = RecipeCreate;
 	
 	
-	function RecipeIngredient(id, ingredient_id, ingredient_name, quantity, price, display) {
+	function RecipeIngredient(id, ingredient_id, ingredient_name, quantity, display) {
 	  this.id = id;
 	  this.ingredient_id = ingredient_id | 0;
 	  this.ingredient_name = ingredient_name;
 	  this.quantity = quantity || '1';
-	  this.price = price || 0;
 	  this.display = this.quantity + ' ' + ingredient_name;
 	}
 	
@@ -41127,12 +41126,11 @@
 	    value: function addItem(input) {
 	      self = this;
 	      console.log('addItem - input', input);
-	      this.props.addItem(self.ingredient_input_id, input.name.value, input.quantity.value, input.price.value, function (result) {
+	      this.props.addItem(self.ingredient_input_id, input.name.value, input.quantity.value, function (result) {
 	        if (result) {
 	          console.log('addItem - ingredient_input', self, self.ingredient_input);
 	          self.ingredient_input.setValue({});
 	          input.quantity.value = '';
-	          input.price.value = '';
 	        }
 	      });
 	    }
@@ -41176,13 +41174,6 @@
 	          placeholder: 'Quantity',
 	          ref: function ref(node) {
 	            input.quantity = node;
-	          } }),
-	        _react2.default.createElement('input', {
-	          type: 'number',
-	          className: 'col s3',
-	          placeholder: 'Price',
-	          ref: function ref(node) {
-	            input.price = node;
 	          } }),
 	        _react2.default.createElement(
 	          'button',
@@ -41259,11 +41250,6 @@
 	            'div',
 	            { className: 'col s3' },
 	            item.quantity
-	        ),
-	        _react2.default.createElement(
-	            'div',
-	            { className: 'col s3' },
-	            item.price
 	        ),
 	        _react2.default.createElement(
 	            'button',
