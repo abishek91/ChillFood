@@ -1,6 +1,7 @@
 import React from 'react';
 
 export default class Calories extends React.Component {
+  
   render() {
       if(!this.props.calories)
         return null;

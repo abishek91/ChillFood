@@ -210,7 +210,6 @@ def recipe_create(request):
     if not form.is_valid():
         return JsonResponse(dict(form.errors.items()),status=406)        
     
-
     if 'ingredients' not in body:
         return JsonResponse([{'ingredients': 'Ingredients are required.'}],status=406)        
     
