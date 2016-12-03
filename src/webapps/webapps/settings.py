@@ -178,7 +178,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
 STATIC_ROOT = os.path.join(BASE_DIR, "..", "www", "static")
-print(STATIC_ROOT)
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, '../ChillFood/static'),)
-print(STATICFILES_DIRS)
