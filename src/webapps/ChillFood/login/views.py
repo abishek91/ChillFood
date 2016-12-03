@@ -88,7 +88,7 @@ def register(request):
 
     authLogin(request, new_user)
 
-    return send_registration_mail(request, new_user)
+    send_registration_mail(request, new_user)
 
     return redirect(reverse('index'))
 
