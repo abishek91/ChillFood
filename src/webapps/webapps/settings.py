@@ -34,7 +34,7 @@ CSRF_COOKIE_HTTPONLY=True
 X_FRAME_OPTIONS = 'DENY'
 SECURE_HSTS_SECONDS = 31536000
 
-ALLOWED_HOSTS = ['http://chillfood.us-east-1.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['chillfood.us-east-1.elasticbeanstalk.com']
 
 
 #AWS
