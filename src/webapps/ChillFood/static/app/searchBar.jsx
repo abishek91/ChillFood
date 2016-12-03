@@ -30,6 +30,10 @@ export default class SearchBar extends React.Component {
       window.location = '/#/?' + querystring.stringify({text:text});
     }
   }
+
+  login(){
+    window.location.href="/login";
+  }
   
   // componentWillMount(){
   //   if (this.props.text)
@@ -45,8 +49,15 @@ export default class SearchBar extends React.Component {
 
     if(typeof userId !== 'undefined')
     {
-       console.log('why')
-       buttons = <Buttons username={username} user_photo={user_photo} />
+       buttons = <span>
+                    <Buttons username={username} user_photo={user_photo} />
+                    <Notifications />
+                </span>
+
+    }
+    else
+    {
+       buttons = <Button className="right login" onClick={() => this.login()} type="button">Login</Button>
     }
     let username = userName;
     if (this.props.username)
@@ -66,7 +77,6 @@ export default class SearchBar extends React.Component {
                 <Img alt="ChillFood" src={static_files + 'images/ChillFood-white.png'} className="logo"/>
               </a>
               {buttons}
-              <Notifications />
 
               <SearchForm defaultValue={this.props.defaultValue} handleSearch={this.handleSearch} /> 
 

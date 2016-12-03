@@ -13,10 +13,6 @@ export default class Notifications extends React.Component {
 
   componentDidMount() {
       let self = this;
-      if(typeof userId == 'undefined')
-      {
-         return null;
-      }
       fetch('/notifications',
            {credentials: 'include'})
       .then(function(response) {
