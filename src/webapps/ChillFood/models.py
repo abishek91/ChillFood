@@ -216,7 +216,7 @@ class List(models.Model):
 class Notification(models.Model):
     text = models.CharField(max_length=200)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    link = models.CharField(max_length=200)
+    link = models.CharField(max_length=200,blank=True, null=True)
     read = models.BooleanField(default = False)
     date_time = models.DateTimeField(auto_now_add=True)
     

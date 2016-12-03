@@ -180,7 +180,8 @@ def readNotifications(request):
 
 def party_confirm(request, party_id, user_id, token):
   guest = get_object_or_404(Guest, party_id = party_id, user_id = user_id)
-
+  party = get_object_or_404(Party, id=party_id)
+  recipe = party.recipe
   if len(guest.token) == 0:
     raise Http404("Invitation has already been answered.")
 
@@ -190,13 +191,18 @@ def party_confirm(request, party_id, user_id, token):
     guest.token = "";
     guest.status = 1;
     guest.save(); 
+
+    notification_text = guest.user.name + " has accepted your cooking party invite for recipe " + recipe.title
+    notification = Notification(user=party.host, text=notification_text,read=False,link=None)
+    notification.save()
     return render(request, 'party_confirm.html', {})
   else:
     raise Http404("Token does not exist")
 
 def party_decline(request, party_id, user_id, token):
   guest = get_object_or_404(Guest, party_id = party_id, user_id = user_id)
-
+  party = get_object_or_404(Party, id=party_id)
+  recipe = party.recipe
   if not guest.token:
     raise Http404("Token does not exist")
 
@@ -206,6 +212,9 @@ def party_decline(request, party_id, user_id, token):
     guest.token = "";
     guest.status = -1;
     guest.save(); 
+    notification_text = guest.user.name + " has declined your cooking party invite for recipe " + recipe.title
+    notification = Notification(user=party.host, text=notification_text,read=False,link=None)
+    notification.save()
     return render(request, 'party_decline.html', {})
   else:
     raise Http404("Token does not exist")
