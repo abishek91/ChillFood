@@ -62,7 +62,7 @@ export default class SearchBar extends React.Component {
                     <Notifications />
                 </span>
       if(confirmed == 'False')
-        activate =  <div className="row">
+        activate =  <div className="">
                         <div className="ribbon col s12 red center white-text z-depth-1">Please, confirm your email address.</div>  
                     </div>  
 
