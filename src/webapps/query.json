@@ -1,0 +1,1009 @@
+[
+  {
+    "model": "ChillFood.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$30000$LoTXqWS6Ivqz$Hw29736s\/hThSwWDmjawkH\/Fp\/tYihXmGRdkcr7+kmw=",
+      "last_login": "2016-12-03T02:04:51.250Z",
+      "is_superuser": false,
+      "username": "delacruzpaulino@gmail.com",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2016-12-02T23:54:33.831Z",
+      "name": "Caleb",
+      "bio": "",
+      "birthdate": null,
+      "photo": "",
+      "is_confirmed": false,
+      "location_lat": "40.437926",
+      "location_lon": "-79.955642",
+      "groups": [
+        
+      ],
+      "user_permissions": [
+        
+      ],
+      "following": [
+        
+      ]
+    }
+  },
+  {
+    "model": "ChillFood.user",
+    "pk": 2,
+    "fields": {
+      "password": "",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2016-12-02T23:54:51.006Z",
+      "name": "ChillFood.com",
+      "bio": "",
+      "birthdate": null,
+      "photo": "",
+      "is_confirmed": false,
+      "location_lat": "0.000000",
+      "location_lon": "0.000000",
+      "groups": [
+        
+      ],
+      "user_permissions": [
+        
+      ],
+      "following": [
+        
+      ]
+    }
+  },
+  {
+    "model": "ChillFood.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$30000$QpgHscgwNQHy$AzeRIEARy4HJy6PRrwXQPMGwiqspdd88Yg7XwehQ8bs=",
+      "last_login": "2016-12-03T03:42:36.429Z",
+      "is_superuser": false,
+      "username": "a@aol.com",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2016-12-03T03:42:35.866Z",
+      "name": "Arya",
+      "bio": "",
+      "birthdate": null,
+      "photo": "",
+      "is_confirmed": false,
+      "location_lat": "40.437926",
+      "location_lon": "-79.955642",
+      "groups": [
+        
+      ],
+      "user_permissions": [
+        
+      ],
+      "following": [
+        
+      ]
+    }
+  },
+  {
+    "model": "ChillFood.category",
+    "pk": 1,
+    "fields": {
+      "name": "Vegan"
+    }
+  },
+  {
+    "model": "ChillFood.category",
+    "pk": 2,
+    "fields": {
+      "name": "Veg"
+    }
+  },
+  {
+    "model": "ChillFood.category",
+    "pk": 3,
+    "fields": {
+      "name": "Non-veg"
+    }
+  },
+  {
+    "model": "ChillFood.equipment",
+    "pk": 1,
+    "fields": {
+      "name": "bowl"
+    }
+  },
+  {
+    "model": "ChillFood.equipment",
+    "pk": 2,
+    "fields": {
+      "name": "baking sheet"
+    }
+  },
+  {
+    "model": "ChillFood.equipment",
+    "pk": 3,
+    "fields": {
+      "name": "mixing bowl"
+    }
+  },
+  {
+    "model": "ChillFood.equipment",
+    "pk": 4,
+    "fields": {
+      "name": "oven"
+    }
+  },
+  {
+    "model": "ChillFood.equipment",
+    "pk": 5,
+    "fields": {
+      "name": "blender"
+    }
+  },
+  {
+    "model": "ChillFood.equipment",
+    "pk": 6,
+    "fields": {
+      "name": "waffle iron"
+    }
+  },
+  {
+    "model": "ChillFood.equipment",
+    "pk": 7,
+    "fields": {
+      "name": "sauce pan"
+    }
+  },
+  {
+    "model": "ChillFood.equipment",
+    "pk": 8,
+    "fields": {
+      "name": "ladle"
+    }
+  },
+  {
+    "model": "ChillFood.equipment",
+    "pk": 9,
+    "fields": {
+      "name": "baking paper"
+    }
+  },
+  {
+    "model": "ChillFood.equipment",
+    "pk": 10,
+    "fields": {
+      "name": "food processor"
+    }
+  },
+  {
+    "model": "ChillFood.equipment",
+    "pk": 11,
+    "fields": {
+      "name": "loaf pan"
+    }
+  },
+  {
+    "model": "ChillFood.equipment",
+    "pk": 12,
+    "fields": {
+      "name": "frying pan"
+    }
+  },
+  {
+    "model": "ChillFood.equipment",
+    "pk": 13,
+    "fields": {
+      "name": "whisk"
+    }
+  },
+  {
+    "model": "ChillFood.equipment",
+    "pk": 14,
+    "fields": {
+      "name": "pressure cooker"
+    }
+  },
+  {
+    "model": "ChillFood.equipment",
+    "pk": 15,
+    "fields": {
+      "name": "measuring cup"
+    }
+  },
+  {
+    "model": "ChillFood.equipment",
+    "pk": 16,
+    "fields": {
+      "name": "slotted spoon"
+    }
+  },
+  {
+    "model": "ChillFood.equipment",
+    "pk": 17,
+    "fields": {
+      "name": "toaster"
+    }
+  },
+  {
+    "model": "ChillFood.equipment",
+    "pk": 18,
+    "fields": {
+      "name": "pot"
+    }
+  },
+  {
+    "model": "ChillFood.equipment",
+    "pk": 19,
+    "fields": {
+      "name": "baking pan"
+    }
+  },
+  {
+    "model": "ChillFood.equipment",
+    "pk": 20,
+    "fields": {
+      "name": "kitchen thermometer"
+    }
+  },
+  {
+    "model": "ChillFood.equipment",
+    "pk": 21,
+    "fields": {
+      "name": "paper towels"
+    }
+  },
+  {
+    "model": "ChillFood.equipment",
+    "pk": 22,
+    "fields": {
+      "name": "knife"
+    }
+  },
+  {
+    "model": "ChillFood.equipment",
+    "pk": 23,
+    "fields": {
+      "name": "plastic wrap"
+    }
+  },
+  {
+    "model": "ChillFood.equipment",
+    "pk": 24,
+    "fields": {
+      "name": "ice cream machine"
+    }
+  },
+  {
+    "model": "ChillFood.cuisine",
+    "pk": 1,
+    "fields": {
+      "name": "mediterranean"
+    }
+  },
+  {
+    "model": "ChillFood.cuisine",
+    "pk": 2,
+    "fields": {
+      "name": "european"
+    }
+  },
+  {
+    "model": "ChillFood.cuisine",
+    "pk": 3,
+    "fields": {
+      "name": "french"
+    }
+  },
+  {
+    "model": "ChillFood.cuisine",
+    "pk": 4,
+    "fields": {
+      "name": "american"
+    }
+  },
+  {
+    "model": "ChillFood.recipe",
+    "pk": 1,
+    "fields": {
+      "pic": "recipes\/Agavoni-207902.jpg",
+      "remote_pic": "",
+      "title": "Something",
+      "cook": 2,
+      "time": 2,
+      "calories": null,
+      "video_link": "",
+      "date_time": "2016-12-02T23:54:56.594Z",
+      "views": 0,
+      "category_set": [
+        1,
+        2
+      ],
+      "equipment_set": [
+        
+      ],
+      "cuisine_set": [
+        
+      ]
+    }
+  },
+  {
+    "model": "ChillFood.recipe",
+    "pk": 2,
+    "fields": {
+      "pic": "recipes\/Make-Ahead-Vegetable-Medley-449593.jpg",
+      "remote_pic": "",
+      "title": "Frito Make-Ahead Vegetable Medley",
+      "cook": 2,
+      "time": 10,
+      "calories": null,
+      "video_link": "this is a link",
+      "date_time": "2016-12-02T23:55:14.834Z",
+      "views": 0,
+      "category_set": [
+        1,
+        2
+      ],
+      "equipment_set": [
+        1
+      ],
+      "cuisine_set": [
+        
+      ]
+    }
+  },
+  {
+    "model": "ChillFood.recipe",
+    "pk": 3,
+    "fields": {
+      "pic": "recipes\/kfc-coleslaw-copycat-coleslaw-2-94514.jpg",
+      "remote_pic": "",
+      "title": "Tostones Kfc Coleslaw  Copycat  Coleslaw",
+      "cook": 2,
+      "time": 15,
+      "calories": null,
+      "video_link": "",
+      "date_time": "2016-12-02T23:55:20.867Z",
+      "views": 0,
+      "category_set": [
+        2
+      ],
+      "equipment_set": [
+        
+      ],
+      "cuisine_set": [
+        
+      ]
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 1,
+    "fields": {
+      "name": "campari"
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 2,
+    "fields": {
+      "name": "orange"
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 3,
+    "fields": {
+      "name": "silver tequila"
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 4,
+    "fields": {
+      "name": "vermouth"
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 5,
+    "fields": {
+      "name": "canned chickpeas"
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 6,
+    "fields": {
+      "name": "canned kidney beans"
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 7,
+    "fields": {
+      "name": "canned lima beans"
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 8,
+    "fields": {
+      "name": "canned peas"
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 9,
+    "fields": {
+      "name": "cider vinegar"
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 10,
+    "fields": {
+      "name": "cucumber"
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 11,
+    "fields": {
+      "name": "diced pimientos"
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 12,
+    "fields": {
+      "name": "garlic powder"
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 13,
+    "fields": {
+      "name": "green beans"
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 14,
+    "fields": {
+      "name": "green pepper"
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 15,
+    "fields": {
+      "name": "onion"
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 16,
+    "fields": {
+      "name": "pepper"
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 17,
+    "fields": {
+      "name": "seasoned salt"
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 18,
+    "fields": {
+      "name": "sugar"
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 19,
+    "fields": {
+      "name": "vegetable oil"
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 20,
+    "fields": {
+      "name": "wax beans"
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 21,
+    "fields": {
+      "name": "white shoepeg corn"
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 22,
+    "fields": {
+      "name": "buttermilk"
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 23,
+    "fields": {
+      "name": "cabbage"
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 24,
+    "fields": {
+      "name": "carrot"
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 25,
+    "fields": {
+      "name": "lemon juice"
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 26,
+    "fields": {
+      "name": "mayonnaise"
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 27,
+    "fields": {
+      "name": "milk"
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 28,
+    "fields": {
+      "name": "salt"
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 29,
+    "fields": {
+      "name": "white vinegar"
+    }
+  },
+  {
+    "model": "ChillFood.ingredient",
+    "pk": 30,
+    "fields": {
+      "name": "butter"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 1,
+    "fields": {
+      "recipe": 1,
+      "ingredient": 1,
+      "quantity": "0.75 ounces",
+      "display": "3\/4 ounce Campari"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 2,
+    "fields": {
+      "recipe": 1,
+      "ingredient": 2,
+      "quantity": "2.0 dashes",
+      "display": "2 dashes orange bitters (The Bitter Truth is a recommended brand)"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 3,
+    "fields": {
+      "recipe": 1,
+      "ingredient": 3,
+      "quantity": "0.75 ounces",
+      "display": "3\/4 ounce silver tequila (Heuser recommends Tapatio Blanco)"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 4,
+    "fields": {
+      "recipe": 1,
+      "ingredient": 4,
+      "quantity": "0.75 ounces",
+      "display": "3\/4 ounce Carpano Antica sweet vermouth"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 5,
+    "fields": {
+      "recipe": 2,
+      "ingredient": 5,
+      "quantity": "15.0 ounces",
+      "display": "1 can (15 ounces) garbanzo beans or chickpeas, rinsed and drained"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 6,
+    "fields": {
+      "recipe": 2,
+      "ingredient": 6,
+      "quantity": "16.0 ounces",
+      "display": "1 can (16 ounces) kidney beans, rinsed and drained"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 7,
+    "fields": {
+      "recipe": 2,
+      "ingredient": 7,
+      "quantity": "15.0 ounces",
+      "display": "1 can (15-1\/4 ounces) lima beans, rinsed and drained"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 8,
+    "fields": {
+      "recipe": 2,
+      "ingredient": 8,
+      "quantity": "15.0 ounces",
+      "display": "1 can (15-1\/4 ounces) small peas, drained"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 9,
+    "fields": {
+      "recipe": 2,
+      "ingredient": 9,
+      "quantity": "2.0 cups",
+      "display": "2 cups cider vinegar"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 10,
+    "fields": {
+      "recipe": 2,
+      "ingredient": 10,
+      "quantity": "1.0 ",
+      "display": "1 large cucumber, chopped"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 11,
+    "fields": {
+      "recipe": 2,
+      "ingredient": 11,
+      "quantity": "2.0 ounces",
+      "display": "1 jar (2 ounces) diced pimientos, drained"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 12,
+    "fields": {
+      "recipe": 2,
+      "ingredient": 12,
+      "quantity": "0.25 teaspoons",
+      "display": "1\/4 teaspoon garlic powder"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 13,
+    "fields": {
+      "recipe": 2,
+      "ingredient": 13,
+      "quantity": "14.0 ounces",
+      "display": "1 can (14-1\/2 ounces) cut green beans, drained"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 14,
+    "fields": {
+      "recipe": 2,
+      "ingredient": 14,
+      "quantity": "0.5 cups",
+      "display": "1\/2 cup chopped green pepper"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 15,
+    "fields": {
+      "recipe": 2,
+      "ingredient": 15,
+      "quantity": "1.0 cup",
+      "display": "1-1\/2 cups chopped onion"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 16,
+    "fields": {
+      "recipe": 2,
+      "ingredient": 16,
+      "quantity": "0.5 teaspoons",
+      "display": "1\/2 teaspoon pepper"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 17,
+    "fields": {
+      "recipe": 2,
+      "ingredient": 17,
+      "quantity": "0.5 teaspoons",
+      "display": "1\/2 teaspoon seasoned salt"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 18,
+    "fields": {
+      "recipe": 2,
+      "ingredient": 18,
+      "quantity": "1.0 cup",
+      "display": "1-1\/2 cups sugar"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 19,
+    "fields": {
+      "recipe": 2,
+      "ingredient": 19,
+      "quantity": "0.6666666666666666 cups",
+      "display": "2\/3 cup vegetable oil"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 20,
+    "fields": {
+      "recipe": 2,
+      "ingredient": 20,
+      "quantity": "14.0 ounces",
+      "display": "1 can (14-1\/2 ounces) cut wax beans, drained"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 21,
+    "fields": {
+      "recipe": 2,
+      "ingredient": 21,
+      "quantity": "7.0 ounces",
+      "display": "1 can (7 ounces) white or shoepeg corn, drained"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 22,
+    "fields": {
+      "recipe": 3,
+      "ingredient": 22,
+      "quantity": "0.25 cups",
+      "display": "1\/4 cup buttermilk"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 23,
+    "fields": {
+      "recipe": 3,
+      "ingredient": 23,
+      "quantity": "8.0 cups",
+      "display": "8 cups cabbage, finely chopped"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 24,
+    "fields": {
+      "recipe": 3,
+      "ingredient": 24,
+      "quantity": "0.25 cups",
+      "display": "1\/4 cup carrot, shredded"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 25,
+    "fields": {
+      "recipe": 3,
+      "ingredient": 25,
+      "quantity": "2.5 tablespoons",
+      "display": "2 1\/2 tablespoons lemon juice"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 26,
+    "fields": {
+      "recipe": 3,
+      "ingredient": 26,
+      "quantity": "0.5 cups",
+      "display": "1\/2 cup mayonnaise"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 27,
+    "fields": {
+      "recipe": 3,
+      "ingredient": 27,
+      "quantity": "0.25 cups",
+      "display": "1\/4 cup milk"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 28,
+    "fields": {
+      "recipe": 3,
+      "ingredient": 16,
+      "quantity": "0.125 teaspoons",
+      "display": "1\/8 teaspoon pepper"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 29,
+    "fields": {
+      "recipe": 3,
+      "ingredient": 28,
+      "quantity": "0.5 teaspoons",
+      "display": "1\/2 teaspoon salt"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 30,
+    "fields": {
+      "recipe": 3,
+      "ingredient": 18,
+      "quantity": "0.3333333333333333 cups",
+      "display": "1\/3 cup sugar"
+    }
+  },
+  {
+    "model": "ChillFood.recipeingredient",
+    "pk": 31,
+    "fields": {
+      "recipe": 3,
+      "ingredient": 29,
+      "quantity": "1.5 tablespoons",
+      "display": "1 1\/2 tablespoons white vinegar"
+    }
+  },
+  {
+    "model": "ChillFood.step",
+    "pk": 1,
+    "fields": {
+      "recipe": 1,
+      "step_number": 1,
+      "instruction": "1",
+      "picture": ""
+    }
+  },
+  {
+    "model": "ChillFood.step",
+    "pk": 2,
+    "fields": {
+      "recipe": 1,
+      "step_number": 2,
+      "instruction": "Fill a Delmonico or Old Fashioned glass with ice and add ingredients. Stir briefly to mix and chill, and garnish with a grapefruit twist.",
+      "picture": ""
+    }
+  },
+  {
+    "model": "ChillFood.step",
+    "pk": 3,
+    "fields": {
+      "recipe": 2,
+      "step_number": 1,
+      "instruction": "In a large bowl, combine the beans, peas, corn, onion, green pepper, cucumber and pimientos.",
+      "picture": ""
+    }
+  },
+  {
+    "model": "ChillFood.step",
+    "pk": 4,
+    "fields": {
+      "recipe": 2,
+      "step_number": 2,
+      "instruction": "Combine the remaining ingredients; pour over vegetables and toss to coat. Cover and refrigerate overnight.",
+      "picture": ""
+    }
+  },
+  {
+    "model": "ChillFood.preferences",
+    "pk": 1,
+    "fields": {
+      "sort_by": 1,
+      "has_video": false,
+      "category": [
+        3
+      ],
+      "equipment": [
+        1
+      ],
+      "cuisine": [
+        
+      ],
+      "ingredient": [
+        
+      ]
+    }
+  },
+  {
+    "model": "ChillFood.preferences",
+    "pk": 3,
+    "fields": {
+      "sort_by": 1,
+      "has_video": false,
+      "category": [
+        
+      ],
+      "equipment": [
+        
+      ],
+      "cuisine": [
+        
+      ],
+      "ingredient": [
+        
+      ]
+    }
+  },
+  {
+    "model": "ChillFood.party",
+    "pk": 1,
+    "fields": {
+      "name": "The Wholesome Banana Donuts - Gluten Free & Vegan Party",
+      "date": "2016-12-02",
+      "recipe": 1,
+      "host": 3
+    }
+  },
+  {
+    "model": "ChillFood.guest",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "party": 1,
+      "status": 0,
+      "token": "293;543873eb2e124818fb080b82692b3ed673b01abd4b2b00dc0accc540d6602267"
+    }
+  }
+]

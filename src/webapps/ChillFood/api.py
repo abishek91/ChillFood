@@ -25,59 +25,60 @@ from functools import reduce
 from .models import *
 from .forms import *
 
+RECIPES_PER_PAGE = 6
  
 @transaction.atomic
-@login_required
 def recipes(request):
     form = SearchForm(request.GET);
 
     if not form.is_valid():
         return JsonResponse(dict(form.errors.items()),status=406)        
     
-    
-    limit = 6
+    limit = RECIPES_PER_PAGE
     query = Q()
     v_next = None
 
-    preferences = Preferences.objects.get(pk=request.user.id);
-    preferences.sort_by = form.cleaned_data['sort_by'] if form.cleaned_data['sort_by'] else 1;
-    preferences.has_video = form.cleaned_data['has_video'];
+    if request.user.is_authenticated():
+        preferences = Preferences.objects.get(pk=request.user.id);
+        preferences.sort_by = form.cleaned_data['sort_by'] if form.cleaned_data['sort_by'] else 1;
+        preferences.has_video = form.cleaned_data['has_video'];
 
-    preferences.category.clear();
-    preferences.cuisine.clear();
-    preferences.equipment.clear();
-    preferences.ingredient.clear();
-    preferences.save();
+        preferences.category.clear();
+        preferences.cuisine.clear();
+        preferences.equipment.clear();
+        preferences.ingredient.clear();
+        preferences.save();
     
-    categories = Category.objects.filter(pk__in=form.cleaned_data['category']);
-    preferences.category.set(categories)
+        categories = Category.objects.filter(pk__in=form.cleaned_data['category']);
+        preferences.category.set(categories)
 
-    cuisines = Cuisine.objects.filter(pk__in=form.cleaned_data['cuisine']);
-    preferences.cuisine.set(cuisines)
+        cuisines = Cuisine.objects.filter(pk__in=form.cleaned_data['cuisine']);
+        preferences.cuisine.set(cuisines)
 
-    equipments = Equipment.objects.filter(pk__in=form.cleaned_data['equipment']);
-    preferences.equipment.set(equipments)
+        equipments = Equipment.objects.filter(pk__in=form.cleaned_data['equipment']);
+        preferences.equipment.set(equipments)
 
-    ingredients = Ingredient.objects.filter(pk__in=form.cleaned_data['ingredient']);
-    preferences.ingredient.set(ingredients)
+        ingredients = Ingredient.objects.filter(pk__in=form.cleaned_data['ingredient']);
+        preferences.ingredient.set(ingredients)
 
-    preferences.save();
+        preferences.save();
 
-    #Update Location
-    if form.cleaned_data['location_lat'] and form.cleaned_data['location_lon']:
-        request.user.location_lat = form.cleaned_data['location_lat'] 
-        request.user.location_lon = form.cleaned_data['location_lon']
-        request.user.save();
-        
+        #Update Location
+        if form.cleaned_data['location_lat'] and form.cleaned_data['location_lon']:
+            request.user.location_lat = form.cleaned_data['location_lat'] 
+            request.user.location_lon = form.cleaned_data['location_lon']
+            request.user.save();
+            
     #Filter
     if form.cleaned_data['search']:
         
         lista = form.cleaned_data['search'].split()
-        query = reduce(lambda x, y: x | y, [Q(title__icontains=word) for word in lista])
+        query &= reduce(lambda x, y: x | y, [Q(title__icontains=word) for word in lista])
 
     if form.cleaned_data['user_id']:
         query &= Q(cook__id=form.cleaned_data['user_id'])
 
+    print('has_video',form.cleaned_data['has_video'])
     if form.cleaned_data['has_video']:
         query &= ~Q(video_link="")
 
@@ -98,7 +99,6 @@ def recipes(request):
         query &= ~Q(video_link="")
 
     #Order
-    
     if form.cleaned_data['sort_by'] == Sort.difficulty:
         sort = 'difficulty'
     elif form.cleaned_data['sort_by'] == Sort.calories:
@@ -114,12 +114,10 @@ def recipes(request):
     recipes = Recipe
 
     if query:
-        
-
         recipes = Recipe.objects.filter(query) 
     else:
         recipes = Recipe.objects.filter() 
-
+    print("Query",recipes.query)
     #Remove recipes that have ingredients which are not included in the list
     if form.cleaned_data['ingredient']:
 
@@ -163,32 +161,26 @@ def recipes(request):
                           tastiness=Coalesce(Avg('rating__tastiness'),-1),) \
                  .order_by(sort)    
     
-        
-    
-    
     #TODO: More elaborate query for homepage
     skip = form.cleaned_data['skip']
     
     data = new_recipes[skip:skip+limit]
     next_url_filters = []
+
     if (len(new_recipes[skip+limit:])):
+        path = request.path
         v_next = request.get_full_path()
-        re.sub(r'skip=\d+\&',v_next,'')
+
+        v_next = v_next.replace(path,'')
         
+        v_next = re.sub(r'(\&)?skip=\d+','',v_next)
+        print('v_next', v_next)
+
         v_next += '&skip=%d' % (skip+limit)
         
-        re.sub(r'\\&',v_next,'?')
-        
+        v_next = v_next.replace('?','')
 
-        # next_url_filters.append('skip=%d' % (skip+limit))
-        # if form.cleaned_data['search']:
-        #     next_url_filters.append('search=%s' % form.cleaned_data['search'] )
-        # if form.cleaned_data['user_id']:
-        #     next_url_filters.append('user_id=%d' % form.cleaned_data['user_id'] )
-        # if form.cleaned_data['sort_by']
-
-        # if next_url_filters:
-        # v_next = '%s?%s' % (request.path,v_next)
+        v_next = '%s?%s' % (path,v_next)
 
     result = {
         "data": list(map(lambda x: x.to_json(), data)),
@@ -197,7 +189,6 @@ def recipes(request):
 
     return JsonResponse(result,safe=False)
     
-@csrf_exempt
 @transaction.atomic
 @login_required
 def recipe_create(request):
@@ -394,22 +385,19 @@ def party_create(request):
     
     #Validations
     form = PartyForm(body, instance=party)
-    
 
     if not form.is_valid():
         return JsonResponse(dict(form.errors.items()),status=406)        
+    
+    if len(body['guests']) != len(set(body['guests'])):
+        return JsonResponse({'Guests': 'There are duplicated guests in this party.'},status=406)
     
     party.host = request.user
     party.save();
     
     for guest_id in body['guests']:  
-      
       guest = Guest(user_id=guest_id, party=party)
       guest.save()
-    
-    #Save Parent
-    
-    
     
     
     # for guest in party.guests.all():TODO: Ask OH
