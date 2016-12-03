@@ -27054,7 +27054,7 @@
 	            { waves: 'light', modal: 'close', flat: true },
 	            'Close'
 	          )]
-	
+
 	        },
 	        _react2.default.createElement(
 	          _reactMaterialize.Row,
