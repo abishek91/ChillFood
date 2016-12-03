@@ -78,7 +78,6 @@ def recipes(request):
     if form.cleaned_data['user_id']:
         query &= Q(cook__id=form.cleaned_data['user_id'])
 
-    print('has_video',form.cleaned_data['has_video'])
     if form.cleaned_data['has_video']:
         query &= ~Q(video_link="")
 
@@ -117,7 +116,7 @@ def recipes(request):
         recipes = Recipe.objects.filter(query) 
     else:
         recipes = Recipe.objects.filter() 
-    print("Query",recipes.query)
+
     #Remove recipes that have ingredients which are not included in the list
     if form.cleaned_data['ingredient']:
 
@@ -357,15 +356,17 @@ def ingredient_create(request):
     
     return JsonResponse(ingredient.to_json(), safe=False);
 
-@login_required
 def preferences(request):
-    preference = Preferences.objects.filter(user=request.user)
-    if not len(preference):
-        preferences = Preferences(user=request.user)
-        preferences.save()
+    if request.user.is_authenticated():
+        preference = Preferences.objects.filter(user=request.user)
+        if not len(preference):
+            preferences = Preferences(user=request.user)
+            preferences.save()
+        else:
+            preferences = preference[0]
     else:
-        preferences = preference[0]
-        
+        preferences = Preferences()
+    
     return JsonResponse(preferences.to_json(), safe=False);
 
 @transaction.atomic
