@@ -107,6 +107,15 @@ export default class RecipeDetails extends React.Component {
     
     if(!this.state.recipe)
       return null;
+
+    var comments = null;
+    if(typeof userId !== 'undefined')
+    {
+        comments = <Comments onNewComments={this.addComment} onNewDifficultyRating={this.addDifficulty} 
+                        onNewTastinessRating={this.addTastiness} comments={this.state.recipe.comments}
+                        difficulty={this.state.recipe.user_rating.difficulty}
+                        tastiness={this.state.recipe.user_rating.tastiness} />
+    }
     
     var recipe_image_url = "/recipe_image/" + this.state.recipe.id;
     return (
@@ -156,10 +165,7 @@ export default class RecipeDetails extends React.Component {
             <Col s={5}>
               <Views views={this.state.recipe.views} />
               <ShareBar title={this.props.name} image={recipe_image_url}/>
-              <Comments onNewComments={this.addComment} onNewDifficultyRating={this.addDifficulty} 
-                        onNewTastinessRating={this.addTastiness} comments={this.state.recipe.comments}
-                        difficulty={this.state.recipe.user_rating.difficulty}
-                        tastiness={this.state.recipe.user_rating.tastiness} />
+
             </Col>
           </Row>
         </div>

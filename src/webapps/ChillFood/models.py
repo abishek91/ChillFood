@@ -113,8 +113,11 @@ class Recipe(models.Model):
         result["comments"] = comments
 
         user_rating = {"tastiness" : 0, "difficulty": 0}
-        for rating in self.rating_set.filter(user=user):
-            user_rating = {"tastiness" : rating.tastiness, "difficulty": rating.difficulty}
+        if user.id:
+          for rating in self.rating_set.filter(user=user):
+              user_rating = {"tastiness" : rating.tastiness, "difficulty": rating.difficulty}
+        else:
+              user_rating = {"tastiness" : 0, "difficulty": 0}
         result["user_rating"] = user_rating;
 
         return result
