@@ -24,7 +24,16 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__name__))
 SECRET_KEY = 'q^wr0#=5erv1$t-nv4-m@#l$#y)j76l0^8%1uuzij%web-_$em'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+CSRF_COOKIE_SECURE=True
+SESSION_COOKIE_SECURE=True 
+SECURE_CONTENT_TYPE_NOSNIFF=True
+SECURE_BROWSER_XSS_FILTER=True
+SECURE_SSL_REDIRECT=True
+SECURE_HSTS_INCLUDE_SUBDOMAINS=True
+CSRF_COOKIE_HTTPONLY=True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_HSTS_SECONDS = 31536000
 
 ALLOWED_HOSTS = ['*']
 

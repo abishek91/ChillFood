@@ -11,6 +11,9 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "webapps.settings-dev")
+env = os.environ['ENV'] if 'ENV' in os.environ else 'dev'
 
-application = get_wsgi_application()
+if env != 'prod':
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "webapps.settings")
+else:
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "webapps.settings-dev")
