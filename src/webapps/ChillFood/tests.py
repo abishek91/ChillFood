@@ -2,15 +2,6 @@ from django.test import TestCase, Client
 from .models import *
 import math, json
 
-# class TodoListModelsTest(TestCase):
-#     def test_simple_add(self):
-#         self.assertTrue(Item.objects.all().count() == 0)
-#         new_item = Item(text='A test item')
-#         new_item.save()
-#         self.assertTrue(Item.objects.all().count() == 1)
-#         self.assertTrue(Item.objects.filter(text__contains='test'))
-        
-
 class RecipesTest(TestCase):
                                 # Seeds the test database with data we obtained
     fixtures = ['sample-data']  # from python manage.py dumpdata 
@@ -51,7 +42,7 @@ class RecipesTest(TestCase):
 
             self.assertTrue(body['next'])
 
-            print(body['next'])
+            
 
         next_response = client.get(body['next'])            
         self.assertEqual(next_response.status_code, 200)            
@@ -382,20 +373,20 @@ class NewRecipeTest(TestCase):
                                 json.dumps({}),
                                 content_type="application/json")
         self.assertEqual(response.status_code, 406)
-        print(response.json())
+        
 
 
         response = client.post('/api/recipe/create',
                                 json.dumps({'title':'One Recipe'}),
                                 content_type="application/json", safe=False)
         self.assertEqual(response.status_code, 406)
-        print(response.json())
+        
 
         # response = client.post('/api/recipe/create',
         #                         json.dumps({'title':'One Recipe', 'time':2}),
         #                         safe=False, content_type="application/json")
         # self.assertEqual(response.status_code, 406)
-        # print(response.json())
+        # 
 
         # self.assertEqual(len(response.json()['data']), 1)
 
