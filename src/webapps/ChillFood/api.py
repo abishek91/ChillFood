@@ -287,7 +287,6 @@ def recipe_create(request):
 
     return JsonResponse(recipe.to_json(), safe=False);
 
-@login_required
 def lists(request):    
     categories = [c.to_json() for c in Category.objects.all()]
     equipments = [c.to_json() for c in Equipment.objects.all()]
@@ -298,7 +297,6 @@ def lists(request):
                          'cuisines':cuisines}, safe=False);
 
 
-@login_required
 def ingredients(request): 
     #Variables
     result = {}  
@@ -364,10 +362,19 @@ def preferences(request):
             preferences.save()
         else:
             preferences = preference[0]
-    else:
-        preferences = Preferences()
     
-    return JsonResponse(preferences.to_json(), safe=False);
+        return JsonResponse(preferences.to_json(), safe=False);
+    else:
+        preferences = {
+            "sort_by": 0,
+            "has_video": 1,
+            "categories": [],
+            "equipments": [],
+            "cuisines": [],
+            "ingredients": [],
+        }
+    
+        return JsonResponse(preferences, safe=False);
 
 @transaction.atomic
 @login_required

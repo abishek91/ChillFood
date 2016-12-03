@@ -165,18 +165,15 @@ export default class RecipeList extends React.Component {
   }
 
   componentWillMount(){
+    console.log('HERE')
     const self = this;
     let sortBy, hasVideo;
     let selected_cuisines,selected_equipments;
     let preferences;
 
-    if(typeof userId == 'undefined')
-    {
-       return null;
-    }
-
     new Preferences().get()
     .then(function (_preferences) {
+      console.log('HERE')
       // this.hasVideo = true; //Check how to update the fucking check
       preferences = _preferences;
 

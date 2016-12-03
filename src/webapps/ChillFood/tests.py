@@ -321,34 +321,38 @@ class RecipesQueryTest(TestCase):
         response = client.get('/api/recipes?ingredient=1')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()['data']), 1)
-        self.assertEqual(len(response.json()['data'][0]['missing_ingredients']), 3)
+        self.assertEqual(response.json()['data'][0]['missing_ingredients'], 3)
 
         response = client.get('/api/recipes?ingredient=1&ingredient=3')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()['data']), 1)
-        self.assertEqual(len(response.json()['data'][0]['missing_ingredients']), 2)
+        self.assertEqual(response.json()['data'][0]['missing_ingredients'], 2)
 
         response = client.get('/api/recipes?ingredient=1&ingredient=3&ingredient=3')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()['data']), 1)
-        self.assertEqual(len(response.json()['data'][0]['missing_ingredients']), 2)
+        self.assertEqual(response.json()['data'][0]['missing_ingredients'], 2)
 
         response = client.get('/api/recipes?ingredient=1&ingredient=2&ingredient=3&ingredient=4')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()['data']), 1)
-        self.assertEqual(len(response.json()['data'][0]['missing_ingredients']), 0)
+        self.assertEqual(response.json()['data'][0]['missing_ingredients'], 0)
 
 
         # response = client.get('/api/recipes?ingredient=16&ingredient=18&order_by=0')
         # self.assertEqual(response.status_code, 200)
         # self.assertEqual(len(response.json()['data']), 2)
+        # self.assertEqual(response.json()['data'][0]['missing_ingredients'], 2)
         # self.assertEqual(len(response.json()['data'][0]['missing_ingredients']), 2)
-        # self.assertEqual(len(response.json()['data'][0]['missing_ingredients']), 2)
-        
+
         response = client.get('/api/recipes?ingredient=1&ingredient=16&ingredient=18')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()['data']), 3)
-
+        self.assertEqual(response.json()['data'][0]['missing_ingredients'], 3)
+        self.assertEqual(response.json()['data'][1]['missing_ingredients'], 8)
+        self.assertEqual(response.json()['data'][2]['missing_ingredients'], 16)
+        
+        
         # user_id: userId,
         # sort_by: sort_id,
         # location_lat: lat,
