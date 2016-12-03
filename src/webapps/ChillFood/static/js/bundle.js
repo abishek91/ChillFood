@@ -26489,7 +26489,10 @@
 	      response = _response;
 	      return response.text();
 	    }).then(function (text) {
-	      if (response.status == 406) {
+	      if (response.status == 302) {
+	        window.location.href = "/login";
+	        return;
+	      } else if (response.status == 406) {
 	        var errors = JSON.parse(text);
 	        for (var key in errors) {
 	          Materialize.toast(key + ": " + errors[key], 2000, 'orange');
@@ -26547,9 +26550,18 @@
 	      body: JSON.stringify(body)
 	    }).then(function (_response) {
 	      response = _response;
+
+	      if (response.status == 302) {
+	        window.location.href = "/login";
+	        return;
+	      }
+
 	      return response.text();
 	    }).then(function (text) {
-	      if (response.status == 406) {
+	      if (response.status == 302) {
+	        window.location.href = "/login";
+	        return;
+	      }if (response.status == 406) {
 	        var errors = JSON.parse(text);
 	        for (var key in errors) {
 	          Materialize.toast(key + ": " + errors[key], 2000, 'orange');
@@ -42648,21 +42660,6 @@
 	                return _this2.handleSave();
 	              } },
 	            'Save'
-	          ),
-	          _react2.default.createElement(
-	            _reactMaterialize.Modal,
-	            {
-	              header: 'Modal Header',
-	              trigger: _react2.default.createElement(
-	                _reactMaterialize.Button,
-	                { waves: 'light' },
-	                'MODAL'
-	              ) },
-	            _react2.default.createElement(
-	              'p',
-	              null,
-	              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'
-	            )
 	          )
 	        )
 	      );
