@@ -16,6 +16,6 @@ env = os.environ['ENV'] if 'ENV' in os.environ else 'dev'
 if env != 'prod':
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "webapps.settings")
 else:
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "webapps.settings-dev")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "webapps.settings")
 
 application = get_wsgi_application()
