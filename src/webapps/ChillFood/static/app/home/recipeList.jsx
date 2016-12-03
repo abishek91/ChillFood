@@ -170,6 +170,11 @@ export default class RecipeList extends React.Component {
     let selected_cuisines,selected_equipments;
     let preferences;
 
+    if(typeof userId == 'undefined')
+    {
+       return null;
+    }
+
     new Preferences().get()
     .then(function (_preferences) {
       // this.hasVideo = true; //Check how to update the fucking check

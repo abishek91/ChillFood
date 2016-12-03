@@ -41,7 +41,13 @@ export default class SearchBar extends React.Component {
   render() {
     const static_files = '/static/';
     const user ={};
+    var buttons = <span></span>;
 
+    if(typeof userId !== 'undefined')
+    {
+       console.log('why')
+       buttons = <Buttons username={username} user_photo={user_photo} />
+    }
     let username = userName;
     if (this.props.username)
       username = this.props.username;
@@ -59,8 +65,7 @@ export default class SearchBar extends React.Component {
               <a className="brand-logo" href="/#/">
                 <Img alt="ChillFood" src={static_files + 'images/ChillFood-white.png'} className="logo"/>
               </a>
-
-              <Buttons username={username} user_photo={user_photo} />
+              {buttons}
               <Notifications />
 
               <SearchForm defaultValue={this.props.defaultValue} handleSearch={this.handleSearch} /> 

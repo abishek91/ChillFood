@@ -45,7 +45,9 @@
     <script type="text/javascript">
       var userName = '{{user.get_full_name}}'
       var userPhoto = '{{user.photo}}'
-      var userId = {{user.id}}
+      {% if user.id %}
+        var userId = {{user.id}}  
+      {% endif %}
     </script>
     
     {% block content %}

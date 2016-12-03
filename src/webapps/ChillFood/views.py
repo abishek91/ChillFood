@@ -14,10 +14,8 @@ import boto3, os, json
 
 from django.conf import settings
 
-@login_required
 def index(request):
     context = {}
-
     return render(request, 'index.html',context)
 
 def recipe_image(request, recipe_id):
@@ -74,7 +72,6 @@ def recipe_detail(request, recipe_id):
     context = {'recipe': recipe, 'user_id': request.user.id}
     return render(request, 'recipe_detail.html', context)
 
-@login_required
 def recipe_detail_json(request, recipe_id):
     recipe = get_object_or_404(Recipe, id=recipe_id)
     recipe.views += 1
