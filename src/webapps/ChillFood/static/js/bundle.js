@@ -27168,7 +27168,7 @@
 	      var data = JSON.parse(text);
 	      resolve(data);
 	    }).catch(function (error) {
-	      Materialize.toast('There has been a problem, please contact your administrator.');
+	      Materialize.toast('There has been a problem, please contact your administrator.', 2000);
 	      console.log('There has been a problem with your fetch operation: ' + error.message, 400);
 	      reject(error);
 	    });
@@ -27219,7 +27219,7 @@
 	      var data = JSON.parse(text);
 	      resolve(data);
 	    }).catch(function (error) {
-	      Materialize.toast('There has been a problem, please contact your administrator.');
+	      Materialize.toast('There has been a problem, please contact your administrator.', 2000);
 	      console.log('There has been a problem with your fetch operation: ' + error.message, 400);
 	      reject(error);
 	    });
@@ -27968,7 +27968,7 @@
 	          var data = JSON.parse(text);
 	          resolve(data);
 	        }).catch(function (error) {
-	          Materialize.toast('There has been a problem, please contact your administrator.');
+	          Materialize.toast('There has been a problem, please contact your administrator.', 2000);
 	          console.log('There has been a problem with your fetch operation: ' + error.message, 400);
 	          reject(error);
 	        });
@@ -35383,7 +35383,7 @@
 	      var error = true;
 	      var self = this;
 	      if (!/[\w\d]+/.test(ingredient_name)) {
-	        Materialize.toast('Please, include the name of the ingredient.', 4000);
+	        Materialize.toast('Please, include the name of the ingredient.', 4000, 'orange');
 	        finishSuccesfully(false);
 	      } else {
 	
@@ -35391,12 +35391,22 @@
 	        ingredient_api.get(ingredient_name, true).then(function (data) {
 	
 	          if (data.data.length == 0) {
-	            Materialize.toast('Please, select or add one ingredient to the list.', 4000);
+	            Materialize.toast('Please, select or add one ingredient to the list.', 4000, 'orange');
 	            finishSuccesfully(false);
 	          } else {
 	
 	            ingredient_id = data.data[0].id;
 	            ingredient_name = data.data[0].text;
+	
+	            var duplicated = self.state.ingredients.filter(function (item) {
+	              if (item.ingredient_id === ingredient_id) return item;
+	            });
+	
+	            if (duplicated.length) {
+	              Materialize.toast('You have alread added this ingredient.', 4000, 'orange');
+	              throw Error("Duplicated ingredient_id", ingredient_id);
+	            }
+	
 	            // Assemble data
 	            var item = new RecipeIngredient(self.state.ingredients.length, ingredient_id, ingredient_name, quantity, price);
 	            // Update data
@@ -42299,7 +42309,7 @@
 	          // console.log('data Obtained',data);
 	          resolve(data);
 	        }).catch(function (error) {
-	          Materialize.toast('There has been a problem, please contact your administrator.');
+	          Materialize.toast('There has been a problem, please contact your administrator.', 2000);
 	          console.log('There has been a problem with your fetch operation: ' + error.message, 400);
 	          reject(error);
 	        });
@@ -42873,7 +42883,7 @@
 	          // console.log('data Obtained',data);
 	          resolve(data);
 	        }).catch(function (error) {
-	          Materialize.toast('There has been a problem, please contact your administrator.');
+	          Materialize.toast('There has been a problem, please contact your administrator.', 2000);
 	          console.log('There has been a problem with your fetch operation: ' + error.message, 400);
 	          reject(error);
 	        });

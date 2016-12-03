@@ -95,7 +95,7 @@ export default class RecipeCreate extends React.Component {
     let error = true;
     const self = this;
     if (!/[\w\d]+/.test(ingredient_name)) {
-      Materialize.toast('Please, include the name of the ingredient.',4000);
+      Materialize.toast('Please, include the name of the ingredient.', 4000, 'orange');
       finishSuccesfully(false);
     } else {
 
@@ -104,12 +104,22 @@ export default class RecipeCreate extends React.Component {
       .then(function(data) {
 
         if (data.data.length == 0) {
-          Materialize.toast('Please, select or add one ingredient to the list.',4000);
+          Materialize.toast('Please, select or add one ingredient to the list.', 4000, 'orange');
           finishSuccesfully(false);
         } else {
 
           ingredient_id = data.data[0].id;
           ingredient_name = data.data[0].text;
+
+          const duplicated = self.state.ingredients.filter((item) => {
+            if(item.ingredient_id === ingredient_id) return item;
+          });
+
+          if (duplicated.length) {
+            Materialize.toast('You have alread added this ingredient.', 4000, 'orange');
+            throw Error("Duplicated ingredient_id", ingredient_id)
+          }
+
           // Assemble data
           const item = new RecipeIngredient(self.state.ingredients.length, ingredient_id, ingredient_name, quantity, price);
           // Update data

@@ -208,14 +208,9 @@ def recipes(request):
 @csrf_exempt
 @transaction.atomic
 @login_required
-def recipe_create(request, recipe_id = 0):
+def recipe_create(request):
     context={}
     recipe = Recipe()
-    
-    if recipe_id:
-        recipe = get_object_or_404(Recipe, pk=recipe_id)
-    else:
-        recipe.cook = request.user
 
     if request.method == "GET":
         return JsonResponse(recipe.to_json(), safe=False);
@@ -226,15 +221,9 @@ def recipe_create(request, recipe_id = 0):
     except Exception:
         return JsonResponse({'error':'Body malformed'},status=406)        
     
-    
-    try:
-        body_unicode = request.body.decode('utf-8')
-        body = json.loads(body_unicode)
-    except Exception:
-        return JsonResponse({'error':'Body malformed'},status=406)        
-    
     #Validations
     form = RecipeForm(body, instance=recipe)
+    recipe.cook = request.user;
 
     if not form.is_valid():
         return JsonResponse(dict(form.errors.items()),status=406)        
@@ -260,6 +249,21 @@ def recipe_create(request, recipe_id = 0):
             return JsonResponse(dict(st_form.errors.items()),status=406)
         steps.append(st_form);
 
+    #Check for duplicated values
+    temp_ingredients_id = list(map(lambda x: x['ingredient_id'], body['ingredients']))
+    print('ingredients ', temp_ingredients_id, set(temp_ingredients_id))
+    if len(temp_ingredients_id) != len(set(temp_ingredients_id)):
+        return JsonResponse({'Ingredients': 'There are duplicated ingredients in this recipe.'},status=406)
+    
+    if len(body['category_set']) != len(set(body['category_set'])):
+        return JsonResponse({'Categories': 'There are duplicated categories in this recipe.'},status=406)
+    
+    if len(body['equipment_set']) != len(set(body['equipment_set'])):
+        return JsonResponse({'Equipments': 'There are duplicated equipments in this recipe.'},status=406)
+    
+    if len(body['cuisine_set']) != len(set(body['cuisine_set'])):
+        return JsonResponse({'Cuisines': 'There are duplicated cuisines in this recipe.'},status=406)
+
     #Recipe - Categories
     
     #Save Parent
@@ -273,24 +277,15 @@ def recipe_create(request, recipe_id = 0):
 
     #Saving nested elements 
     for rp in recipe_ingredients:
-        # my_ingredient = rp.ingredient_id
-
-        # If the ingredient is new, save it to the database
-        if not rp.cleaned_data['ingredient_id']:
-            my_ingredient = Ingredient(name=rp.cleaned_data['ingredient_name']);
-            my_ingredient.save()
-            ingredient_id = my_ingredient.id
-        else:
-            ingredient_id = rp.cleaned_data['ingredient_id']
+        my_ingredient = rp.cleaned_data['ingredient_id']
 
         recipe_ingredient = RecipeIngredient(recipe_id = recipe.id,
-                                             ingredient_id = ingredient_id,
+                                             ingredient_id = my_ingredient.id,
                                              quantity = rp.cleaned_data['quantity'],
                                              price = rp.cleaned_data['price'],
                                              display = rp.cleaned_data['display']);
 
         recipe_ingredient.save()
-        # recipe.ingredients.add(recipe_ingredient)
     
     for step in steps:
         

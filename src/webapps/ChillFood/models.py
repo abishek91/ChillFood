@@ -47,6 +47,7 @@ class Recipe(models.Model):
     category_set = models.ManyToManyField(Category,related_name='recipes')
     equipment_set = models.ManyToManyField(Equipment,related_name='recipes')
     cuisine_set = models.ManyToManyField(Cuisine,related_name='recipes')
+    
     def to_json(self):
         result = {
           "id": self.id,
@@ -118,8 +119,6 @@ class Recipe(models.Model):
         result["user_rating"] = user_rating;
 
         return result
-
-
     
 class Ingredient(models.Model):
     name = models.CharField(max_length = 200)
@@ -133,6 +132,9 @@ class RecipeIngredient(models.Model):
     quantity = models.CharField(max_length = 200, blank = True)
     price = models.IntegerField(blank = True, null = True)
     display = models.CharField(max_length = 200, blank = True)
+
+    class Meta:
+      unique_together = ('recipe', 'ingredient',)
 
 class Step(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="steps")

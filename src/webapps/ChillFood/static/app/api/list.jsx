@@ -31,7 +31,7 @@ export default class List {
         resolve(data);
       })
       .catch(function(error) {
-        Materialize.toast('There has been a problem, please contact your administrator.');
+        Materialize.toast('There has been a problem, please contact your administrator.',2000);
         console.log('There has been a problem with your fetch operation: ' + error.message,400);
         reject(error);
       });

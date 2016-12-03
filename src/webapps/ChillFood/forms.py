@@ -69,13 +69,12 @@ class StepForm(forms.ModelForm):
         exclude = ['recipe'] 
 
 class RecipeIngredientForm(forms.Form):    
-    ingredient_id = forms.IntegerField()
+    ingredient_id = forms.ModelChoiceField(queryset=Ingredient.objects.all())
     ingredient_name = forms.CharField(max_length=150)
     quantity = forms.CharField(max_length = 200)
     price = forms.IntegerField()
     display = forms.CharField(max_length = 200)
 
-    
 class RecipeForm(forms.ModelForm):
     category_set=forms.ModelMultipleChoiceField(queryset=Category.objects.all(),required=False)
     equipment_set=forms.ModelMultipleChoiceField(queryset=Equipment.objects.all(),required=False)
