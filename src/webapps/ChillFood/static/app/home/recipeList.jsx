@@ -15,7 +15,6 @@ const sortOptions = [ {label:'time',value: 5},
                       {label:'tastiness',value: 4},
                       {label:'views',value: 1},
                       {label:'difficulty',value: 2},
-                      {label:'calories',value: 3},
                       ]
 
 export default class RecipeList extends React.Component {

@@ -173,7 +173,6 @@ def recipes(request):
         v_next = v_next.replace(path,'')
         
         v_next = re.sub(r'(\&)?skip=\d+','',v_next)
-        print('v_next', v_next)
 
         v_next += '&skip=%d' % (skip+limit)
         
@@ -200,7 +199,8 @@ def recipe_create(request):
     try:
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
-    except Exception:
+    except Exception as e:
+        print(e)
         return JsonResponse({'error':'Body malformed'},status=406)        
     
     #Validations
@@ -374,7 +374,7 @@ def preferences(request):
             "ingredients": [],
         }
     
-        return JsonResponse(preferences, safe=False);
+        return JsonResponse(Preferences, safe=False);
 
 @transaction.atomic
 @login_required
