@@ -1,4 +1,20 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block scripts %}
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+{% endblock %}
 {% block content %}
+      <div>
+        <div className="navbar-fixed">
+          <nav>
+            <div class="nav-wrapper blue">
+              <a class="brand-logo" href="/">
+                <img alt="ChillFood" src="{% static '/images/ChillFood-white.png' %}" class="logo"/>
+              </a>
+            </div> 
+          </nav>           
+        </div>    
+      </div>
 <div>Please click on activation link sent to your email address {{email}}</div>
 {% endblock %}

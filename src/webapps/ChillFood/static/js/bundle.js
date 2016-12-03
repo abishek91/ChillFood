@@ -40972,7 +40972,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var sortOptions = [{ label: 'time', value: 5 }, { label: 'tastiness', value: 4 }, { label: 'views', value: 1 }, { label: 'difficulty', value: 2 }, { label: 'calories', value: 3 }];
+	var sortOptions = [{ label: 'time', value: 5 }, { label: 'tastiness', value: 4 }, { label: 'views', value: 1 }, { label: 'difficulty', value: 2 }];
 
 	var RecipeList = function (_React$Component) {
 	  _inherits(RecipeList, _React$Component);
