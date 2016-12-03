@@ -84,17 +84,16 @@ def recipes(request):
     
     if form.cleaned_data['category']:
         lista = form.cleaned_data['category']
-        query &= reduce(lambda x, y: x | y, [Q(category_set__id=int(category.id)) for category in lista])
-
+        query &= Q(category_set__id__in=lista)
+        
     if form.cleaned_data['equipment']:
         lista = form.cleaned_data['equipment']
         query &= Q(equipment_set__id__in=lista)
 
     if form.cleaned_data['cuisine']:
         lista = form.cleaned_data['cuisine']
-        query &= reduce(lambda x, y: x | y, [Q(cuisine_set__id=int(cuisine.id)) for cuisine in lista])
-
-
+        query &= Q(cuisine_set__id__in=lista)
+        
     # if form.cleaned_data['price_min']:
     #     query &= Q(price__gte=form.cleaned_data['price_min'])
         
@@ -205,7 +204,6 @@ def recipes(request):
 
     return JsonResponse(result,safe=False)
     
-@csrf_exempt
 @transaction.atomic
 @login_required
 def recipe_create(request):
@@ -352,7 +350,6 @@ def ingredients(request):
 
 @transaction.atomic
 @login_required
-@csrf_exempt
 def ingredient_create(request):
     context={}
     ingredient = Ingredient()
@@ -541,7 +538,6 @@ def user(request):
 
 
 #Profile
-@csrf_exempt
 @login_required
 def edit_profile(request):
     context = {}
