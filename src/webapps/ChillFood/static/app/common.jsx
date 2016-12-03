@@ -12,14 +12,15 @@ export class Img extends React.Component {
     componentDidMount() {
         var self = this;
 
-
-        self.setState({ src: this.props.src });
-        this.img = new Image();
-        this.img.onerror = function () {
-          
+        if (!(this.props.src))
           self.setState({ src: '/static/images/empty_profile.gif' });
-        };
-        this.img.src = this.props.src;
+        else
+          self.setState({ src: this.props.src });
+        // this.img = new Image();
+        // this.img.onerror = function () {
+        //   // self.setState({ src: '/static/images/empty_profile.gif' });
+        // };
+        // this.img.src = this.props.src;
     }
 
     
