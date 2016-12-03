@@ -21835,13 +21835,22 @@
 	      var static_files = '/static/';
 	      var user = {};
 	      var buttons = _react2.default.createElement('span', null);
-
+	      var activate = null;
 	      if (typeof userId !== 'undefined') {
 	        buttons = _react2.default.createElement(
 	          'span',
 	          null,
 	          _react2.default.createElement(Buttons, { username: username, user_photo: user_photo }),
 	          _react2.default.createElement(_notifications2.default, null)
+	        );
+	        if (confirmed == 'False') activate = _react2.default.createElement(
+	          'div',
+	          { className: 'row' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col s12 red center white-text z-depth-1' },
+	            'Please, confirm your email address.'
+	          )
 	        );
 	      } else {
 	        buttons = _react2.default.createElement(
@@ -21876,7 +21885,8 @@
 	              ),
 	              buttons,
 	              _react2.default.createElement(SearchForm, { defaultValue: this.props.defaultValue, handleSearch: this.handleSearch })
-	            )
+	            ),
+	            activate
 	          )
 	        )
 	      );

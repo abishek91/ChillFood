@@ -46,13 +46,17 @@ export default class SearchBar extends React.Component {
     const static_files = '/static/';
     const user ={};
     var buttons = <span></span>;
-
+    var activate = null;
     if(typeof userId !== 'undefined')
     {
        buttons = <span>
                     <Buttons username={username} user_photo={user_photo} />
                     <Notifications />
                 </span>
+      if(confirmed == 'False')
+        activate =  <div className="row">
+                        <div className="col s12 red center white-text z-depth-1">Please, confirm your email address.</div>  
+                    </div>  
 
     }
     else
@@ -80,7 +84,8 @@ export default class SearchBar extends React.Component {
 
               <SearchForm defaultValue={this.props.defaultValue} handleSearch={this.handleSearch} /> 
 
-            </div>            
+            </div> 
+            {activate}
           </nav>           
         </div>    
       </div>

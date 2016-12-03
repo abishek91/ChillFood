@@ -291,3 +291,19 @@ def sign_s3(request):
         'data': presigned_post,
         'url': 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, file_name)
     },safe=False)   
+
+def send_authentication_email(user, request):
+    context = {}
+    token = default_token_generator.make_token(user)
+    email_body = """
+    Welcome to grumblr. Please click the below link to verify your email and activate your account
+
+    http://%s%s
+    """ % (request.get_host(), reverse('confirm', args=(user.username, token)))
+    person = Person.objects.get(user=user)
+    send_mail(subject="Verify your email address for grumblr",
+              message=email_body,
+              from_email="asanand@andrew.cmu.edu",
+              recipient_list=[person.email])
+    context['email'] = person.email
+    return render(request, 'needs_confirmation.html', context)

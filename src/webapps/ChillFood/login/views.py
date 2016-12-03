@@ -12,7 +12,7 @@ from django.contrib.auth.tokens import default_token_generator
 # Python Libraries
 from mimetypes import guess_type
 import re
-
+import os
 # Local Libraries
 from .models import *
 from .forms import *
@@ -86,25 +86,27 @@ def register(request):
 
     authLogin(request, new_user)
 
-    send_registration_mail(request.get_host(), new_user)
+    return send_registration_mail(request, new_user)
 
     return redirect(reverse('index'))
 
 
-def send_registration_mail(host, user):
+def send_registration_mail(request, user):
     token = default_token_generator.make_token(user)
 
     email_body = "Verify your account clicking here: http://%s%s" % (
-        host, reverse('confirm', args=(user.username, token)))
+        request.get_host(), reverse('confirm', args=(user.name, token)))
 
     send_mail(subject="Verify your email address",
               message=email_body,
-              from_email="cdelacru@andrew.cmu.edu",
-              recipient_list=[user.email])
+              from_email='chillfood@chillfood.com',
+              recipient_list=[user.username])
+    context = {'email': user.username}
+    return render(request, 'needs_confirmation.html', context)
 
 
-def confirm(request, username, token):
-    user = get_object_or_404(User, username=username)
+def confirm(request, name, token):
+    user = get_object_or_404(User, name=name)
     real_token = default_token_generator.make_token(user)
     if token == real_token:
         user.is_confirmed = True

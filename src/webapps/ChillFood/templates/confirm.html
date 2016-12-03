@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block scripts %}
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+    <link href="{% static 'css/common.css' %}" rel="stylesheet">
+    
+{% endblock %}
+{% block content %}
+<div><span>Congratulations your account has been activated. Click </span> <a href={% url 'index' %}>here</a> to continue </div>
+{% endblock %}

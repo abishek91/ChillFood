@@ -33,7 +33,7 @@ urlpatterns = [
     url(r'^recipe/(?P<recipe_id>\d+)/pic$', views.recipe_image,name='recipe_pic'),
     #Login Module
     url(r'^login$', login.login, name='login'),
-    url(r'^confirm/(?P<username>.+)/(?P<token>.+)$', login.confirm, name='confirm'),    
+    url(r'^confirm/(?P<name>.+)/(?P<token>.+)$', login.confirm, name='confirm'),    
     url(r'^logout$',logout_then_login, name='logout'),
     url(r'^register$', login.register, name='register'), 
     url(r'^change_password/(?P<user_id>\d+)/(?P<token>[\w\-]+)$', views.change_password, name='change_password'),

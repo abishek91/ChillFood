@@ -47,6 +47,7 @@
       var userPhoto = '{{user.photo}}'
       {% if user.id %}
         var userId = {{user.id}}  
+        var confirmed = '{{user.is_confirmed}}'
       {% endif %}
     </script>
     
