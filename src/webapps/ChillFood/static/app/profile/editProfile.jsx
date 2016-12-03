@@ -8,8 +8,12 @@ export default class EditProfile extends React.Component {
 
   constructor(props) {
     super(props);
+    console.log(userName)
     this.state = {
-      name: userName      
+      name: userName,
+      birthdate: '',
+      bio: '',
+      photo: ''  
     }
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleBirthdateChange = this.handleBirthdateChange.bind(this);
@@ -45,6 +49,11 @@ export default class EditProfile extends React.Component {
 
   handleSave () {
     const self = this;
+    if (self.state.name == "") {
+      Materialize.toast('Please, specify a name.',2000,'orange');
+      return;
+    }
+
     new User().save(this.state)
     .then(function (data) {
       self.setState(data)
@@ -54,7 +63,7 @@ export default class EditProfile extends React.Component {
   }
   render() {
     const user = this.state;
-    console.log(user.photo)
+    console.log(user)
     return (
         <div>
           <SearchBar username={user.name} user_photo={user.photo} />
@@ -77,7 +86,7 @@ export default class EditProfile extends React.Component {
               <input type="date" 
                     name="birthdate" 
                     placeholder="birthdate" 
-                    value={user.birthdate}
+                    value={user.birthdate || ''}
                     onChange={this.handleBirthdateChange}
               />
             </Row>

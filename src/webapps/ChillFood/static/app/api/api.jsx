@@ -1,5 +1,6 @@
 const get = (url) => {
   let self = this;
+  let response;
 
   var promise = new Promise(function (resolve,reject) {
     fetch(url, {  
@@ -10,16 +11,24 @@ const get = (url) => {
           "X-CSRFToken": getCookie('csrftoken')
       }
     })
-    .then(function(response) {
-      if (!response.ok) {
-          throw Error(response.statusText);
-      }
-      
+    .then(function(_response) {
+      response = _response
       return response.text();
     })
-    .then(function(text) { 
-      var data = JSON.parse(text);
-      resolve(data);
+    .then(function(text) {     
+      if (response.status == 406) {
+        var errors = JSON.parse(text);
+        for (var key in errors) {
+          Materialize.toast(key+": "+errors[key],2000,'orange')
+        }
+        
+        reject(errors);
+      } else if (!response.ok) {
+          throw Error(response.statusText);
+      } else {      
+        var data = JSON.parse(text);
+        resolve(data);
+      }
     })
     .catch(function(error) {
       Materialize.toast('There has been a problem, please contact your administrator.',2000);
@@ -45,7 +54,6 @@ const get2 = (url) => {
     })
     .then(function(response) {
       resolve(response);
-      // resolve(data);
     })
     .catch(function(error) {
       reject(error);
@@ -56,6 +64,8 @@ const get2 = (url) => {
 }
 
 const post = (url, body) =>{
+  let response;
+  
   var promise = new Promise(function (resolve,reject) {
     fetch(url, {  
       credentials: 'include',
@@ -66,16 +76,24 @@ const post = (url, body) =>{
       },
       body: JSON.stringify(body)
     })
-    .then(function(response) {
-      if (!response.ok) {
-          throw Error(response.statusText);
-      }
-      
+    .then(function(_response) {
+      response = _response
       return response.text();
     })
-    .then(function(text) { 
-      var data = JSON.parse(text);
-      resolve(data);
+    .then(function(text) {     
+      if (response.status == 406) {
+        var errors = JSON.parse(text);
+        for (var key in errors) {
+          Materialize.toast(key+": "+errors[key],2000,'orange')
+        }
+        
+        reject(errors);
+      } else if (!response.ok) {
+          throw Error(response.statusText);
+      } else {      
+        var data = JSON.parse(text);
+        resolve(data);
+      }
     })
     .catch(function(error) {
       Materialize.toast('There has been a problem, please contact your administrator.',2000);

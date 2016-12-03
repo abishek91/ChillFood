@@ -42,6 +42,11 @@ export default class RecipeCreate extends React.Component {
       return; 
     }
 
+    if (!this.refs.timeInput.value) {
+      Materialize.toast('Please, enter the the time needed to make the recipe.',4000);
+      return; 
+    }
+
     if (this.state.ingredients.length == 0) {
       Materialize.toast('Please, enter at least one ingredient.',4000);
       return;
@@ -252,7 +257,7 @@ export default class RecipeCreate extends React.Component {
               <input type="text" 
                      name="video_link" 
                      placeholder="YouTube link"
-                     pattern="^https?\:\/\/www\.youtube\.com\/watch\?v=\w*$"
+                     pattern="^https?:\/\/www\.youtube\.com\/watch\?v=\w*$"
                      value={this.props.value.video_link}
                      ref="video_linkInput"
                      onChange={this.handleChange}

@@ -27149,6 +27149,7 @@
 	});
 	var get = function get(url) {
 	  var self = undefined;
+	  var response = void 0;
 	
 	  var promise = new Promise(function (resolve, reject) {
 	    fetch(url, {
@@ -27158,15 +27159,23 @@
 	        "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
 	        "X-CSRFToken": getCookie('csrftoken')
 	      }
-	    }).then(function (response) {
-	      if (!response.ok) {
-	        throw Error(response.statusText);
-	      }
-	
+	    }).then(function (_response) {
+	      response = _response;
 	      return response.text();
 	    }).then(function (text) {
-	      var data = JSON.parse(text);
-	      resolve(data);
+	      if (response.status == 406) {
+	        var errors = JSON.parse(text);
+	        for (var key in errors) {
+	          Materialize.toast(key + ": " + errors[key], 2000, 'orange');
+	        }
+	
+	        reject(errors);
+	      } else if (!response.ok) {
+	        throw Error(response.statusText);
+	      } else {
+	        var data = JSON.parse(text);
+	        resolve(data);
+	      }
 	    }).catch(function (error) {
 	      Materialize.toast('There has been a problem, please contact your administrator.', 2000);
 	      console.log('There has been a problem with your fetch operation: ' + error.message, 400);
@@ -27190,7 +27199,6 @@
 	      }
 	    }).then(function (response) {
 	      resolve(response);
-	      // resolve(data);
 	    }).catch(function (error) {
 	      reject(error);
 	    });
@@ -27200,6 +27208,8 @@
 	};
 	
 	var post = function post(url, body) {
+	  var response = void 0;
+	
 	  var promise = new Promise(function (resolve, reject) {
 	    fetch(url, {
 	      credentials: 'include',
@@ -27209,15 +27219,23 @@
 	        "X-CSRFToken": getCookie('csrftoken')
 	      },
 	      body: JSON.stringify(body)
-	    }).then(function (response) {
-	      if (!response.ok) {
-	        throw Error(response.statusText);
-	      }
-	
+	    }).then(function (_response) {
+	      response = _response;
 	      return response.text();
 	    }).then(function (text) {
-	      var data = JSON.parse(text);
-	      resolve(data);
+	      if (response.status == 406) {
+	        var errors = JSON.parse(text);
+	        for (var key in errors) {
+	          Materialize.toast(key + ": " + errors[key], 2000, 'orange');
+	        }
+	
+	        reject(errors);
+	      } else if (!response.ok) {
+	        throw Error(response.statusText);
+	      } else {
+	        var data = JSON.parse(text);
+	        resolve(data);
+	      }
 	    }).catch(function (error) {
 	      Materialize.toast('There has been a problem, please contact your administrator.', 2000);
 	      console.log('There has been a problem with your fetch operation: ' + error.message, 400);
@@ -35326,6 +35344,11 @@
 	        return;
 	      }
 	
+	      if (!this.refs.timeInput.value) {
+	        Materialize.toast('Please, enter the the time needed to make the recipe.', 4000);
+	        return;
+	      }
+	
 	      if (this.state.ingredients.length == 0) {
 	        Materialize.toast('Please, enter at least one ingredient.', 4000);
 	        return;
@@ -35574,7 +35597,7 @@
 	              _react2.default.createElement('input', { type: 'text',
 	                name: 'video_link',
 	                placeholder: 'YouTube link',
-	                pattern: '^https?\\:\\/\\/www\\.youtube\\.com\\/watch\\?v=\\w*$',
+	                pattern: '^https?:\\/\\/www\\.youtube\\.com\\/watch\\?v=\\w*$',
 	                value: this.props.value.video_link,
 	                ref: 'video_linkInput',
 	                onChange: this.handleChange
@@ -44217,8 +44240,12 @@
 	
 	    var _this = _possibleConstructorReturn(this, (EditProfile.__proto__ || Object.getPrototypeOf(EditProfile)).call(this, props));
 	
+	    console.log(userName);
 	    _this.state = {
-	      name: userName
+	      name: userName,
+	      birthdate: '',
+	      bio: '',
+	      photo: ''
 	    };
 	    _this.handleNameChange = _this.handleNameChange.bind(_this);
 	    _this.handleBirthdateChange = _this.handleBirthdateChange.bind(_this);
@@ -44261,6 +44288,11 @@
 	    key: 'handleSave',
 	    value: function handleSave() {
 	      var self = this;
+	      if (self.state.name == "") {
+	        Materialize.toast('Please, specify a name.', 2000, 'orange');
+	        return;
+	      }
+	
 	      new _user2.default().save(this.state).then(function (data) {
 	        self.setState(data);
 	        Materialize.toast('Profile has been updated.', 2000, 'blue');
@@ -44272,7 +44304,7 @@
 	      var _this2 = this;
 	
 	      var user = this.state;
-	      console.log(user.photo);
+	      console.log(user);
 	      return _react2.default.createElement(
 	        'div',
 	        null,
@@ -44316,7 +44348,7 @@
 	            _react2.default.createElement('input', { type: 'date',
 	              name: 'birthdate',
 	              placeholder: 'birthdate',
-	              value: user.birthdate,
+	              value: user.birthdate || '',
 	              onChange: this.handleBirthdateChange
 	            })
 	          ),
