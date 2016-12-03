@@ -191,7 +191,7 @@ def party_confirm(request, party_id, user_id, token):
     guest.status = 1;
     guest.save(); 
 
-    notification_text = guest.user.name + " has accepted your cooking party invite for recipe " + recipe.title
+    notification_text = guest.user.get_full_name() + " has accepted your cooking party invite for recipe " + recipe.title
     notification = Notification(user=party.host, text=notification_text,read=False,link=None)
     notification.save()
     return render(request, 'party_confirm.html', {})
@@ -211,7 +211,7 @@ def party_decline(request, party_id, user_id, token):
     guest.token = "";
     guest.status = -1;
     guest.save(); 
-    notification_text = guest.user.name + " has declined your cooking party invite for recipe " + recipe.title
+    notification_text = guest.user.get_full_name() + " has declined your cooking party invite for recipe " + recipe.title
     notification = Notification(user=party.host, text=notification_text,read=False,link=None)
     notification.save()
     return render(request, 'party_decline.html', {})

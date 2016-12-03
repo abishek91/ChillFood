@@ -164,7 +164,7 @@ export default class RecipeDetails extends React.Component {
             <Col s={5}>
               <Views views={this.state.recipe.views} />
               <ShareBar title={this.state.recipe.title} image={this.state.recipe.remote_pic}/>
-
+              {comments}
             </Col>
           </Row>
         </div>
