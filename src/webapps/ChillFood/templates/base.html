@@ -50,9 +50,15 @@
     <script type="text/javascript">
       var userName = '{{user.get_full_name}}'
       var userPhoto = '{{user.photo}}'
-      {% if user.id %}
+      
+
+      {% if user.is_authenticated and not backends.associated %}
         var userId = {{user.id}}  
         var confirmed = '{{user.is_confirmed}}'
+        var authenticated = true;
+      {% elif user.is_authenticated and backends.associated %}
+        var userId = {{user.id}}  
+        var confirmed = true;
         var authenticated = true;
       {% else %}
         var authenticated = false;
