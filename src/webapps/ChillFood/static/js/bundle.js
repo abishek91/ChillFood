@@ -21848,7 +21848,7 @@
 	        );
 	        if (confirmed == 'False') activate = _react2.default.createElement(
 	          'div',
-	          { className: 'row' },
+	          { className: '' },
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'ribbon col s12 red center white-text z-depth-1' },
@@ -21892,10 +21892,10 @@
 	              ),
 	              buttons,
 	              _react2.default.createElement(SearchForm, { defaultValue: this.props.defaultValue, handleSearch: this.handleSearch })
-	            ),
-	            activate
+	            )
 	          )
-	        )
+	        ),
+	        activate
 	      );
 	    }
 	  }]);
@@ -26441,13 +26441,12 @@
 	    value: function componentDidMount() {
 	      var self = this;
 
-	      self.setState({ src: this.props.src });
-	      this.img = new Image();
-	      this.img.onerror = function () {
-
-	        self.setState({ src: '/static/images/empty_profile.gif' });
-	      };
-	      this.img.src = this.props.src;
+	      if (!this.props.src) self.setState({ src: '/static/images/empty_profile.gif' });else self.setState({ src: this.props.src });
+	      // this.img = new Image();
+	      // this.img.onerror = function () {
+	      //   // self.setState({ src: '/static/images/empty_profile.gif' });
+	      // };
+	      // this.img.src = this.props.src;
 	    }
 	  }, {
 	    key: 'render',
