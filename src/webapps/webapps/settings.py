@@ -106,7 +106,7 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'chillfood_4',
+            'NAME': 'chillfood',
             'USER': 'chillfood',
             'PASSWORD': 'chillfood',
             'HOST': 'localhost',
