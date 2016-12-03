@@ -111,7 +111,7 @@ def save_recipe(user):
 	return context;
 
 def setup(request):
-	number_of_files = 10;
+	number_of_files = 100;
 	i = 0;
 	while(i < number_of_files):
 		try:

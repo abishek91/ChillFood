@@ -21,8 +21,6 @@ from django.contrib.auth.views import logout_then_login
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),    
-    #Configuration
-    url(r'^setup/$', data.setup),
     #Recipe
     url(r'^recipe_image/(?P<recipe_id>\d+)/$', views.recipe_image, name='recipe_image'),
     url(r'^profile_image/(?P<user_id>\d+)/$', views.profile_image, name='profile_image'),

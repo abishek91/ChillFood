@@ -21,7 +21,7 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__name__))
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'q^wr0#=5erv1$t-nv4-m@#l$#y)j76l0^8%1uuzij%web-_$em'
+SECRET_KEY = os.environ.get('SECRET_KEY','')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -161,12 +161,12 @@ USE_TZ = True
 AUTH_USER_MODEL = 'ChillFood.User'
 LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = '/'
-SOCIAL_AUTH_FACEBOOK_KEY = '1221503734555521' 
-SOCIAL_AUTH_FACEBOOK_SECRET = 'd9bc978c8a7d5c1a7ba3a7605cc76e32'
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '285121225157-krvai843hflq522fga6e4j76qi6iojn2.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'NIzzqljibrXSKtSP3fobtDlD'
-SOCIAL_AUTH_TWITTER_KEY = 'ymnJRobiUITl0kUDogUsdZLVz'
-SOCIAL_AUTH_TWITTER_SECRET = 'JV90sbTazy23RtL4fpdPeNrr1KSUL1PACRqdto80TzaWPSnluz'
+SOCIAL_AUTH_FACEBOOK_KEY = os.environ.get('SOCIAL_AUTH_FACEBOOK_KEY','')
+SOCIAL_AUTH_FACEBOOK_SECRET = os.environ.get('SOCIAL_AUTH_FACEBOOK_SECRET','')
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY','')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET','')
+SOCIAL_AUTH_TWITTER_KEY = os.environ.get('SOCIAL_AUTH_TWITTER_KEY','')
+SOCIAL_AUTH_TWITTER_SECRET = os.environ.get('SOCIAL_AUTH_TWITTER_SECRET','')
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
     'fields': 'id,name,email', 
