@@ -17,19 +17,19 @@ CATEGORIES = (
 )
 
 class Category(models.Model):
-    name = models.CharField(max_length = 200, choices=CATEGORIES)
+    name = models.CharField(max_length = 200, unique=True, choices=CATEGORIES)
     def to_json(self):
         return {"id": self.id,
                 "text": self.name}
     
 class Equipment(models.Model):
-    name = models.CharField(max_length = 200)
+    name = models.CharField(max_length = 200, unique=True)
     def to_json(self):
         return {"id": self.id,
                 "text": self.name}
     
 class Cuisine(models.Model):
-    name = models.CharField(max_length = 200)
+    name = models.CharField(max_length = 200, unique=True)
     def to_json(self):
         return {"id": self.id,
                 "text": self.name}
@@ -37,7 +37,7 @@ class Cuisine(models.Model):
 class Recipe(models.Model):
     pic = models.ImageField(upload_to='recipes', blank=True)
     remote_pic = models.CharField(max_length = 2000, blank=True)
-    title = models.CharField(max_length = 200)
+    title = models.CharField(max_length = 200, unique=True)
     cook = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     time = models.IntegerField()
     calories = models.IntegerField(blank=True, null=True)
@@ -120,7 +120,7 @@ class Recipe(models.Model):
         return result
     
 class Ingredient(models.Model):
-    name = models.CharField(max_length = 200)
+    name = models.CharField(max_length = 200, unique=True)
     def to_json(self):
         return {"id": self.id,
                 "text": self.name}

@@ -147,7 +147,6 @@ export default class RecipeCreate extends React.Component {
 
   addStep(val){
     if (!val) {
-      //TODO: Pretty Message
       Materialize.toast('Please, describe the step.', 4000) // 4000 is the duration of the toast
       return;
     }
@@ -184,11 +183,10 @@ export default class RecipeCreate extends React.Component {
     let ingredient_api = new IngredientApi()
     ingredient_api.get(value)
     .then(function(data) {
-      console.log('ingredients',data);
-      if (data.data.length == 0) {
-        data.data = [{id:0, text: ' + '+value}]
-      }
-      callback(value,data.data);
+      let newData =  data.data
+      newData.push({id:0, text: value, extra:'+ '})
+      console.log('ingredients',newData);
+      callback(value,newData);
     })
   }
 
@@ -196,7 +194,11 @@ export default class RecipeCreate extends React.Component {
     console.log(item)
     if (item.id == 0) {
       let ingredient_api = new IngredientApi()
-      return ingredient_api.create(item.text.slice(3))      
+      return ingredient_api.create(item.text)
+      .then(function (data) {
+        Materialize.toast('Your ingredient was created succesfully.', 4000, 'blue') 
+        return data;
+      })
     }
     return Promise.resolve({});
   }

@@ -21,6 +21,7 @@ export default class IngredientForm extends React.Component {
           },
           dropdown: {
               el: '#multipleIngredientDropdown',
+              itemTemplate: '<li class="ac-item" data-id="<%= item.id %>" data-text="<%= item.text %>"><a href="javascript:void(0)"><%= item.extra %><%= item.text %></a></li>'
           },
           ignoreCase: false,
           onSelect: function(data){

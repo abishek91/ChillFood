@@ -80,10 +80,13 @@ export default class PartyList extends React.Component {
                 </Row>
               </CollapsibleItem>)
     });
-    
+
     return (<div>
               <SearchBar handleSearch={this.handleSearch} />
-              <div className="container">            
+              <div className="container " >            
+                  <div className={"grey-text center-align " + (items.length ? 'hidden':'')}>
+                    <h4>You have not created any party, yet.</h4>     
+                  </div>
                   <Collapsible popout accordion={true}>
                     {items}
                   </Collapsible>

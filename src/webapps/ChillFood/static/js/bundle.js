@@ -35450,7 +35450,6 @@
 	    key: 'addStep',
 	    value: function addStep(val) {
 	      if (!val) {
-	        //TODO: Pretty Message
 	        Materialize.toast('Please, describe the step.', 4000); // 4000 is the duration of the toast
 	        return;
 	      }
@@ -35491,11 +35490,10 @@
 	    value: function getIngredientData(value, callback) {
 	      var ingredient_api = new _ingredient4.default();
 	      ingredient_api.get(value).then(function (data) {
-	        console.log('ingredients', data);
-	        if (data.data.length == 0) {
-	          data.data = [{ id: 0, text: ' + ' + value }];
-	        }
-	        callback(value, data.data);
+	        var newData = data.data;
+	        newData.push({ id: 0, text: value, extra: '+ ' });
+	        console.log('ingredients', newData);
+	        callback(value, newData);
 	      });
 	    }
 	  }, {
@@ -35504,7 +35502,10 @@
 	      console.log(item);
 	      if (item.id == 0) {
 	        var ingredient_api = new _ingredient4.default();
-	        return ingredient_api.create(item.text.slice(3));
+	        return ingredient_api.create(item.text).then(function (data) {
+	          Materialize.toast('Your ingredient was created succesfully.', 4000, 'blue');
+	          return data;
+	        });
 	      }
 	      return Promise.resolve({});
 	    }
@@ -41093,7 +41094,8 @@
 	            enable: false
 	          },
 	          dropdown: {
-	            el: '#multipleIngredientDropdown'
+	            el: '#multipleIngredientDropdown',
+	            itemTemplate: '<li class="ac-item" data-id="<%= item.id %>" data-text="<%= item.text %>"><a href="javascript:void(0)"><%= item.extra %><%= item.text %></a></li>'
 	          },
 	          ignoreCase: false,
 	          onSelect: function onSelect(data) {
@@ -42425,6 +42427,7 @@
 	      initDataCuisine: [],
 	      initDataEquipment: []
 	    };
+	    _this.start = true;
 	    _this.hasVideo = true;
 	    _this.selected_categories = [];
 	    _this.selected_ingredients = [];
@@ -42522,7 +42525,7 @@
 	      var search = this.state.search;
 	
 	      this.recipe.get(search.text, search.userId, search.sortBy.value, this.selected_categories, this.selected_cuisines, this.selected_equipments, search.hasVideo, this.selected_ingredients).then(function (data) {
-	
+	        this.start = false;
 	        this.setState({
 	          search: search,
 	          data: data,
@@ -42704,6 +42707,15 @@
 	            'div',
 	            { className: 'progress' },
 	            _react2.default.createElement('div', { className: 'indeterminate' })
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: "grey-text center-align " + (this.start || recipeNode.length ? 'hidden' : '') },
+	            _react2.default.createElement(
+	              'h4',
+	              null,
+	              ':( We don\'t have recipes with this combination.'
+	            )
 	          ),
 	          _react2.default.createElement(
 	            'div',
@@ -44532,7 +44544,16 @@
 	        _react2.default.createElement(_searchBar2.default, { handleSearch: this.handleSearch }),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'container' },
+	          { className: 'container ' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: "grey-text center-align " + (items.length ? 'hidden' : '') },
+	            _react2.default.createElement(
+	              'h4',
+	              null,
+	              'You have not created any party, yet.'
+	            )
+	          ),
 	          _react2.default.createElement(
 	            _reactMaterialize.Collapsible,
 	            { popout: true, accordion: true },

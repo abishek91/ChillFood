@@ -57,6 +57,8 @@ class SearchForm(forms.ModelForm):
         return cleaned_data
 
 class IngredientForm(forms.ModelForm):
+    name = forms.CharField(min_length = 3, max_length=150, required=True)
+    
     class Meta:
         model = Ingredient
         exclude = [] 
@@ -68,9 +70,9 @@ class StepForm(forms.ModelForm):
 
 class RecipeIngredientForm(forms.Form):    
     ingredient_id = forms.ModelChoiceField(queryset=Ingredient.objects.all())
-    ingredient_name = forms.CharField(max_length=150)
-    quantity = forms.CharField(max_length = 200)
-    display = forms.CharField(max_length = 200)
+    ingredient_name = forms.CharField(min_length = 3, max_length=150, required=True)
+    quantity = forms.CharField(max_length = 200, required=True)
+    display = forms.CharField(min_length = 3, max_length = 200, required=True)
 
 class RecipeForm(forms.ModelForm):
     category_set=forms.ModelMultipleChoiceField(queryset=Category.objects.all(),required=False)

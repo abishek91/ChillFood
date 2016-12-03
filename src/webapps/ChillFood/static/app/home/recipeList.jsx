@@ -37,6 +37,7 @@ export default class RecipeList extends React.Component {
       initDataCuisine: [],
       initDataEquipment: [],   
     }
+    this.start = true;
     this.hasVideo = true;
     this.selected_categories=[];
     this.selected_ingredients=[];
@@ -136,7 +137,7 @@ export default class RecipeList extends React.Component {
       search.hasVideo,
       this.selected_ingredients
     ).then(function (data) {
-      
+      this.start = false;
       this.setState({
         search: search,
         data: data,
@@ -304,6 +305,9 @@ export default class RecipeList extends React.Component {
                   <div className="progress">
                         <div className="indeterminate"></div>
                   </div>  
+                  <div className={"grey-text center-align " + ((this.start || recipeNode.length) ? 'hidden':'')}>
+                    <h4>:( We don't have recipes with this combination.</h4>     
+                  </div>
                   <div id="post_container" className="list">{recipeNode}</div>
                   <div className={"center-align " + (this.state.next ? '':'hidden')}>
                       <button id="next" 
