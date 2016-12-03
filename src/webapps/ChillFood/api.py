@@ -197,6 +197,7 @@ def recipes(request):
 
     return JsonResponse(result,safe=False)
     
+@csrf_exempt
 @transaction.atomic
 @login_required
 def recipe_create(request):

@@ -41148,7 +41148,7 @@
 	        null,
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'option col s5' },
+	          { className: 'option col s8' },
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'autocomplete', id: 'single' },
@@ -41243,7 +41243,7 @@
 	        ),
 	        _react2.default.createElement(
 	            'div',
-	            { className: 'col s4' },
+	            { className: 'col s7' },
 	            item.ingredient_name
 	        ),
 	        _react2.default.createElement(

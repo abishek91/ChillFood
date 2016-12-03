@@ -73,7 +73,7 @@ export default class IngredientForm extends React.Component {
     const self = this;
     return (<Row>
                 
-                <div className="option col s5">
+                <div className="option col s8">
                     <div className="autocomplete" id="single">
                         <div className="ac-input-a">
                             <input type="text" 

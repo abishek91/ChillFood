@@ -7,7 +7,7 @@ const Item = ({index, item, remove}) => {
   //  Each Todo
   return (<Row className="" onClick={() => {remove(item.id)}}>
               <div className="col s1">{index}</div>
-              <div className="col s4">{item.ingredient_name}</div>
+              <div className="col s7">{item.ingredient_name}</div>
               <div className="col s3">{item.quantity}</div>
               <button className="col s1 waves-effect waves-blue btn btn-flat" 
                   type="button" 
