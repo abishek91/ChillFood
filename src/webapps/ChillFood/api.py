@@ -373,7 +373,7 @@ def preferences(request):
             "ingredients": [],
         }
     
-        return JsonResponse(Preferences, safe=False);
+        return JsonResponse(preferences, safe=False);
 
 @transaction.atomic
 @login_required
