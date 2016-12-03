@@ -82,9 +82,7 @@ export default class SearchBar extends React.Component {
     
     return (
       <div>
-        <div className="navbar-fixed">
-               
-
+        <div className="navbar-fixed">              
           <nav>
             <div className="nav-wrapper blue">
               <a className="brand-logo" href="/#/">
@@ -94,10 +92,10 @@ export default class SearchBar extends React.Component {
 
               <SearchForm defaultValue={this.props.defaultValue} handleSearch={this.handleSearch} /> 
 
-            </div> 
-            {activate}
+            </div>             
           </nav>           
         </div>    
+        {activate}
       </div>
     );
   }
