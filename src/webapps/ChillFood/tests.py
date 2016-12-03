@@ -1,6 +1,7 @@
-from django.test import TestCase, Client
+from django.test import TestCase, Client, RequestFactory
 from .models import *
 import math, json
+from .views import *
 
 class RecipesTest(TestCase):
                                 # Seeds the test database with data we obtained
@@ -397,3 +398,38 @@ class NewRecipeTest(TestCase):
         # response = client.get('/api/recipes?search=omEth')
         # self.assertEqual(response.status_code, 200)
         # self.assertEqual(len(response.json()['data']), 1)
+
+class RecipeDetailTest(TestCase):
+    
+    fixtures = ['query']
+
+    def test_recipe_details_without_login(self):
+        user = User(name='test_user', username='test@gmail.com')
+        user.save()
+        recipe = Recipe.objects.get(id=1)
+        r = recipe.to_json_full(user)   
+        self.assertEqual(recipe.id, 1)
+
+class NotificationsTest(TestCase):
+
+    def setUp(self):
+        self.factory = RequestFactory()
+    fixtures = ['query']
+
+    def test_notifications(self):
+        user = User(name='test_user', username='test@gmail.com')
+        user.save()
+        notification_text = 'test notification'
+        notification = Notification(user=user, text=notification_text,read=False,link=None)
+        notification.save()
+        n = Notification.objects.get(user=user)
+        self.assertEqual(n.text, notification_text)
+        self.assertEqual(n.read, False)
+
+        request = self.factory.get('/notifications')
+        request.user = user;
+        readNotifications(request)
+        
+        n = Notification.objects.get(user=user)
+        self.assertEqual(n.text, notification_text)
+        self.assertEqual(n.read, True)

@@ -124,7 +124,7 @@ def add_comment(request, recipe_id):
         notification = Notification(user=recipe.cook, text=notification_text,read=False,
                                     link=reverse('recipe_detail', kwargs={'recipe_id':recipe.id}) + '#/recipe/' + str(recipe.id))
         notification.save()
-
+        print(recipe.title)
         return JsonResponse({"recipe":recipe.to_json_full(request.user)})
     return JsonResponse({"error":"Invalid parameters"})
 
@@ -171,7 +171,7 @@ def notifications(request):
 
 @login_required
 def readNotifications(request):
-    unread = Notification.objects.filter(read=False)
+    unread = Notification.objects.filter(read=False, user=request.user)
     for notification in unread:
         notification.read = True;
         notification.save()
