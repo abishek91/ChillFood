@@ -76,6 +76,12 @@ export default class Recipe {
   }
 
   getMore() {
-    return get(this.next);
+    let self = this;
+    
+    return get(this.next)
+    .then(function(data) { 
+      self.next = data.next;
+      return data.data;
+    });
   }
 }

@@ -58,7 +58,7 @@ class Recipe(models.Model):
           "date_time": self.date_time,
           "views": self.views,
           "calories": self.calories,
-          "remote_pic":self.remote_pic,
+          "remote_pic": self.remote_pic if self.remote_pic else "https://s3-us-west-2.amazonaws.com/grumblrdelacruzpaulino/%s" % self.pic,
           "categories": list(map(lambda x: x.to_json(),self.category_set.all())),
           "equipments": list(map(lambda x: x.to_json(),self.equipment_set.all())),
         }
@@ -97,6 +97,7 @@ class Recipe(models.Model):
           "ingredients": serializers.serialize('json',self.ingredients.all()),
           "steps": serializers.serialize('json',self.steps.order_by('step_number')),
           "difficulty": self.rating_set.all().aggregate(Avg('difficulty')),
+          "remote_pic": self.remote_pic if self.remote_pic else "https://s3-us-west-2.amazonaws.com/grumblrdelacruzpaulino/%s" % self.pic,
           "tastiness": self.rating_set.all().aggregate(Avg('tastiness'))
         }
 

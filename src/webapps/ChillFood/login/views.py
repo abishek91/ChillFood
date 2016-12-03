@@ -68,7 +68,9 @@ def register(request):
         return render(request, 'login.html', context)
 
     new_user = User.objects.create_user(username=form.cleaned_data['username'],
+                                        email=form.cleaned_data['username'],
                                         name=form.cleaned_data['name'],
+                                        first_name=form.cleaned_data['first_name'],
                                         password=form.cleaned_data['password'],
                                         bio=form.cleaned_data['bio'],
                                         birthdate=form.cleaned_data['birthdate'],

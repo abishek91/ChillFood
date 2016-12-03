@@ -10,7 +10,6 @@ import RecipeTitle from './recipeTitle.jsx'
 import Steps from './steps.jsx'
 import Comments from './comments.jsx'
 import ShareBar from './shareBar.jsx'
-import ReactStars from 'react-stars'
 import Views from './views.jsx'
 import { Button, Card, Row, Col } from 'react-materialize';
 import {Img} from './common.jsx'
@@ -164,7 +163,7 @@ export default class RecipeDetails extends React.Component {
             </Col>
             <Col s={5}>
               <Views views={this.state.recipe.views} />
-              <ShareBar title={this.props.name} image={recipe_image_url}/>
+              <ShareBar title={this.state.recipe.title} image={this.state.recipe.remote_pic}/>
 
             </Col>
           </Row>

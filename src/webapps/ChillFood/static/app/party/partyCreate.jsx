@@ -103,47 +103,13 @@ export default class CreateParty extends React.Component {
   render() {
     
     return (
-        <Modal
-          id="modal"
-          header="Invite Friends"
-          fixedFooter
-          trigger={
-            Invitation()
-          }
-          actions={[
-            <Button waves='light' className='blue white-text' disabled={this.state.disable} onClick={this.handleClick} flat>
-              Invite
-            </Button>,
-            <Button waves='light' modal='close' flat>
-              Close
-            </Button>]}
-
-          >
-          <Row>
-            <label htmlFor="title">Title</label>
-            <input type="text" 
-            name="title" 
-            placeholder="Title" 
-            ref="title"
-            />
-          </Row>
-          <Row>
-            <label htmlFor="title">When?</label>
-            <input 
-              className="datepicker"
-              name="date" 
-              ref="date"
-            />
-          </Row>
-          <div className="autocomplete" id="multiple">
-              <div className="ac-input">
-                  <input type="text" id="search_friends" placeholder="Who do you want to invite?" data-activates="multiple-dropdown" data-beloworigin="true" />
-              </div>
-              <div className="ac-friends"></div>
-              <ul id="multiple-dropdown" className="dropdown-content ac-dropdown"></ul>
-              <input type="hidden" name="multipleHidden" />
-          </div>
-        </Modal>
+      <Modal
+  header='Modal Header'
+  trigger={
+    <Button waves='light'>MODAL</Button>
+  }>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+</Modal>
     );
   }
 }

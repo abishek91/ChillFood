@@ -294,3 +294,7 @@ img.social-icon {
   color: gray;
 }
 
+.ribbon {
+  height: 34px;
+  line-height: 34px;
+}

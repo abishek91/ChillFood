@@ -1,6 +1,5 @@
 import React from 'react';
 import {Row, Col, Input, Icon, Button} from 'react-materialize';
-import ReactStars from 'react-stars'
 import Rating from 'react-rating'
 import {Img} from './common.jsx'
 export default class Comments extends React.Component {

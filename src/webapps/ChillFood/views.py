@@ -128,7 +128,6 @@ def add_comment(request, recipe_id):
         return JsonResponse({"recipe":recipe.to_json_full(request.user)})
     return JsonResponse({"error":"Invalid parameters"})
 
-@login_required
 def app(request):
     return render(request, 'app.html')
 

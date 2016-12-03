@@ -96,7 +96,7 @@ export default class RecipeList extends React.Component {
     .then(function (data) {
       this.setState((prevState, props) => {
         return {
-          data: prevState.data.concat(data.data),
+          data: prevState.data.concat(data),
           next: !!(self.recipe.next)
         }
       })

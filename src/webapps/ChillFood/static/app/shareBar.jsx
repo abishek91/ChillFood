@@ -32,8 +32,10 @@ export default class ShareBar extends React.Component {
   componentWillMount() {
     var url = window.location;
     var base_url = url.protocol + "//" + url.host 
-
-    $('meta[name=image]').attr('content', base_url+this.props.image);
+    console.log('tilte',this.props.title)
+    $('meta[name=image]').attr('content', this.props.image);
+    $('meta[itemprop=image]').attr('content', this.props.image);
+    $('meta[itemprop=name]').attr('content', this.props.title);
   }
 
   render() {

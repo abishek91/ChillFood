@@ -47,6 +47,14 @@ export default class SearchBar extends React.Component {
     const user ={};
     var buttons = <span></span>;
     var activate = null;
+    let username = userName;
+    if (this.props.username)
+      username = this.props.username;
+    
+    let user_photo = userPhoto;
+    if (this.props.user_photo)
+      user_photo = this.props.user_photo;
+
     if(typeof userId !== 'undefined')
     {
        buttons = <span>
@@ -55,21 +63,23 @@ export default class SearchBar extends React.Component {
                 </span>
       if(confirmed == 'False')
         activate =  <div className="row">
-                        <div className="col s12 red center white-text z-depth-1">Please, confirm your email address.</div>  
+                        <div className="ribbon col s12 red center white-text z-depth-1">Please, confirm your email address.</div>  
                     </div>  
 
     }
     else
     {
-       buttons = <Button className="right login" onClick={() => this.login()} type="button">Login</Button>
+       buttons = (<ul className="right hide-on-med-and-down">
+                    <li>
+                      <a href="/login" onClick={() => this.login()} >  
+                        Login
+                      </a>
+                    </li>
+                  </ul>)
+
+
     }
-    let username = userName;
-    if (this.props.username)
-      username = this.props.username;
     
-    let user_photo = userPhoto;
-    if (this.props.user_photo)
-      user_photo = this.props.user_photo;
     return (
       <div>
         <div className="navbar-fixed">
