@@ -47,6 +47,7 @@ export default class Sidebar extends React.Component {
                             id="hasVideo"
                             type='switch' 
                             checked
+                            value={this.state.hasVideo}
                             onLabel=' ' 
                             offLabel='Only recipes with video'
                             onChange={(e)=>this.props.handleVideo(e)}
@@ -55,6 +56,7 @@ export default class Sidebar extends React.Component {
       my_switch = () => (<Input name='hasVideo' 
                             id="hasVideo"
                             type='switch' 
+                            value={this.state.hasVideo}
                             onLabel=' ' 
                             offLabel='Only recipes with video'
                             onChange={(e)=>this.props.handleVideo(e)}

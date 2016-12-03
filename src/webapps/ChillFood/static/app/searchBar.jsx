@@ -19,23 +19,24 @@ export default class SearchBar extends React.Component {
 
   handleSearch(text) {
     // 
-    this.setState({
-      text: text
-    });
+    // this.setState({
+    //   text: text
+    // });
 
     if (/^#\/(\?.*)?$/.test(location.hash)) {
+      console.log('searching',text)
       this.props.handleSearch(text)
     } else {
-      window.location = '/#/?' + querystring.stringify(search);
+      window.location = '/#/?' + querystring.stringify({text:text});
     }
   }
   
-  componentWillMount(){
-    if (this.props.text)
-      this.setState({
-        text: this.props.text
-      })    
-  }
+  // componentWillMount(){
+  //   if (this.props.text)
+  //     this.setState({
+  //       text: this.props.text
+  //     })    
+  // }
 
   render() {
     const static_files = '/static/';
@@ -62,7 +63,7 @@ export default class SearchBar extends React.Component {
               <Buttons username={username} user_photo={user_photo} />
               <Notifications />
 
-              <SearchForm text={this.state.text} handleSearch={this.handleSearch} /> 
+              <SearchForm defaultValue={this.props.defaultValue} handleSearch={this.handleSearch} /> 
 
             </div>            
           </nav>           
@@ -102,12 +103,27 @@ const Buttons = ({username, user_photo}) => {
           </ul>);  
 }
 
+const getParams = query => {
+  if (!query) {
+    return { };
+  }
+
+  return (/^[?#/]/.test(query) ? query.slice(2) : query)
+    .split('&')
+    .reduce((params, param) => {
+      let [ key, value ] = param.split('=');
+      params[key] = value ? decodeURIComponent(value.replace(/\+/g, ' ')) : '';
+      return params;
+    }, { });
+};
+
+
 class SearchForm extends React.Component {
 // const SearchForm = ({text, handleSearch}) => {
   constructor(props) {
     super(props)
     this.state = {
-      text: ''
+      text: props.defaultValue
     }
   }
 
@@ -115,29 +131,26 @@ class SearchForm extends React.Component {
     let self = this;
     clearInterval(self.interval)
     self.interval = setTimeout(() => self.props.handleSearch(text), 500);
-    this.setState({text:text})
+    self.setState({text:text})
   }
 
   render() {
     return (
-      <span><form className="right col s6">
-      
-                <div className="input-field">
-                  <input id="search" 
-                    type="search" 
-                    value={this.state.text} 
-                    onChange={(e) => this.handleSearch(e.target.value)} 
-                    required/>
-
-                  
-                  <label htmlFor="search">
-                    <i className="material-icons">search</i>
-
-                  </label>
-                  <i className="material-icons">close</i>
-                </div>
-              </form>
-        </span> );  
+      <span>
+        <form className="right col s6">
+          <div className="input-field">
+            <input id="search" 
+              type="search" 
+              value={this.state.text} 
+              onChange={(e) => this.handleSearch(e.target.value)} 
+              required/>
+            <label htmlFor="search">
+              <i className="material-icons">search</i>
+            </label>
+            <i className="material-icons">close</i>
+          </div>
+        </form>
+      </span> );  
   }
 }
 

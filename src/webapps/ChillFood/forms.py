@@ -54,11 +54,8 @@ class SearchForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super(SearchForm, self).clean()
         for key, value in cleaned_data.items():
-            # print(1,key,value, initial)
             if not value and key in initial:
-                # print(2,key,value)
                 cleaned_data[key] = initial[key]
-        print(cleaned_data);
         return cleaned_data
 
 class IngredientForm(forms.ModelForm):

@@ -106,7 +106,7 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'chillfood',
+            'NAME': 'chillfood_4',
             'USER': 'chillfood',
             'PASSWORD': 'chillfood',
             'HOST': 'localhost',
@@ -161,6 +161,7 @@ USE_TZ = True
 AUTH_USER_MODEL = 'ChillFood.User'
 LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = '/'
+
 SOCIAL_AUTH_FACEBOOK_KEY = '1221503734555521' 
 SOCIAL_AUTH_FACEBOOK_SECRET = 'd9bc978c8a7d5c1a7ba3a7605cc76e32'
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '285121225157-krvai843hflq522fga6e4j76qi6iojn2.apps.googleusercontent.com'

@@ -24,6 +24,7 @@ export default class RecipeList extends React.Component {
     
     this.state = {
       search: {
+        text: this.get_text_from_url(),
         hasVideo: false,
         sortBy: sortOptions[0],        
       },
@@ -76,6 +77,15 @@ export default class RecipeList extends React.Component {
 
     return sort;
   }
+
+  get_text_from_url() {
+    const params = /(text=)(.+?)(&.*)?$/.exec(location.hash)
+    let text = ''
+    if (params)
+      text = params[2]
+    return text;
+  }
+
 
   load_posts (argument) {
     // body...
@@ -250,10 +260,6 @@ export default class RecipeList extends React.Component {
     let ingredient_api = new IngredientApi()
     ingredient_api.get(value)
     .then(function(data) {
-      
-      if (data.data.length == 0) {
-        data.data = [{id:0, text: ' + '+value}]
-      }
       callback(value,data.data);
     })
   }
@@ -266,7 +272,7 @@ export default class RecipeList extends React.Component {
     });
     
     return (<div>
-              <SearchBar handleSearch={this.handleSearch} />
+              <SearchBar defaultValue={this.state.search.text} handleSearch={this.handleSearch} />
               <SortBar 
                 sortOptions={sortOptions} 
                 sortBy={this.state.search.sortBy}

@@ -28,10 +28,8 @@ class User(AbstractUser):
     return self.name
 
   def get_full_name(self):
-    print('here',self.name)
     if len(self.name):
       return self.name
-    print('here',self.first_name,'%s %s' % (self.first_name, self.last_name))
     return '%s %s' % (self.first_name, self.last_name)
 
   def to_json(self):

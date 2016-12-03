@@ -22272,6 +22272,8 @@
 	  value: true
 	});
 	
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _react = __webpack_require__(/*! react */ 1);
@@ -22319,23 +22321,25 @@
 	    key: 'handleSearch',
 	    value: function handleSearch(text) {
 	      // 
-	      this.setState({
-	        text: text
-	      });
+	      // this.setState({
+	      //   text: text
+	      // });
 	
 	      if (/^#\/(\?.*)?$/.test(location.hash)) {
+	        console.log('searching', text);
 	        this.props.handleSearch(text);
 	      } else {
-	        window.location = '/#/?' + _querystring2.default.stringify(search);
+	        window.location = '/#/?' + _querystring2.default.stringify({ text: text });
 	      }
 	    }
-	  }, {
-	    key: 'componentWillMount',
-	    value: function componentWillMount() {
-	      if (this.props.text) this.setState({
-	        text: this.props.text
-	      });
-	    }
+	
+	    // componentWillMount(){
+	    //   if (this.props.text)
+	    //     this.setState({
+	    //       text: this.props.text
+	    //     })    
+	    // }
+	
 	  }, {
 	    key: 'render',
 	    value: function render() {
@@ -22366,7 +22370,7 @@
 	              ),
 	              _react2.default.createElement(Buttons, { username: username, user_photo: user_photo }),
 	              _react2.default.createElement(_notifications2.default, null),
-	              _react2.default.createElement(SearchForm, { text: this.state.text, handleSearch: this.handleSearch })
+	              _react2.default.createElement(SearchForm, { defaultValue: this.props.defaultValue, handleSearch: this.handleSearch })
 	            )
 	          )
 	        )
@@ -22466,6 +22470,22 @@
 	  );
 	};
 	
+	var getParams = function getParams(query) {
+	  if (!query) {
+	    return {};
+	  }
+	
+	  return (/^[?#/]/.test(query) ? query.slice(2) : query).split('&').reduce(function (params, param) {
+	    var _param$split = param.split('='),
+	        _param$split2 = _slicedToArray(_param$split, 2),
+	        key = _param$split2[0],
+	        value = _param$split2[1];
+	
+	    params[key] = value ? decodeURIComponent(value.replace(/\+/g, ' ')) : '';
+	    return params;
+	  }, {});
+	};
+	
 	var SearchForm = function (_React$Component2) {
 	  _inherits(SearchForm, _React$Component2);
 	
@@ -22476,7 +22496,7 @@
 	    var _this2 = _possibleConstructorReturn(this, (SearchForm.__proto__ || Object.getPrototypeOf(SearchForm)).call(this, props));
 	
 	    _this2.state = {
-	      text: ''
+	      text: props.defaultValue
 	    };
 	    return _this2;
 	  }
@@ -22489,7 +22509,7 @@
 	      self.interval = setTimeout(function () {
 	        return self.props.handleSearch(text);
 	      }, 500);
-	      this.setState({ text: text });
+	      self.setState({ text: text });
 	    }
 	  }, {
 	    key: 'render',
@@ -42373,6 +42393,7 @@
 	
 	    _this.state = {
 	      search: {
+	        text: _this.get_text_from_url(),
 	        hasVideo: false,
 	        sortBy: sortOptions[0]
 	      },
@@ -42428,6 +42449,14 @@
 	      }
 	
 	      return sort;
+	    }
+	  }, {
+	    key: 'get_text_from_url',
+	    value: function get_text_from_url() {
+	      var params = /(text=)(.+?)(&.*)?$/.exec(location.hash);
+	      var text = '';
+	      if (params) text = params[2];
+	      return text;
 	    }
 	  }, {
 	    key: 'load_posts',
@@ -42604,10 +42633,6 @@
 	    value: function getIngredients(value, callback) {
 	      var ingredient_api = new _ingredient2.default();
 	      ingredient_api.get(value).then(function (data) {
-	
-	        if (data.data.length == 0) {
-	          data.data = [{ id: 0, text: ' + ' + value }];
-	        }
 	        callback(value, data.data);
 	      });
 	    }
@@ -42625,7 +42650,7 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2.default.createElement(_searchBar2.default, { handleSearch: this.handleSearch }),
+	        _react2.default.createElement(_searchBar2.default, { defaultValue: this.state.search.text, handleSearch: this.handleSearch }),
 	        _react2.default.createElement(_sortBar2.default, {
 	          sortOptions: sortOptions,
 	          sortBy: this.state.search.sortBy,
@@ -43302,6 +43327,7 @@
 	            id: 'hasVideo',
 	            type: 'switch',
 	            checked: true,
+	            value: _this2.state.hasVideo,
 	            onLabel: ' ',
 	            offLabel: 'Only recipes with video',
 	            onChange: function onChange(e) {
@@ -43314,6 +43340,7 @@
 	          return _react2.default.createElement(_reactMaterialize.Input, { name: 'hasVideo',
 	            id: 'hasVideo',
 	            type: 'switch',
+	            value: _this2.state.hasVideo,
 	            onLabel: ' ',
 	            offLabel: 'Only recipes with video',
 	            onChange: function onChange(e) {

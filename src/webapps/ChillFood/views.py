@@ -52,7 +52,7 @@ def profile_image(request, user_id):
     return HttpResponse(image, content_type=content_type)   
 
 def step_image(request, step_id):
-    print()
+    
     step = get_object_or_404(Step, id=step_id)
 
     if step.picture:
@@ -170,7 +170,7 @@ def display_users(request, user_id):
 
 @login_required
 def notifications(request):
-    print(request.user.id)
+    
     return JsonResponse({"notifications": serializers.serialize("json", Notification.objects.filter(user=request.user).order_by('-id'))})
 
 @login_required

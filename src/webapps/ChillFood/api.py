@@ -34,7 +34,7 @@ def recipes(request):
     if not form.is_valid():
         return JsonResponse(dict(form.errors.items()),status=406)        
     
-    print('start');
+    
     limit = 6
     query = Q()
     v_next = None
@@ -71,7 +71,7 @@ def recipes(request):
         
     #Filter
     if form.cleaned_data['search']:
-        print('search',form.cleaned_data['search']);
+        
         lista = form.cleaned_data['search'].split()
         query = reduce(lambda x, y: x | y, [Q(title__icontains=word) for word in lista])
 
@@ -106,7 +106,7 @@ def recipes(request):
 
 
     #Order
-    print('sort_by', form.cleaned_data['sort_by']);
+    
     if form.cleaned_data['sort_by'] == Sort.difficulty:
         sort = 'difficulty'
     elif form.cleaned_data['sort_by'] == Sort.calories:
@@ -122,7 +122,7 @@ def recipes(request):
     recipes = Recipe
 
     if query:
-        print('query',query)
+        
 
         recipes = Recipe.objects.filter(query) 
     else:
@@ -146,7 +146,7 @@ def recipes(request):
         for i in temp_ids:
             ingredients_id.append(str(i[0]))
 
-        print('Original', lista, 'New Ingredient',ingredients_id)
+        
         
         recipes = recipes.annotate(
                 found_ingredients = Count(
@@ -170,23 +170,23 @@ def recipes(request):
                  .annotate(difficulty=Coalesce(Avg('rating__difficulty'),10), \
                           tastiness=Coalesce(Avg('rating__tastiness'),-1),) \
                  .order_by(sort)    
-    print("----->" , recipes.query)
+    
         
-    print(new_recipes)
+    
     
     #TODO: More elaborate query for homepage
     skip = form.cleaned_data['skip']
-    print(skip)
+    
     data = new_recipes[skip:skip+limit]
     next_url_filters = []
     if (len(new_recipes[skip+limit:])):
         v_next = request.get_full_path()
         re.sub(r'skip=\d+\&',v_next,'')
-        print(v_next)
+        
         v_next += '&skip=%d' % (skip+limit)
-        print(v_next)
+        
         re.sub(r'\\&',v_next,'?')
-        print(request.path,v_next)
+        
 
         # next_url_filters.append('skip=%d' % (skip+limit))
         # if form.cleaned_data['search']:
@@ -268,8 +268,8 @@ def recipe_create(request, recipe_id = 0):
     recipe.equipment_set.set(form.cleaned_data['equipment_set'])
     recipe.cuisine_set.set(form.cleaned_data['cuisine_set'])
     recipe.save()
-    print('Categories',recipe.category_set)
-    print('Categories 2',form.cleaned_data['category_set'])
+    
+    
 
     #Saving nested elements 
     for rp in recipe_ingredients:
@@ -409,7 +409,7 @@ def party_create(request):
     
     #Validations
     form = PartyForm(body, instance=party)
-    print(request.user)
+    
 
     if not form.is_valid():
         return JsonResponse(dict(form.errors.items()),status=406)        
@@ -418,24 +418,24 @@ def party_create(request):
     party.save();
     
     for guest_id in body['guests']:  
-      print('a') 
+      
       guest = Guest(user_id=guest_id, party=party)
       guest.save()
     
     #Save Parent
-    print('guests',party.guests)
-    print('guests',form['guests'])
-    print('guests',len(party.guests.all()))
+    
+    
+    
     
     # for guest in party.guests.all():TODO: Ask OH
     for guest in Guest.objects.filter(party_id=party.id):
-        print('tests', guest.status)
+        
         random_number = str(random.randrange(1000))
         hash = hashlib.sha256()
 
         # for i in range(ROUNDS):
         key = str(party.id) + str(guest.id)
-        print(key)
+        
         hash.update(key.encode('utf-8'))
         hash.update(random_number.encode('utf-8'))
 
@@ -528,7 +528,7 @@ def user(request):
     # users = User.objects.all()
     users = User.objects.filter(name__icontains=name).exclude(pk=request.user.id)
     # users = request.user.following.filter(name__icontains=name)
-    print('hey',len(users))
+    
     lista = []
     if lon and lat:
         for u in users:

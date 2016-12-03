@@ -105,10 +105,7 @@ def send_registration_mail(host, user):
 
 def confirm(request, username, token):
     user = get_object_or_404(User, username=username)
-    print ('User - ', user)
     real_token = default_token_generator.make_token(user)
-    print(token)
-    print(token)
     if token == real_token:
         user.is_confirmed = True
         user.save()
