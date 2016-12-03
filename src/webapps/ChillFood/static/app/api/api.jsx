@@ -16,7 +16,10 @@ const get = (url) => {
       return response.text();
     })
     .then(function(text) {     
-      if (response.status == 406) {
+      if (response.status == 302) {
+        window.location.href="/login";
+        return;
+      } else if (response.status == 406) {
         var errors = JSON.parse(text);
         for (var key in errors) {
           Materialize.toast(key+": "+errors[key],2000,'orange')
@@ -78,10 +81,19 @@ const post = (url, body) =>{
     })
     .then(function(_response) {
       response = _response
+      
+      if (response.status == 302) {
+        window.location.href="/login";
+        return;
+      }
+      
       return response.text();
     })
     .then(function(text) {     
-      if (response.status == 406) {
+      if (response.status == 302) {
+        window.location.href="/login";
+        return;
+      } if (response.status == 406) {
         var errors = JSON.parse(text);
         for (var key in errors) {
           Materialize.toast(key+": "+errors[key],2000,'orange')
