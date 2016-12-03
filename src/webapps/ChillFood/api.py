@@ -489,8 +489,13 @@ def user_query(request):
     # if near:
     #     #TODO: Some cool logic
 
+    lista = []
+
     users = request.user.following.filter(name__icontains=name)
-    lista = [{'id':c.id, 'text':c.get_full_name()}for c in users]
+    for user in users:
+        if name in user.get_full_name():
+            lista.append({'id': user.id, 'text': user.get_full_name()})
+    # lista = [{'id':c.id, 'text':c.get_full_name()}for c in users]
 
     return JsonResponse(lista, safe=False);
 
