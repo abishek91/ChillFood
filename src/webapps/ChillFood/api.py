@@ -278,7 +278,7 @@ def recipe_create(request):
         # recipe.steps.add(step)
     
     user = User.objects.get(id=request.user.id)
-    notification_text = user.name + " has uploaded a new recipe " + recipe.title;
+    notification_text = user.get_full_name() + " has uploaded a new recipe " + recipe.title;
     for follower in user.followers.all():
         notification = Notification(user=follower, text=notification_text,read=False,
                                         link=reverse('recipe_detail', kwargs={'recipe_id':recipe.id}) + '#/recipe/' + str(recipe.id))
@@ -422,7 +422,7 @@ def party_create(request):
         token =  hash.hexdigest();
         guest.token = random_number + ';' + token
         guest.save()
-        send_invitation(request.get_host(), party.host.name,\
+        send_invitation(request.get_host(), party.host.get_full_name(),\
          guest, party.recipe.title, party.date, token)
 
     party.save();
@@ -490,7 +490,7 @@ def user_query(request):
     #     #TODO: Some cool logic
 
     users = request.user.following.filter(name__icontains=name)
-    lista = [{'id':c.id, 'text':c.name}for c in users]
+    lista = [{'id':c.id, 'text':c.get_full_name()}for c in users]
 
     return JsonResponse(lista, safe=False);
 
@@ -512,15 +512,15 @@ def user(request):
     lista = []
     if lon and lat:
         for u in users:
-            user_dic ={'id':u.id, 'text':u.name}
+            user_dic ={'id':u.id, 'text':u.get_full_name()}
             user_dic['distance'] = u.distance(lon,lat)
             if user_dic['distance'] != None:
-                user_dic['text'] ="%s (%0.2f km)" % (u.name, u.distance(lon,lat))
+                user_dic['text'] ="%s (%0.2f km)" % (u.get_full_name(), u.distance(lon,lat))
             lista.append(user_dic)
 
         lista = sorted(lista,key=lambda x: x['distance'] if  x['distance'] else sys.maxsize)
     else:
-        lista = [{'id':c.id, 'text':c.name, 'distance':None}for c in users]
+        lista = [{'id':c.id, 'text':c.get_full_name(), 'distance':None}for c in users]
         
     return JsonResponse(lista, safe=False);
 

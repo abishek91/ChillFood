@@ -27812,16 +27812,60 @@
 	      return _react2.default.createElement(
 	        _reactMaterialize.Modal,
 	        {
-	          header: 'Modal Header',
-	          trigger: _react2.default.createElement(
+	          id: 'modal',
+	          header: 'Invite Friends',
+	          fixedFooter: true,
+	          trigger: (0, _invitation2.default)(),
+	          actions: [_react2.default.createElement(
 	            _reactMaterialize.Button,
-	            { waves: 'light' },
-	            'MODAL'
-	          ) },
+	            { waves: 'light', className: 'blue white-text', disabled: this.state.disable, onClick: this.handleClick, flat: true },
+	            'Invite'
+	          ), _react2.default.createElement(
+	            _reactMaterialize.Button,
+	            { waves: 'light', modal: 'close', flat: true },
+	            'Close'
+	          )]
+	
+	        },
 	        _react2.default.createElement(
-	          'p',
+	          _reactMaterialize.Row,
 	          null,
-	          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'
+	          _react2.default.createElement(
+	            'label',
+	            { htmlFor: 'title' },
+	            'Title'
+	          ),
+	          _react2.default.createElement('input', { type: 'text',
+	            name: 'title',
+	            placeholder: 'Title',
+	            ref: 'title'
+	          })
+	        ),
+	        _react2.default.createElement(
+	          _reactMaterialize.Row,
+	          null,
+	          _react2.default.createElement(
+	            'label',
+	            { htmlFor: 'title' },
+	            'When?'
+	          ),
+	          _react2.default.createElement('input', {
+	            className: 'datepicker',
+	            name: 'date',
+	            ref: 'date'
+	          })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'autocomplete', id: 'multiple' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'ac-input' },
+	            _react2.default.createElement('input', { type: 'text', id: 'search_friends', placeholder: 'Who do you want to invite?', 'data-activates': 'multiple-dropdown', 'data-beloworigin': 'true' })
+	          ),
+	          _react2.default.createElement('div', { className: 'ac-friends' }),
+	          _react2.default.createElement('ul', { id: 'multiple-dropdown', className: 'dropdown-content ac-dropdown' }),
+	          _react2.default.createElement('input', { type: 'hidden', name: 'multipleHidden' })
 	        )
 	      );
 	    }
