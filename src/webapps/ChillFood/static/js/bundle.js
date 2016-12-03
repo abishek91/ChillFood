@@ -27658,7 +27658,7 @@
 	          multiple: {
 	            enable: true,
 	            onExist: function onExist(item) {
-	              Materialize.toast('Tag: ' + item.text + ' is already added!', 2000);
+	              Materialize.toast(item.text + ' is already added!', 2000);
 	            }
 	          },
 	          appender: {
@@ -35502,7 +35502,7 @@
 	      console.log(item);
 	      if (item.id == 0) {
 	        var ingredient_api = new _ingredient4.default();
-	        return ingredient_api.create(item.text).then(function (data) {
+	        return ingredient_api.create(item.text.trim()).then(function (data) {
 	          Materialize.toast('Your ingredient was created succesfully.', 4000, 'blue');
 	          return data;
 	        });

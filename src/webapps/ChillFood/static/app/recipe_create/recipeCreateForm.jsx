@@ -194,7 +194,7 @@ export default class RecipeCreate extends React.Component {
     console.log(item)
     if (item.id == 0) {
       let ingredient_api = new IngredientApi()
-      return ingredient_api.create(item.text)
+      return ingredient_api.create(item.text.trim())
       .then(function (data) {
         Materialize.toast('Your ingredient was created succesfully.', 4000, 'blue') 
         return data;

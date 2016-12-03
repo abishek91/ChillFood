@@ -31,7 +31,7 @@ export default class CreateParty extends React.Component {
           multiple: {
               enable: true,
               onExist: function (item) {
-                  Materialize.toast('Tag: ' + item.text + ' is already added!', 2000);
+                  Materialize.toast(item.text + ' is already added!', 2000);
               }              
           },
           appender: {
