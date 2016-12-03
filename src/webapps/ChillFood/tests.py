@@ -271,20 +271,19 @@ class RecipesQueryTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()['data']), 0)
 
-        response = client.get('/api/recipes?equipment=1&category=3&text=rito')
+        response = client.get('/api/recipes?equipment=1&category=3&search=rito')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()['data']), 0)
 
-        response = client.get('/api/recipes?equipment=1&category=1&text=rito')
+        response = client.get('/api/recipes?equipment=1&category=1&search=rito')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()['data']), 1)
 
-        response = client.get('/api/recipes?category=1&text=rito')
+        response = client.get('/api/recipes?category=1&search=rito')
         self.assertEqual(response.status_code, 200)
-        print(response.json()['data'])
         self.assertEqual(len(response.json()['data']), 1)
         
-        response = client.get('/api/recipes?equipment=100&category=1&text=rito')
+        response = client.get('/api/recipes?equipment=100&category=1&search=rito')
         self.assertEqual(response.status_code, 406)
 
     def test_has_video(self): 
@@ -311,6 +310,41 @@ class RecipesQueryTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()['data']), 2)
 
+        response = client.get('/api/recipes?ingredient=1&ingredient=16&ingredient=18')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()['data']), 3)
+
+    def test_missing_ingredients(self): 
+        
+        client = Client()       
+
+        response = client.get('/api/recipes?ingredient=1')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()['data']), 1)
+        self.assertEqual(len(response.json()['data'][0]['missing_ingredients']), 3)
+
+        response = client.get('/api/recipes?ingredient=1&ingredient=3')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()['data']), 1)
+        self.assertEqual(len(response.json()['data'][0]['missing_ingredients']), 2)
+
+        response = client.get('/api/recipes?ingredient=1&ingredient=3&ingredient=3')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()['data']), 1)
+        self.assertEqual(len(response.json()['data'][0]['missing_ingredients']), 2)
+
+        response = client.get('/api/recipes?ingredient=1&ingredient=2&ingredient=3&ingredient=4')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()['data']), 1)
+        self.assertEqual(len(response.json()['data'][0]['missing_ingredients']), 0)
+
+
+        # response = client.get('/api/recipes?ingredient=16&ingredient=18&order_by=0')
+        # self.assertEqual(response.status_code, 200)
+        # self.assertEqual(len(response.json()['data']), 2)
+        # self.assertEqual(len(response.json()['data'][0]['missing_ingredients']), 2)
+        # self.assertEqual(len(response.json()['data'][0]['missing_ingredients']), 2)
+        
         response = client.get('/api/recipes?ingredient=1&ingredient=16&ingredient=18')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()['data']), 3)
