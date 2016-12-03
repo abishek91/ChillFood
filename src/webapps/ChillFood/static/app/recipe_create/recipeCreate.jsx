@@ -8,6 +8,10 @@ import List from '../api/list.jsx'
 export default class RecipeCreate extends React.Component{
   constructor(props){
     super(props);
+    
+    if (!authenticated)
+      window.location.href="/login";
+    
     this.state = {
       recipe: {
         title: '',
@@ -69,6 +73,9 @@ export default class RecipeCreate extends React.Component{
   }
 
   componentWillMount(){
+    if (!authenticated)
+      window.location.href="/login";
+    
     const self = this;
     new List().get()
     .then(function (data) {

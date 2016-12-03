@@ -16,7 +16,7 @@ const get = (url) => {
       return response.text();
     })
     .then(function(text) {     
-      if (response.status == 302) {
+      if (response.status == 302 || /login/.test(response.url)) {
         window.location.href="/login";
         return;
       } else if (response.status == 406) {
@@ -82,7 +82,7 @@ const post = (url, body) =>{
     .then(function(_response) {
       response = _response
       
-      if (response.status == 302) {
+      if (response.status == 302 || /login/.test(response.url)) {
         window.location.href="/login";
         return;
       }
@@ -90,7 +90,7 @@ const post = (url, body) =>{
       return response.text();
     })
     .then(function(text) {     
-      if (response.status == 302) {
+      if (response.status == 302 || /login/.test(response.url)) {
         window.location.href="/login";
         return;
       } if (response.status == 406) {

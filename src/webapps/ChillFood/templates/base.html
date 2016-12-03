@@ -53,6 +53,9 @@
       {% if user.id %}
         var userId = {{user.id}}  
         var confirmed = '{{user.is_confirmed}}'
+        var authenticated = true;
+      {% else %}
+        var authenticated = false;
       {% endif %}
     </script>
     
