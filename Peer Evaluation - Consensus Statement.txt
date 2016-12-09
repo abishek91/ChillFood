@@ -1,0 +1,30 @@
+Contributions:
+--------------
+
+Abishek Anand:
+- Setup the initial dataset by researching API’s, finding an appropriate one and writing an endpoint to make calls to that API and enter that data into our database
+- Initial setup of ReactJS, Babel and Webpack. Setup dev environment so webpack would watch for changes in our JSX files, then use babel to transpile the code to js and bundle it into a single JS file
+- Recipe details page
+- Comments section
+- Notifications
+- Configuration for hosting app on Amazon elastic beanstalk
+- Follow/Unfollow users
+- Star Ratings
+
+Caleb De La Cruz Paulino:
+- Login/Register Functionality
+- Social Network Integration
+- Picture Upload to S3 Amazon
+- Landing page 
+- Search Bar
+- Filters and Sorting Functionality
+- Party creation, and email invitations
+- Recipe creation
+
+Questions:
+- We set reasonable expectations for ourselves and met those expectations in a timely manner.
+- We were clear with our availability early in the sprint so that we could plan accordingly.
+- We attended projects meeting on time.
+- We were clear with technical issues that we were facing and helped each other out.
+- We believe we each did about 50% of the project work.
+
